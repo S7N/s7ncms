@@ -2,8 +2,7 @@
 
 class Media_Controller extends Controller {
 
-	public function _remap()
-	{
+	public function _remap() {
 		$type = $this->uri->segment(2);
 		$file = $this->uri->segment(3);
 
@@ -15,4 +14,5 @@ class Media_Controller extends Controller {
 			throw new Kohana_404_Exception();
 		}
 	}
+	
 }

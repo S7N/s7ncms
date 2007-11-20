@@ -28,7 +28,7 @@ $config = array
 	),
 	'autoload'             => array
 	(
-		'libraries' => '',
+		'libraries' => 'Auth',
 		'models'    => ''
 	)
 );
