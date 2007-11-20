@@ -1,0 +1,7 @@
+core http://svn.kohanaphp.com/trunk/system/core/
+helpers http://svn.kohanaphp.com/trunk/system/helpers/
+i18n http://svn.kohanaphp.com/trunk/system/i18n/
+libraries http://svn.kohanaphp.com/trunk/system/libraries/
+models http://svn.kohanaphp.com/trunk/system/models/
+vendor http://svn.kohanaphp.com/trunk/system/vendor/
+views http://svn.kohanaphp.com/trunk/system/views/
