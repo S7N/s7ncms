@@ -1,1 +1,2 @@
-<h2>Welcome to the administration interface.</h2>
+<h1>Welcome</h1>
+Welcome to the S7Ncms Administration Interface. Here You can manage your website.
