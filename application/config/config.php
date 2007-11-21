@@ -25,7 +25,7 @@ $config = array
 	'extension_prefix'     => 'MY_',
 	'include_paths'        => array
 	(
-	    'modules/user_guide'
+	    
 	),
 	'autoload'             => array
 	(

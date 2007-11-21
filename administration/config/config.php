@@ -16,7 +16,7 @@
  */
 $config = array
 (
-	'site_domain'          => $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']).'/admin', //'dev.s7n/S7Ncms/admin',
+	'site_domain'          => 'dev.s7n/S7Ncms/admin',
 	'site_protocol'        => 'http',
 	'index_page'           => '',
 	'url_suffix'           => '',
@@ -25,10 +25,11 @@ $config = array
 	'extension_prefix'     => 'MY_',
 	'include_paths'        => array
 	(
+		
 	),
 	'autoload'             => array
 	(
-		'libraries' => 'session, auth',
+		'libraries' => 'profiler, session, auth',
 		'models'    => ''
 	)
 );

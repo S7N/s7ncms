@@ -29,7 +29,7 @@
                 </ul>
             </li>
             <li><?php echo html::anchor('credits', 'Credits') ?></li>
-            <li><?php echo html::anchor('user/logout', 'Logout') ?></li>
+            <li><?php echo html::anchor('auth/logout', 'Logout') ?></li>
         </ul>
     </div>
     <div id="content"><?php echo $content; ?></div>

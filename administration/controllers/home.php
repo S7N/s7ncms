@@ -8,6 +8,9 @@ class Home_Controller extends Controller {
     public function index() {
         $this->template->title = 'Home';
         $this->template->content = new View('home/home');
-    }    
+    }
+    public function xyz() {
+    	$this->template->content = 'hi@';
+    }
 
 }
