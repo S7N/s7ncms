@@ -16,7 +16,7 @@
  */
 $config = array
 (
-	'site_domain'          => 'dev.s7n.de/kohana_tests/admin/',
+	'site_domain'          => $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']).'/admin', //'dev.s7n/S7Ncms/admin',
 	'site_protocol'        => 'http',
 	'index_page'           => '',
 	'url_suffix'           => '',
@@ -28,7 +28,7 @@ $config = array
 	),
 	'autoload'             => array
 	(
-		'libraries' => 'Auth',
+		'libraries' => 'session, auth',
 		'models'    => ''
 	)
 );

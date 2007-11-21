@@ -2,7 +2,10 @@
 
 class Home_Controller extends Controller {
 
-    function index() {
+	public function __construct() {
+		parent::__construct();
+	}
+    public function index() {
         $this->template->title = 'Home';
         $this->template->content = new View('home/home');
     }    

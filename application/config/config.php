@@ -16,7 +16,7 @@
  */
 $config = array
 (
-	'site_domain'          => 'dev.s7n.de/kohana_tests/',
+	'site_domain'          => $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']), //'dev.s7n/S7Ncms',
 	'site_protocol'        => 'http',
 	'index_page'           => '',
 	'url_suffix'           => '',
