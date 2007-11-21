@@ -43,6 +43,7 @@ a {
 }
 
 #footer {
+	clear: both;
 	width: 100%;
 	background-color: #6698B3;
 	padding-top: 0.4em;

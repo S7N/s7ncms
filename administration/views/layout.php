@@ -30,7 +30,10 @@
 						<li><?php echo html::anchor('user/groups', 'Groups'); ?></li>
 					</ul>
 				</li>
-				<li><span id="current"><?php echo html::anchor('pages', 'Pages'); ?></span>
+				<li><span id="current">Pages</span>
+					<ul id="subnavlist">
+					    <li><?php echo html::anchor('pages', 'List all'); ?></li>
+					</ul>
 				</li>
 				<li><span id="current">Modules</span>
 					<ul id="subnavlist">
