@@ -16,8 +16,7 @@ class Controller extends Controller_Core {
         parent::__construct();
         
         $current_url = url::current();
-        $current_controller = explode('/', $current_url);
-        
+        $current_controller = explode('/', $current_url);        
         
         if(!in_array($current_controller[0], $this->not_protected)) {
         	if ($this->session->get('user_id')) {
@@ -34,6 +33,8 @@ class Controller extends Controller_Core {
         
         $this->template = new View($this->template);
         $this->template->title = '';
+        $this->template->meta = '';
+        $this->template->content = '';
         
         Event::add('system.post_controller', array($this, '_display'));        
 	}

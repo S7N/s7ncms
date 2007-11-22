@@ -158,7 +158,10 @@ textarea, input, select {
 	margin: 1px;
 	padding: 3px;
 }
-
+textarea {
+	width: 550px;
+	height: 300px;
+}
 input:focus, textarea:focus, label:focus {
 	background: #fff;
 	border: 1px solid #686868;
