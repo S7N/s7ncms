@@ -64,7 +64,6 @@ a {
 	float: left;
 	width: 145px;
 	margin: 0;
-	
 }
 
 #message {
@@ -87,7 +86,6 @@ a {
 	padding-bottom: 5pt;
 	padding-left: 10pt;
 	padding-right: 10pt;
-	
 }
 
 #content .ueberschrift {
@@ -131,7 +129,7 @@ tbody {
 }
 
 tbody tr td {
-	vertical-align: top;	
+	vertical-align: top;
 }
 
 thead {
@@ -145,28 +143,29 @@ tbody tr:hover td {
 	background: #F7E9A8;
 }
 
-form, label, input {
+form,label,input {
 	margin: 0;
 	padding: 0;
 }
 
-textarea, input, select {
+textarea,input,select {
 	background: #f4f4f4;
 	border: 1px solid #b2b2b2;
 	color: black;
-	font:  13px Verdana, Arial, Helvetica, sans-serif;
+	font: 13px Verdana, Arial, Helvetica, sans-serif;
 	margin: 1px;
 	padding: 3px;
 }
+
 textarea {
 	width: 550px;
 	height: 300px;
 }
-input:focus, textarea:focus, label:focus {
+
+input:focus,textarea:focus,label:focus {
 	background: #fff;
 	border: 1px solid #686868;
 }
-
 
 /*************************** NAVIGATIONSLEISTE ***************************/
 #navigation { /*avoid gap after li in ie6 by setting width*/
@@ -233,7 +232,7 @@ input:focus, textarea:focus, label:focus {
 	text-decoration: none;
 }
 
-span#current,a#current,a:visited #current,a#subcurrent  , a:visited
+span#current,a#current,a:visited #current,a#subcurrent   , a:visited
 	#subcurrent {
 	border-left: 8px solid #283D82;
 	background: #D6E9EE;
@@ -245,20 +244,44 @@ span#current,a#current,a:visited #current,a#subcurrent  , a:visited
 }
 
 /* Menü - Mootools */
-#menuspace ul {list-style-type: none; margin:0; padding:0;}
-#menuspace li {cursor:pointer; margin-left: 32px;}
-#menuspace .drag {background-color:#ccc; cursor: move;}
-#menuspace .nCollapse {background-color:#ddd; color:red;}
-#menuspace .unlocked {background-color:#cfc;}
-#menuspace .deactivate {color:#DDD;}
-#menuspace .delete {color:#F0F;}
+#menuspace ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
 
+#menuspace li {
+	cursor: pointer;
+	margin-left: 32px;
+}
+
+#menuspace .drag {
+	background-color: #ccc;
+	cursor: move;
+}
+
+#menuspace .nCollapse {
+	background-color: #ddd;
+	color: red;
+}
+
+#menuspace .unlocked {
+	background-color: #cfc;
+}
+
+#menuspace .deactivate {
+	color: #DDD;
+}
+
+#menuspace .delete {
+	color: #F0F;
+}
 
 #insertimages {
 	background: #f4f4f4;
 	border: 1px solid #b2b2b2;
 	color: black;
-	font:  13px Verdana, Arial, Helvetica, sans-serif;
+	font: 13px Verdana, Arial, Helvetica, sans-serif;
 	margin: 1px;
 	padding: 3px;
 	overflow: auto;
@@ -270,22 +293,22 @@ span#current,a#current,a:visited #current,a#subcurrent  , a:visited
 }
 
 #uploaded_files .box {
-    font-weight: bold;
-    background-color: #D6E9EE;
-    padding: 2px;
-    width: 48%;
-    cursor: pointer;
-    vertical-align:middle;
+	font-weight: bold;
+	background-color: #D6E9EE;
+	padding: 2px;
+	width: 48%;
+	cursor: pointer;
+	vertical-align: middle;
 }
 
 #uploaded_files .infobox {
-    width: 50%;
+	width: 50%;
 }
 
 #uploaded_files .infocontent {
-    background-color: #f4f4f4;
-    margin: 10px;
-    margin-top: 0;
-    padding: 5px;
-    float:left;
+	background-color: #f4f4f4;
+	margin: 10px;
+	margin-top: 0;
+	padding: 5px;
+	float: left;
 }

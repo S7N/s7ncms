@@ -15,6 +15,7 @@ class User_Controller extends Controller {
     public function edit() {
     	if($_SERVER["REQUEST_METHOD"] == 'POST') {
     		$user = new User_Model((int)$this->input->post('id'));
+    		
     		$user->username = htmlspecialchars($this->input->post('username'));
             $user->email = htmlspecialchars($this->input->post('email'));
             $user->homepage = htmlspecialchars($this->input->post('homepage'));
@@ -53,11 +54,11 @@ class User_Controller extends Controller {
             $user->last_name = htmlspecialchars($this->input->post('last_name'));
             $user->password = $auth->hash_password($this->input->post('password'));            
             
-            $user->save();           
-
-            $this->session->set_flash('flash_msg', 'User created successfully');
-
-            url::redirect('user');
+    		if ($user->save() AND $user->add_role('login')) {
+				$this->session->set_flash('flash_msg', 'User created successfully');
+			}
+            
+		    url::redirect('user');
     	} else {
         	$this->template->content = new View('user/create');
     	}
