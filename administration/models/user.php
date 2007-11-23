@@ -108,4 +108,36 @@ class User_Model extends ORM {
 		return array('username' => $id);
 	}
 
+	public function get($id) {
+		// DATE_FORMAT(users.registered_on,'%d.%m.%Y, %H:%i') AS registered_on,
+		//$db = new Database();
+		$query = Kohana::instance()->db->select('*')
+        	->from('users')
+        	->where('id', (int) $id)
+        	->limit(1)
+        	->get();
+
+        if(count($query) == 1) {
+        	$result = $query->result();             
+            return $result[0];            
+        }
+
+        return array();
+	}
+	
+	public function get_all() {
+		// DATE_FORMAT(users.registered_on,'%d.%m.%Y, %H:%i') AS registered_on,
+		//$db = new Database();
+		$query = Kohana::instance()->db->select('users.*')
+        	->from('users')
+        	->orderby('users.username','asc')
+        	->get();
+
+        if(count($query) > 0) {            
+            return $query->result();            
+        }
+
+        return array();
+	}
+
 } // End User_Model

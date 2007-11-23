@@ -74,9 +74,9 @@ a {
 	margin: 0;
 	margin-left: -10pt;
 	margin-right: -10pt;
-	visibility: hidden;
 	border: 2px solid #15520F;
 	text-align: center;
+	display: none;
 }
 
 #content {
