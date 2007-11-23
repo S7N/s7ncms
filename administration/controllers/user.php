@@ -62,4 +62,20 @@ class User_Controller extends Controller {
         	$this->template->content = new View('user/create');
     	}
     }
+    
+    public function action() {
+    	if($_SERVER["REQUEST_METHOD"] == 'POST') {
+    		if($this->input->post('action') == 'delete') {
+    			$ids = $this->input->post('user_id');
+    			foreach($ids as $id) {
+    				$user = new User_Model($id);
+    				$user->delete();
+    			}
+    		}
+    	}
+    	
+    	$this->session->set_flash('flash_msg', 'User created successfully');
+
+    	url::redirect('user');
+    }
 }

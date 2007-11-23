@@ -19,7 +19,7 @@
 	<tbody align="left" valign="middle">
 	<?php foreach($users as $user): ?>
 		<tr>
-			<td><?php echo form::checkbox('userid[]', $user->id, false)?></td>
+			<td><?php echo form::checkbox('user_id[]', $user->id, false)?></td>
 			<td><?php echo $user->id; ?></td>
 			<td><?php echo $user->username; ?><br /><span style="font-size: 80%;"><?php echo $user->email; ?></span></td>
 			<td><?php echo html::anchor('user/edit/'.$user->id, 'edit'); ?></td>
