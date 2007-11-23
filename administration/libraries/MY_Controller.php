@@ -20,7 +20,7 @@ class Controller extends Controller_Core {
         
         if(!in_array($current_controller[0], $this->not_protected)) {
         	if ($this->session->get('user_id')) {
-        		$user = new User_Model(true);
+        		$user = new User_Model($this->session->get('user_id'));
         		if(!$user->has_role('admin')) {
         			// The user has no access to the admin interface!
         			Kohana::show_error('No Access', 'You have no access to the administration interface');

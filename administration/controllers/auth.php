@@ -2,21 +2,17 @@
 
 class Auth_Controller extends Controller {
 
-	protected $inputs = array
-	(
-		'username' => array
-		(
+	protected $inputs = array (
+		'username' => array (
 			'label' => 'Username',
 			'rules' => 'required[3,32]'
 		),
-		'password' => array
-		(
+		'password' => array (
 			'label' => 'Password',
 			'type'  => 'password',
 			'rules' => 'required[5,40]'
 		),
-		'submit' => array
-		(
+		'submit' => array (
 			'type' => 'submit',
 			'value' => ' Login '
 		)
@@ -50,9 +46,10 @@ class Auth_Controller extends Controller {
 			{
 				// Load the user
 				$user = new User_Model($form->data('username'));
-
+				
 				// Attempt a login
-				if ($this->auth->login($user, $form->data('password')))
+				$auth = new Auth();
+				if ($auth->login($user, $form->data('password')))
 				{
 					$message .= "<h4>Login Success!</h4>";
 					$message .= "<p>Your roles are:</p>";
