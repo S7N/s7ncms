@@ -31,7 +31,6 @@
 				<li><span id="current">User</span>
 					<ul id="subnavlist">
 					    <li><?php echo html::anchor('user', 'List all'); ?></li>
-						<li><?php echo html::anchor('user/groups', 'Groups'); ?></li>
 					</ul>
 				</li>
 				<li><span id="current">Pages</span>
