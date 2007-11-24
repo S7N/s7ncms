@@ -1,7 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Settings_Core {
-	public static function item($key = false) {
+    private static $items = array();
+    
+    public static function item($key = false) {
+        if(empty(self::$items)) {
+            self::get_all();
+        }
+        
 		if($key === false) {
 			return null;
 		}
@@ -14,20 +20,21 @@ class Settings_Core {
 		$context = $key[0];
 		$key = $key[1];
 
-		$db = new Database();
-		
-		$query = $db->select('value')
-			->from('settings')
-			->where('context', $context)
-			->where('key', $key)
-			->limit(1)
-			->get();
-		
-		if(count($query) != 1) {
-			return null; 
+		if(array_key_exists($context, self::$items) and array_key_exists($key, self::$items[$context])) {
+		    return self::$items[$context][$key];
 		}
-		
-		$result = $query->result();
-        return $result[0]->value;
 	}
+    
+    private static function get_all() {
+        $db = new Database();
+		
+		$query = $db->select('context, key, value')
+			->from('settings')
+			->get();
+        
+        $result = $query->result();
+        foreach ($result as $item) {
+            self::$items[$item->context] = array($item->key => $item->value);
+        }        
+    }
 }
