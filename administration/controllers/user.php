@@ -16,7 +16,24 @@ class User_Controller extends Controller {
     	if($_SERVER["REQUEST_METHOD"] == 'POST') {
     		$user = new User_Model((int)$this->input->post('id'));
     		
-    		$user->username = htmlspecialchars($this->input->post('username'));
+            $new_roles = array_diff($this->input->post('roles'), $user->roles);
+            $old_roles = array_diff($user->roles, $this->input->post('roles'));
+            
+            $myself = ((int)$this->input->post('id') == (int) $this->session->get('user_id'));
+            
+            foreach($new_roles as $role) {
+                $user->add_role($role);
+            }
+            
+            foreach($old_roles as $role) {
+                if($myself and ($role == 'admin' or $role == 'login')) {
+                    continue;
+                }
+                
+                $user->remove_role($role);
+            }
+            
+            $user->username = htmlspecialchars($this->input->post('username'));
             $user->email = htmlspecialchars($this->input->post('email'));
             $user->homepage = htmlspecialchars($this->input->post('homepage'));
             $user->first_name = htmlspecialchars($this->input->post('first_name'));
@@ -28,17 +45,19 @@ class User_Controller extends Controller {
             	$user->password = $auth->hash_password($password);
             }
             
-            //$user->save();           
-
             $this->session->set_flash('flash_msg', 'User edited successfully');
 
             url::redirect('user');
     	} else {
         	$this->user = new User_Model();
+            $roles = new Role_Model();
             
     		$content = new View('user/edit');
     		$content->user = $this->user->get((int) $this->uri->segment(3));
-    		$this->template->content = $content;
+            $content->usermodel = new User_Model($content->user->id);
+            $content->roles = $roles->get_all();
+            
+            $this->template->content = $content;
         }
     }
     
@@ -79,4 +98,9 @@ class User_Controller extends Controller {
 
     	url::redirect('user');
     }
+	
+	public function roles() {
+	    $roles = new Role_Model();
+        print Kohana::debug($roles->find_all());
+	}
 }

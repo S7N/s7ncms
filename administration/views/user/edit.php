@@ -8,5 +8,13 @@
 <p>Homepage:<br /><?php echo form::input('homepage', $user->homepage); ?></p>
 <p>First name:<br /><?php echo form::input('first_name', $user->first_name); ?></p>
 <p>Last name:<br /><?php echo form::input('last_name', $user->last_name); ?></p>
+
+<p>Roles:<br />
+<?php foreach($roles as $role): ?>
+<?php echo form::checkbox('roles[]', $role->name, in_array($role->name, $usermodel->roles)); ?>
+<?php echo $role->name; ?> (<?php echo $role->description; ?>)<br />
+<?php endforeach;?>
+</p>
+
 <p><?php echo form::submit('submit', 'Save'); ?></p>
 </form>

@@ -1,4 +1,5 @@
 <h1>User - New</h1>
+<?php echo form::open('user/create'); ?>
 
 <p>Username:<br /><?php echo form::input('username'); ?></p>
 <p>Password:<br /><?php echo form::password('password'); ?></p>

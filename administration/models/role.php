@@ -33,5 +33,18 @@ class Role_Model extends ORM {
 
 		return $return;
 	}
+    
+    public function get_all() {
+        $query = Kohana::instance()->db->select('roles.*')
+        	->from('roles')
+        	->orderby('roles.name','asc')
+        	->get();
+
+        if(count($query) > 0) {            
+            return $query->result();            
+        }
+
+        return array();
+    }
 
 } // End Role_Model
