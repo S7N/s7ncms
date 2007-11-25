@@ -4,10 +4,10 @@ RewriteEngine On
 # Do not enable rewriting for files that exist
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} ^admin.*
+RewriteCond %{REQUEST_FILENAME} admin.*
 
 # Rewrite to admin.php/URL
-RewriteRule ^admin(/?.*)$ admin.php/$1 [PT,L]
+RewriteRule admin/(.*) admin.php/$1 [PT,L]
 
 
 # Do not enable rewriting for files that exist

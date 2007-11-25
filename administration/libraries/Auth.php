@@ -154,7 +154,8 @@ class Auth_Core {
 	 */
 	protected function hash($str)
 	{
-		return hash($this->config['hash_method'], $str);
+	    $method = $this->config['hash_method'];
+        return $method($str);
 	}
 
 	/*
