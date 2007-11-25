@@ -1,10 +1,6 @@
 <h1>Pages</h1>
 <p><b><?php echo html::anchor('pages/newpage', 'Create a new page'); ?></b></p>
 
-<?php echo form::open('pages/search'); ?>
-<p><b>Search Pages:</b><br /><?php echo form::input(array('name' => 'search', 'size' => 10)); ?> <?php echo form::submit('submit',' Search! ')?></p>
-<?php echo form::close(); ?>
-
 <?php echo form::open('pages/action'); ?>
 
 <table cellspacing="0" cellpadding="5" class="table">

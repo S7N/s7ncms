@@ -29,7 +29,7 @@ $config = array
 	),
 	'autoload'             => array
 	(
-		'libraries' => 'profiler, session',
+		'libraries' => 'session',
 		'models'    => ''
 	)
 );
