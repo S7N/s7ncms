@@ -38,13 +38,13 @@
 					    <li><?php echo html::anchor('pages', 'List all'); ?></li>
 					</ul>
 				</li>
-				<li><span id="current">Modules</span>
+				<!--li><span id="current">Modules</span>
 					<ul id="subnavlist">
 					    <li><?php echo html::anchor('blog', 'Blog'); ?></li>
 						<li><?php echo html::anchor('gallery', 'Gallery'); ?></li>
 						<li><?php echo html::anchor('upload', 'Upload'); ?></li>
 					</ul>
-				</li>
+				</li-->
 				<li><span id="current">Logout</span>
 					<ul id="subnavlist">
 						<li><?php echo html::anchor('auth/logout', 'Logout'); ?></li>
