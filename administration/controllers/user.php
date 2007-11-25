@@ -41,9 +41,10 @@ class User_Controller extends Controller {
             
             $password = trim($this->input->post('password'));
             if(!empty($password)) {
-            	$auth = new Auth();
-            	$user->password = $auth->hash_password($password);
+            	$user->password = $password;                
             }
+            
+            $user->save();
             
             $this->session->set_flash('flash_msg', 'User edited successfully');
 
@@ -71,7 +72,7 @@ class User_Controller extends Controller {
             $user->homepage = htmlspecialchars($this->input->post('homepage'));
             $user->first_name = htmlspecialchars($this->input->post('first_name'));
             $user->last_name = htmlspecialchars($this->input->post('last_name'));
-            $user->password = $auth->hash_password($this->input->post('password'));            
+            $user->password = $this->input->post('password');
             
     		if ($user->save() AND $user->add_role('login')) {
 				$this->session->set_flash('flash_msg', 'User created successfully');

@@ -10,7 +10,7 @@ class Auth_Controller extends Controller {
 		'password' => array (
 			'label' => 'Password',
 			'type'  => 'password',
-			'rules' => 'required[5,40]'
+			'rules' => 'required[4,40]'
 		),
 		'submit' => array (
 			'type' => 'submit',
@@ -63,16 +63,11 @@ class Auth_Controller extends Controller {
 					$message .= "<h4>Login Failed!</h4>";
 				}
 			}
-		}
-
-		if ($this->session->get('user_id'))
-		{
+		} else {
 			$message .= 'You are already logged in as '. $this->session->get('username');
 		}
 
-		// Display the form
-		//print $form->build();
-	 	$login = new View('login');
+		$login = new View('login');
 	 	
 	 	if(!is_null($form)) {
 	 		$login->form = $form->build();
