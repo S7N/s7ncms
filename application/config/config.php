@@ -16,7 +16,7 @@
  */
 $config = array
 (
-	'site_domain'          => 'dev.s7n/S7Ncms',
+	'site_domain'          => 'localhost/S7Ncms',
 	'site_protocol'        => 'http',
 	'index_page'           => '',
 	'url_suffix'           => '',
