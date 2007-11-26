@@ -1,0 +1,4 @@
+S7Ncms Changelog 
+
+0.5 (2007-11-26)
+    - First release
