@@ -1,4 +1,7 @@
-S7Ncms Changelog 
+S7Ncms Changelog
+
+0.6 (still in development)
+	- fixed media controller to force files being loaded from browser cache
 
 0.5 (2007-11-26)
     - First release
