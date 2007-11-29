@@ -94,18 +94,16 @@ class User_Model extends ORM {
 		return $return;
 	}
 
-	protected function where($id)
+	public function where($id = NULL)
 	{
-		// Primary key
-		if (($where = parent::where($id)) !== NULL)
-			return $where;
+		if (is_string($id) AND $id != '')
+		{
+			$this->where = valid::email($id) ? array('email' => $id) : array('username' => $id);
 
-		// Email address
-		if (valid::email($id))
-			return array('email' => $id);
+			return $this;
+		}
 
-		// Username
-		return array('username' => $id);
+		return parent::where($id);
 	}
 
 	public function get($id) {
