@@ -4,6 +4,7 @@ S7Ncms Changelog
 	- fixed media controller to force files loading from browser cache
 	- fixed router hook to work with newest changes in kohana framework
 	- fixed authorization to work with newest changes in kohana framework
+	- added controller to edit cms settings
 
 0.5 (2007-11-26)
     - First release
