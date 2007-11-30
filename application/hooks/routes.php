@@ -17,9 +17,10 @@ class Newroute {
     	}
     	
     	$db = new Database();
+        $prefix = Config::item('database.table_prefix');
     	$query = $db->query("
     		SELECT id
-    		FROM pages 
+    		FROM ".$prefix."pages 
     		WHERE content_id IN (
     			SELECT id 
     			FROM content 
