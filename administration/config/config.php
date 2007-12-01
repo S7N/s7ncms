@@ -16,9 +16,9 @@
  */
 $config = array
 (
-	'site_domain'          => 'localhost/S7Ncms/admin',
+	'site_domain'          => 'localhost/S7Ncms',
 	'site_protocol'        => 'http',
-	'index_page'           => '',
+	'index_page'           => 'admin',
 	'url_suffix'           => '',
 	'allow_config_set'     => FALSE,
 	'global_xss_filtering' => FALSE,
