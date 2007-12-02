@@ -100,6 +100,8 @@ CREATE TABLE `users` (
   UNIQUE KEY `uniq_email` (`email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
+# username: admin
+# password: admin
 INSERT INTO `users` (`id`,`email`,`username`,`password`,`logins`,`homepage`,`first_name`,`last_name`,`registered_on`) VALUES ('1','admin@example.net','admin','a3c5fc4e7d736181725363eae2e5e24dc36cd947251788743d','8','http://www.example.com','Admin','Istrator','2007-11-20 18:18:18');
 
 
@@ -114,6 +116,3 @@ CREATE TABLE `users_roles` (
 
 INSERT INTO `users_roles` (`user_id`,`role_id`) VALUES ('1','1');
 INSERT INTO `users_roles` (`user_id`,`role_id`) VALUES ('1','2');
-INSERT INTO `users_roles` (`user_id`,`role_id`) VALUES ('2','1');
-
-

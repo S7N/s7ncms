@@ -13,7 +13,7 @@ class Media_Controller extends Controller {
         
         if(file_exists($path)) {
 		
-		    $time_file = filemtime(Kohana::find_file('views', 'media/'.$type.'/'.$file, FALSE, $ext));
+		    $time_file = filemtime($path);
             
             if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {    		    
                 $time_cache = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']);
