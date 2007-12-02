@@ -6,6 +6,7 @@ S7Ncms Changelog
 	- fixed router hook to work with database table prefixes
 	- fixed authorization to work with newest changes in kohana framework
 	- added controller to edit cms settings
+	- cleaned up the sql dump
 
 0.5 (2007-11-26)
     - First release
