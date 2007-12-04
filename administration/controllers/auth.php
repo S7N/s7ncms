@@ -68,14 +68,14 @@ class Auth_Controller extends Controller {
 		}
 
 		$login = new View('login');
-	 	
-	 	if(!is_null($form)) {
-	 		$login->form = $form->build();
-	 	} else {
-	 		$login->form = '';
-	 	}
-	 	$login->message = $message;
-	 	echo $login;
+		
+		if(!is_null($form)) {
+			$login->form = $form->build();
+		} else {
+			$login->form = '';
+		}
+		$login->message = $message;
+		echo $login;
 	
 	}
 

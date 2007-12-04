@@ -94,48 +94,46 @@ class User_Model extends ORM {
 		return $return;
 	}
 
-	public function where($id = NULL)
+	public function where_key($id = NULL)
 	{
 		if (is_string($id) AND $id != '')
 		{
-			$this->where = valid::email($id) ? array('email' => $id) : array('username' => $id);
-
-			return $this;
+			return valid::email($id) ? 'email' : 'username';
 		}
 
-		return parent::where($id);
+		return parent::where_key($id);
 	}
 
 	public function get($id) {
 		// DATE_FORMAT(users.registered_on,'%d.%m.%Y, %H:%i') AS registered_on,
 		//$db = new Database();
 		$query = Kohana::instance()->db->select('*')
-        	->from('users')
-        	->where('id', (int) $id)
-        	->limit(1)
-        	->get();
+			->from('users')
+			->where('id', (int) $id)
+			->limit(1)
+			->get();
 
-        if(count($query) == 1) {
-        	$result = $query->result();             
-            return $result[0];            
-        }
+		if(count($query) == 1) {
+			$result = $query->result();             
+			return $result[0];            
+		}
 
-        return array();
+		return array();
 	}
 	
 	public function get_all() {
 		// DATE_FORMAT(users.registered_on,'%d.%m.%Y, %H:%i') AS registered_on,
 		//$db = new Database();
 		$query = Kohana::instance()->db->select('users.*')
-        	->from('users')
-        	->orderby('users.username','asc')
-        	->get();
+			->from('users')
+			->orderby('users.username','asc')
+			->get();
 
-        if(count($query) > 0) {            
-            return $query->result();            
-        }
+		if(count($query) > 0) {            
+			return $query->result();            
+		}
 
-        return array();
+		return array();
 	}
 
 } // End User_Model
