@@ -40,7 +40,7 @@ $config['global_xss_filtering'] = FALSE;
  * Enable or disable dynamic setting of configuration options. By default, all
  * configuration options are read-only.
  */
-$config['allow_config_set'] = FALSE;
+$config['allow_config_set'] = TRUE;
 
 /**
  * Filename prefixed used to determine extensions. For example, an
