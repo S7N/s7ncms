@@ -38,5 +38,4 @@ class Newroute {
     }
 }
 
-$newroute = new Newroute();
-unset($newroute);
+new Newroute();
