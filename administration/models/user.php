@@ -96,7 +96,7 @@ class User_Model extends ORM {
 
 	public function where_key($id = NULL)
 	{
-		if (is_string($id) AND $id != '')
+		if (is_string($id) AND !is_numeric($id))
 		{
 			return valid::email($id) ? 'email' : 'username';
 		}
