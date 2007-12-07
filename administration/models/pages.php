@@ -78,22 +78,29 @@ class Pages_Model extends Model {
     
     public function get_all() {
 		//DATE_FORMAT(content.created_on,'%d.%m.%Y, %H:%i') AS created_on,
-		$this->db->select("
-			pages.id,
-			created_on,
-			content.created_by,
-			content.modified_on,
-			content.title,
-			content.uri,
-			content.intro,
-			content.body,
-		");
-        $this->db->from('pages');
-        $this->db->join('content', 'content.id = pages.content_id', 'left');
-        $this->db->groupby('pages.id');
-        $this->db->orderby('pages.id','desc');
-
-        $query = $this->db->get();
+		$prefix = Config::item('database.default.table_prefix');
+		$query = "
+    		SELECT
+    			pages.id,
+    			created_on,
+    			content.created_by,
+    			content.modified_on,
+    			content.title,
+    			content.uri,
+    			content.intro,
+    			content.body
+    		FROM
+    		    ".$prefix."pages AS pages
+    		LEFT JOIN
+    		    ".$prefix."content AS content
+    		    ON content.id = pages.content_id
+    		GROUP BY
+    		    pages.id
+    		ORDER BY
+    		    pages.id DESC
+		";
+        
+        $query = $this->db->query($query);
 
         if(count($query) > 0) {            
             return $query->result();
@@ -104,27 +111,34 @@ class Pages_Model extends Model {
 	
 	public function get($uri) {
 		//DATE_FORMAT(content.created_on,'%d.%m.%Y, %H:%i') AS created_on,
-		$this->db->select("
-			pages.id,
-			pages.sidebar_content,
-			pages.content_id,
-			pages.meta_keywords,
-			content.created_on,
-			content.created_by,
-			content.publish_on,
-			content.title,
-			content.uri,
-			content.intro,
-			content.body
-		");
-        $this->db->from('pages');
-        $this->db->join('content', 'content.id = pages.content_id', 'left');
-        $this->db->groupby('pages.id');
-        $this->db->orderby('content.created_on','desc');
-        $this->db->limit(1);
-        $this->db->where('content.uri', $uri);
-
-        $query = $this->db->get();
+		$prefix = Config::item('database.default.table_prefix');
+		$query = "
+    		SELECT
+    			pages.id,
+    			pages.sidebar_content,
+    			pages.content_id,
+    			pages.meta_keywords,
+    			content.created_on,
+    			content.created_by,
+    			content.publish_on,
+    			content.title,
+    			content.uri,
+    			content.intro,
+    			content.body
+    		FROM
+    		    ".$prefix."pages AS pages
+    		LEFT JOIN
+    		    ".$prefix."content AS content
+    		    ON content.id = pages.content_id
+    		WHERE
+        		content.uri = '".$uri."'
+    		GROUP BY
+    		    pages.id
+    		ORDER BY
+    		    pages.id DESC    		
+		";
+        
+        $query = $this->db->query($query);
 		
         if(count($query) == 1) {            
             $result = $query->result();

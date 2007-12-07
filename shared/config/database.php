@@ -25,5 +25,6 @@ $config['default'] = array
 	'connection'    => 'mysql://edy:edy@localhost/test',
 	'character_set' => 'utf8',
 	'table_prefix'  => '',
-	'object'        => TRUE
+	'object'        => TRUE,
+	'cache'         => FALSE
 );

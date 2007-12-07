@@ -17,13 +17,13 @@ class Newroute {
     	}
     	
     	$db = new Database();
-        $prefix = Config::item('database.table_prefix');
+        $prefix = Config::item('database.default.table_prefix');
     	$query = $db->query("
     		SELECT id
     		FROM ".$prefix."pages 
     		WHERE content_id IN (
     			SELECT id 
-    			FROM content 
+    			FROM ".$prefix."content 
     			WHERE uri = '".$segments[0]."'
     		)
     		LIMIT 1

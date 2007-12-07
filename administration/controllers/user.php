@@ -16,7 +16,7 @@ class User_Controller extends Controller {
     	if($_SERVER["REQUEST_METHOD"] == 'POST') {
     		$user = new User_Model((int)$this->input->post('id'));
     		
-            $new_roles = array_diff($this->input->post('roles'), $user->roles);
+			$new_roles = array_diff($this->input->post('roles'), $user->roles);
             $old_roles = array_diff($user->roles, $this->input->post('roles'));
             
             $myself = ((int)$this->input->post('id') == (int) $this->session->get('user_id'));
@@ -50,12 +50,14 @@ class User_Controller extends Controller {
 
             url::redirect('user');
     	} else {
-        	$this->user = new User_Model();
+        	$user = new User_Model();
             $roles = new Role_Model();
             
+			$user_id = (int) $this->uri->segment(3);
+			
     		$content = new View('user/edit');
-    		$content->user = $this->user->get((int) $this->uri->segment(3));
-            $content->usermodel = new User_Model($content->user->id);
+    		$content->user = $user->get($user_id);
+            $content->usermodel = new User_Model($user_id);
             $content->roles = $roles->get_all();
             
             $this->template->content = $content;

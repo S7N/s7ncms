@@ -10,7 +10,7 @@ class Auth_Controller extends Controller {
 		'password' => array (
 			'label' => 'Password',
 			'type'  => 'password',
-			'rules' => 'required[4,40]'
+			'rules' => 'required[3,40]'
 		),
 		'submit' => array (
 			'type' => 'submit',
@@ -51,10 +51,6 @@ class Auth_Controller extends Controller {
 				$auth = new Auth();
 				if ($auth->login($user, $form->data('password')))
 				{
-					$message .= "<h4>Login Success!</h4>";
-					$message .= "<p>Your roles are:</p>";
-					$message .= Kohana::debug($this->session->get('roles'));
-					
 					$url = $this->session->get_once('redirect_me_to');
 					url::redirect(empty($url) ? '' : $url);
 				}

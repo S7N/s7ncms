@@ -2,6 +2,7 @@
 
 class Pages_Model extends Model {
 	public function get($uri = false) {
+		$prefix = config::item('database.default.table_prefix');
 		$query = $this->db->query("
 		SELECT 
             pages.id,
@@ -14,8 +15,8 @@ class Pages_Model extends Model {
             content.intro,
             content.body,
             content.tags
-        FROM pages
-        LEFT JOIN content
+        FROM ".$prefix."pages AS pages
+        LEFT JOIN ".$prefix."content AS content
         ON content.id = pages.content_id
         WHERE content.status = 'published'
             AND content.publish_on <= NOW()
@@ -26,10 +27,8 @@ class Pages_Model extends Model {
 		", array($uri));
 
         if($query->num_rows() > 0) {
-            
             $result = $query->result();
             return $result[0];
-            
         }
 
         return null;

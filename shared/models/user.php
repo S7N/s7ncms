@@ -3,7 +3,6 @@
 class User_Model extends ORM {
 
 	// Relationships
-	//protected $has_many = array('posts');
 	protected $has_and_belongs_to_many = array('roles');
 
 	// User roles
@@ -19,7 +18,7 @@ class User_Model extends ORM {
 			foreach($this->find_related_roles() as $role)
 			{
 				$this->roles[$role->id] = $role->name;
-			}
+			} 
 		}
 	}
 
@@ -106,7 +105,6 @@ class User_Model extends ORM {
 
 	public function get($id) {
 		// DATE_FORMAT(users.registered_on,'%d.%m.%Y, %H:%i') AS registered_on,
-		//$db = new Database();
 		$query = Kohana::instance()->db->select('*')
 			->from('users')
 			->where('id', (int) $id)
@@ -123,10 +121,9 @@ class User_Model extends ORM {
 	
 	public function get_all() {
 		// DATE_FORMAT(users.registered_on,'%d.%m.%Y, %H:%i') AS registered_on,
-		//$db = new Database();
-		$query = Kohana::instance()->db->select('users.*')
+		$query = Kohana::instance()->db->select('*')
 			->from('users')
-			->orderby('users.username','asc')
+			->orderby('username','asc')
 			->get();
 
 		if(count($query) > 0) {            

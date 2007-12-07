@@ -4,27 +4,17 @@ class Role_Model extends ORM {
 
 	protected $belongs_to_many = array('users');
 
-	public function __construct($id = FALSE)
-	{
-		if ($id != FALSE AND is_string($id))
-		{
-			// Search by name
-			$id = array('name' => $id);
-		}
-
-		parent::__construct($id);
-	}
-
-	public function where($id = NULL)
+	/**
+	 * Allows finding roles by name.
+	 */
+	public function where_key($id = NULL)
 	{
 		if (is_string($id) AND $id != '')
 		{
-			$this->where = array('name' => $id);
-
-			return $this;
+			return 'name';
 		}
 
-		return parent::where($id);
+		return parent::where_key($id);
 	}
 
 	/**
@@ -50,13 +40,13 @@ class Role_Model extends ORM {
 	}
     
     public function get_all() {
-        $query = Kohana::instance()->db->select('roles.*')
+        $query = Kohana::instance()->db->select('*')
         	->from('roles')
-        	->orderby('roles.name','asc')
+        	->orderby('name','asc')
         	->get();
 
-        if(count($query) > 0) {            
-            return $query->result();            
+        if(count($query) > 0) {
+        	return $query->result();            
         }
 
         return array();
