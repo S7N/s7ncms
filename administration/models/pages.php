@@ -71,6 +71,44 @@ class Pages_Model extends Model {
         
         return false;
     }
+	
+	public function delete($ids = array()) {
+		if(!is_array($ids)) {
+            return false;
+        }
+		
+		// catch the contens id's
+        $this->db->select('content_id');
+		
+		foreach ($ids as $id) {
+			$this->db->orwhere('id', (int) $id);
+		}
+		
+		$query = $this->db->get('pages');
+		
+		$content_ids = array();        
+		
+		if(count($query) !== 0) {
+			$result = $query->result();
+			foreach($result as $page) {
+				$content_ids[] = (int) $page->content_id;
+			}
+		}
+
+		// delete pages
+        foreach($ids as $id) {            
+            $this->db->orwhere('id', $id);            
+        }
+        $this->db->delete('pages');
+		
+		// delete contents
+        foreach($content_ids as $id) {            
+            $this->db->orwhere('id', $id);            
+        }
+        $this->db->delete('content');
+		
+		return true;
+	}
     
     public function filter_null($value) {
         return !is_null($value);

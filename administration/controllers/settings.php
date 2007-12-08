@@ -13,7 +13,7 @@ class Settings_Controller extends Controller {
         }
         
         if(Settings::save('s7n.default_uri', $this->input->post('default_uri'))) {
-            $this->session->set_flash('flash_msg', 'Settungs edited successfully');
+            $this->session->set_flash('flash_msg', 'Settings edited successfully');
             url::redirect('settings');
         }
     }

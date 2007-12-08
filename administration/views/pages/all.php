@@ -1,5 +1,8 @@
 <h1>Pages</h1>
-<p><b><?php echo html::anchor('pages/newpage', 'Create a new page'); ?></b></p>
+<p>
+	<b><?php echo html::anchor('pages/newpage', 'Create a new page'); ?></b><br />
+	<b><?php echo html::anchor('pages/settings', 'Edit Settings'); ?></b>
+</p>
 
 <?php echo form::open('pages/action'); ?>
 
@@ -17,7 +20,7 @@
 	<tbody align="left" valign="middle">
 	<?php if($pages) foreach($pages as $page): ?>
 		<tr>
-			<td><?php echo form::checkbox('pageid[]', $page->id, false)?></td>
+			<td><?php echo form::checkbox('page_id[]', $page->id, false)?></td>
 			<td><?php echo $page->id; ?></td>
 			<td><?php echo $page->title; ?></td>
 			<td><?php echo $page->modified_on; ?></td>
