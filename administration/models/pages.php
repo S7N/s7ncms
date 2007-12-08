@@ -124,7 +124,8 @@ class Pages_Model extends Model {
     			content.title,
     			content.uri,
     			content.intro,
-    			content.body
+    			content.body,
+				content.view
     		FROM
     		    ".$prefix."pages AS pages
     		LEFT JOIN

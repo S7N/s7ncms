@@ -22,9 +22,9 @@ $config['default'] = array
 	'show_errors'   => TRUE,
 	'benchmark'     => TRUE,
 	'persistent'    => FALSE,
-	'connection'    => 'mysql://edy:edy@localhost/test',
+	'connection'    => 'mysql://edy:edy@localhost/s7ncms',
 	'character_set' => 'utf8',
 	'table_prefix'  => '',
 	'object'        => TRUE,
-	'cache'         => FALSE
+	'cache'         => TRUE
 );

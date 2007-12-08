@@ -20,6 +20,11 @@ class Pages_Controller extends Controller {
     	if($_SERVER["REQUEST_METHOD"] == 'POST') {
     		$this->page->id = (int) $this->input->post('content_id');
             $this->page->title = htmlspecialchars($this->input->post('title'));
+			
+			if(strstr(Settings::item('page.views'), $this->input->post('view')) !== false) {
+				$this->page->view = trim($this->input->post('view'));
+			}
+			
             $this->page->intro = $this->input->post('intro');
             $this->page->body = $this->input->post('body');
             $this->page->uri = url::title($this->input->post('title'));
@@ -49,6 +54,12 @@ class Pages_Controller extends Controller {
     public function newpage() {
     	if($_SERVER["REQUEST_METHOD"] == 'POST') {
         	$this->page->title = htmlspecialchars($this->input->post('title'));
+			$this->page->view = 'default';
+			
+			if(strstr(Settings::item('page.views'), $this->input->post('view')) !== false) {
+				$this->page->view = trim($this->input->post('view'));
+			} 
+			
             $this->page->intro = $this->input->post('intro');
             $this->page->body = $this->input->post('body');
             $this->page->uri = url::title($this->input->post('title'));

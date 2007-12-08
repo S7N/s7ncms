@@ -77,9 +77,10 @@ CREATE TABLE `settings` (
   `key` varchar(200) NOT NULL,
   `value` varchar(200) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 INSERT INTO `settings` (`id`,`context`,`key`,`value`) VALUES ('1','s7n','default_uri','home');
+INSERT INTO `settings` (`id`,`context`,`key`,`value`) VALUES ('2','page','views','default, extended');
 
 
 # Dump of table users

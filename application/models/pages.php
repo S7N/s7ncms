@@ -14,7 +14,8 @@ class Pages_Model extends Model {
             content.uri,
             content.intro,
             content.body,
-            content.tags
+            content.tags,
+			content.view
         FROM ".$prefix."pages AS pages
         LEFT JOIN ".$prefix."content AS content
         ON content.id = pages.content_id

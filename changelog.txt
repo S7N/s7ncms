@@ -9,6 +9,7 @@ S7Ncms Changelog
 	- cleaned up the sql dump
 	- build in ability to share configs, libraries, helpers, etc between
 	  administration and frontend application
+	- pages can have different views now
 
 0.5 (2007-11-26)
     - First release

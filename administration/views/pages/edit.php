@@ -12,6 +12,8 @@
 	<div id="tab_page" class="mootabs_panel active">
 		<p>Title:<br />
 		<?php echo form::input('title', $page->title); ?></p>
+		<p>Template:<br />
+		<?php echo form::input('view', $page->view); ?></p>
 		<p>Intro: (Editor
 		<a href="javascript:void(0);" onmousedown="tinyMCE.get('intro').show();">an</a> /
 		<a href="javascript:void(0);" onmousedown="tinyMCE.get('intro').hide();">aus</a>
