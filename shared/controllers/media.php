@@ -2,16 +2,27 @@
 
 class Media_Controller extends Controller {
 
-	public function _remap() {
-		$file = $this->uri->string();
-		$ext = substr(strrchr($file, '.'), 1 );
-
+	public function _default() {
+		
+		if (isset($this->profiler)) {
+			$this->profiler->disable();	
+		}
+		
 		$this->auto_render = false;
-
-		$path = Kohana::find_file('views', $file, FALSE, $ext);
-
-		if(file_exists($path)) {
-
+		
+		$segments = $this->uri->argument_array();
+		
+		$filename = array_pop($segments);
+		$type = implode('/',$segments);
+		
+		if (($pos = strrpos($filename, '.')) !== false) {
+			$extension = substr($filename, $pos+1);
+			$filename = substr($filename, 0, $pos);
+		} else {
+			$extension = '';
+		}
+		
+		if($path = Kohana::find_file('views/media/'.$type, $filename, FALSE, $extension)) {
 			$time_file = filemtime($path);
 
 			if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
@@ -28,7 +39,7 @@ class Media_Controller extends Controller {
 			$header .= ' GMT';
 			header($header);
 
-			echo new View($file);
+			echo new View('media/'.$type.'/'.$filename, null, $extension);
 		} else {
 			Event::run('system.404');
 		}

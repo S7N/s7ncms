@@ -1,14 +1,19 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 /**
- * File: Locale
- *  Localization settings.
+ * @package  Core
  *
- * Options:
- *  language - Language name, only en_US is supported by default
- *  timezone - Locale timezone, see <http://php.net/timezones>
+ * Default language locale name.
+ * @see http://php.net/locales
  */
-$config = array
-(
-	'language' => 'de_DE',
-	'timezone' => ''
-);
+$config['language'] = 'de_DE';
+
+/**
+ * Default country locale.
+ */
+$config['country'] = 'DE';
+
+/**
+ * Locale timezone. Defaults to use the server timezone.
+ * @see http://php.net/timezones
+ */
+$config['timezone'] = '';

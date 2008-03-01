@@ -11,9 +11,12 @@ class Controller extends Controller_Core {
     protected $not_protected = array(
     	'media', 'auth'
     );
+	
+	public $session;
     
     public function __construct() {
         parent::__construct();
+		$this->session = new Session;
         
         $current_url = url::current();
         $current_controller = explode('/', $current_url);        

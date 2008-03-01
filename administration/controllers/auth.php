@@ -38,8 +38,8 @@ class Auth_Controller extends Controller {
 		if ( ! $this->session->get('user_id'))
 		{
 			// Create the login form
-			$form = $this->load->model('form', TRUE)
-				->action('auth/login')
+			$form = new Form_model;
+			$form->action('auth/login')
 				->inputs($inputs);
 
 			if ($form->validate())

@@ -1,23 +1,47 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
-/*
- * File: Session
+/**
+ * @package Session
  *
- * Options:
- *  driver     - Session driver name
- *  storage    - Session storage parameter, used by drivers
- *  name       - Default session name
- *  validate   - Session parameters to validate
- *  encryption - Encryption key, set to FALSE to disable session encryption
- *  expiration - Number of seconds that each session will last
- *  regenerate - Number of page loads before the session is regenerated
+ * Session driver name.
  */
-$config = array
-(
-	'driver'     => 'cookie',
-	'storage'    => '',
-	'name'       => 's7n',
-	'validate'   => array('user_agent'),
-	'encryption' => FALSE,
-	'expiration' => 7200,
-	'regenerate' => 200
-);
+$config['driver'] = 'cookie';
+
+/**
+ * Session storage parameter, used by drivers.
+ */
+$config['storage'] = '';
+
+/**
+ * Default session name.
+ * It should contain only alphanumeric characters and at least one letter should be present.
+ */
+$config['name'] = 's7n';
+
+/**
+ * Session parameters to validate: user_agent, ip_address, expiration.
+ */
+$config['validate'] = array('user_agent');
+
+/**
+ * Enable or disable session encryption.
+ * Note: this has no effect on the native session driver.
+ * Note: the cookie driver always encrypts session data. Set to TRUE for stronger encryption.
+ */
+$config['encryption'] = FALSE;
+
+/**
+ * Session lifetime. Number of seconds that each session will last.
+ * A value of 0 will keep the session active until the browser is closed (with a limit of 24h).
+ */
+$config['expiration'] = 7200;
+
+/**
+ * Number of page loads before the session id is regenerated.
+ * A value of 0 will disable automatic session id regeneration.
+ */
+$config['regenerate'] = 3;
+
+/**
+ * Percentage probability that the gc (garbage collection) routine is started.
+ */
+$config['gc_probability'] = 2;

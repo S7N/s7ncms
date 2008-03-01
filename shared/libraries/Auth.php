@@ -1,11 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-/*
- * Class: Auth
+/**
+ * User authorization library. Handles user login and logout, as well as secure
+ * password hashing.
  *
- * Kohana Source Code:
- *  author    - Kohana Team
- *  copyright - (c) 2007 Kohana Team
- *  license   - <http://kohanaphp.com/license.html>
+ * @package    User Management
+ * @depends    ORM
+ * @author     Kohana Team
+ * @copyright  (c) 2007 Kohana Team
+ * @license    http://kohanaphp.com/license.html
  */
 class Auth_Core {
 
@@ -15,10 +17,23 @@ class Auth_Core {
 	// Configuration
 	protected $config;
 
+	/**
+	 * Create an instance of Auth.
+	 *
+	 * @return  object
+	 */
+	public static function factory($config = array())
+	{
+		return new Auth($config);
+	}
+
+	/**
+	 * Loads Session and configuration options.
+	 */
 	public function __construct($config = array())
 	{
 		// Load libraries
-		$this->session = new Session();
+		$this->session = Session::instance();
 
 		// Append default auth configuration
 		$config += Config::item('auth');
@@ -32,21 +47,17 @@ class Auth_Core {
 		Log::add('debug', 'Auth Library loaded');
 	}
 
-	/*
-	 * Method: login
-	 *  Attempt a user login.
+	/**
+	 * Attempt to log in a user by using an ORM object and plain-text password.
 	 *
-	 * Parameters:
-	 *  username - username to check
-	 *  password - password to check
-	 *  level    - minimum level
-	 *
-	 * Returns:
-	 *  TRUE or FALSE
+	 * @param   object  user model object
+	 * @param   string  plain-text password to check against
+	 * @param   bool    to allow auto-login, or "remember me" feature
+	 * @return  bool
 	 */
-	public function login($user, $password)
+	public function login(User_Model $user, $password, $remember = FALSE)
 	{
-		if ( ! is_object($user) OR empty($password))
+		if (empty($password))
 			return FALSE;
 
 		// Create a hashed password using the salt from the stored password
@@ -55,19 +66,22 @@ class Auth_Core {
 		// If the user has the "login" role and the passwords match, perform a login
 		if ($user->has_role('login') AND $user->password === $password)
 		{
-			// Update the number of logins
-			$user->logins += 1;
+			if ($remember == TRUE)
+			{
+				// Create a new autologin token
+				$token = new User_Token_Model;
 
-			// Save the user
-			$user->save();
+				// Set token data
+				$token->user_id = $user->id;
+				$token->expires = time() + $this->config['lifetime'];
+				$token->save();
 
-			// Store session data
-			$this->session->set(array
-			(
-				'user_id'  => $user->id,
-				'username' => $user->username,
-				'roles'    => $user->roles
-			));
+				// Set the autologin cookie
+				cookie::set('autologin', $token->token, $this->config['lifetime']);
+			}
+
+			// Finish the login
+			$this->complete_login($user);
 
 			return TRUE;
 		}
@@ -75,9 +89,46 @@ class Auth_Core {
 		return FALSE;
 	}
 
-	/*
-	 * Method: logout
-	 *  Force a logout of a user.
+	/**
+	 * Attempt to automatically log a user in by using tokens.
+	 *
+	 * @return  bool
+	 */
+	public function auto_login()
+	{
+		if ($token = cookie::get('autologin'))
+		{
+			// Load the token and user
+			$token = new User_Token_Model($token);
+			$user = new User_Model($token->user_id);
+
+			if ($token->id != 0 AND $user->id != 0)
+			{
+				if ($token->user_agent === sha1(Kohana::$user_agent))
+				{
+					// Save the token to create a new unique token
+					$token->save();
+
+					// Set the new token
+					cookie::set('autologin', $token->token, $token->expires - time());
+
+					// Complete the login with the found data
+					$this->complete_login($user);
+
+					// Automatic login was successful
+					return TRUE;
+				}
+
+				// Token is invalid
+				$token->delete();
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Log out a user by removing the related session variables.
 	 *
 	 * Parameters:
 	 *  destroy - completely destroy the session
@@ -94,7 +145,7 @@ class Auth_Core {
 		}
 	}
 
-	/*
+	/**
 	 * Creates a hashed password from a plaintext password, inserting salt
 	 * based on the configured salt pattern.
 	 *
@@ -143,7 +194,7 @@ class Auth_Core {
 		return $password.$hash;
 	}
 
-	/*
+	/**
 	 * Perform a hash, using the configured method.
 	 *
 	 * Parameters:
@@ -154,11 +205,10 @@ class Auth_Core {
 	 */
 	protected function hash($str)
 	{
-		$method = $this->config['hash_method'];
-		return $method($str);
+		return hash($this->config['hash_method'], $str);
 	}
 
-	/*
+	/**
 	 * Finds the salt from a password, based on the configured salt pattern.
 	 *
 	 * Parameters:
@@ -178,6 +228,30 @@ class Auth_Core {
 		}
 
 		return $salt;
+	}
+
+	/**
+	 * Complete the login for a user by incrementing the logins and setting
+	 * session data: user_id, username, roles
+	 *
+	 * @param   object   user model object
+	 * @return  void
+	 */
+	protected function complete_login(User_Model $user)
+	{
+		// Update the number of logins
+		$user->logins += 1;
+
+		// Save the user
+		$user->save();
+
+		// Store session data
+		$this->session->set(array
+		(
+			'user_id'  => $user->id,
+			'username' => $user->username,
+			'roles'    => $user->roles
+		));
 	}
 
 } // End Auth

@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Pages_Controller extends Controller {
+class Pages_Controller extends Template_Controller {
     public function _remap() {
     	$page = new Pages_Model();
 		$data = $page->get($this->uri->segment(2));

@@ -27,7 +27,7 @@ class Pages_Model extends Model {
         DESC LIMIT 0, 1
 		", array($uri));
 
-        if($query->num_rows() > 0) {
+        if(count($query) > 0) {
             $result = $query->result();
             return $result[0];
         }

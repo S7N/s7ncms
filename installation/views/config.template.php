@@ -55,7 +55,7 @@ $config['display_errors'] = FALSE;
  * or relative to the docroot. Modules can include any resource that can exist
  * in your application directory, configuration files, controllers, views, etc.
  */
-$config['include_paths'] = array
+$config['modules'] = array
 (
 	// To enable the demo module; uncomment the following line
 	// 'modules/demo',
