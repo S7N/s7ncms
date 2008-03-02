@@ -102,7 +102,8 @@ class User_Model extends ORM {
 	}
 
 
-	public function get($id) {
+	public function get($id)
+	{
 		// DATE_FORMAT(users.registered_on,'%d.%m.%Y, %H:%i') AS registered_on,
 		$query = self::$db->select('*')
 			->from('users')
@@ -110,7 +111,8 @@ class User_Model extends ORM {
 			->limit(1)
 			->get();
 
-		if(count($query) == 1) {
+		if(count($query) == 1)
+		{
 			$result = $query->result();             
 			return $result[0];            
 		}
@@ -118,16 +120,16 @@ class User_Model extends ORM {
 		return array();
 	}
 	
-	public function get_all() {
+	public function get_all()
+	{
 		// DATE_FORMAT(users.registered_on,'%d.%m.%Y, %H:%i') AS registered_on,
 		$query = self::$db->select('*')
 			->from('users')
 			->orderby('username','asc')
 			->get();
 
-		if(count($query) > 0) {            
+		if(count($query) > 0)         
 			return $query->result();            
-		}
 
 		return array();
 	}

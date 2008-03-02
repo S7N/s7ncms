@@ -1,8 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Pages_Model extends Model {
-	public function get($uri = false) {
+	
+	public function get($uri = false)
+	{
 		$prefix = config::item('database.default.table_prefix');
+		
 		$query = $this->db->query("
 		SELECT 
             pages.id,
@@ -27,11 +30,13 @@ class Pages_Model extends Model {
         DESC LIMIT 0, 1
 		", array($uri));
 
-        if(count($query) > 0) {
+        if(count($query) > 0)
+		{
             $result = $query->result();
             return $result[0];
         }
 
         return null;
 	}
+	
 }

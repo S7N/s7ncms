@@ -1,13 +1,15 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Defaultpage_Controller extends Controller {
-    function index() {
+	
+    public function index()
+	{
     	$redirect = config::item('s7n.default_uri');
     	
-        if(is_null($redirect)) {
+        if(is_null($redirect))
         	Kohana::show_error('No start page defined', "The system couldn't find a start page to display.");
-        }
         
     	url::redirect($redirect);
     }
+	
 }
