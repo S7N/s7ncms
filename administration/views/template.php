@@ -5,7 +5,7 @@
 <head>
     <title>S7Ncms Administration - <?php echo $title; ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <?php echo html::stylesheet('media/css/layout'); ?>
+    <?php echo html::stylesheet('media/css/layout', 'screen', TRUE); ?>
     <?php echo html::script('media/js/mootools-trunk') ?>
     <?php echo html::script('../vendor/tiny_mce/tiny_mce') ?>
     <?php echo html::script('media/js/tiny_mce_config') ?>

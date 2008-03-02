@@ -1,13 +1,17 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Domain name, with the installation directory. Default: localhost/kohana/
+ * Base path of the web site. If this includes a domain, (eg, "localhost/kohana/") then
+ * a full URL will be used (eg, "http://localhost/kohana/"). If it only includes the path, 
+ * and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = 'localhost/S7Ncms';
+$config['site_domain'] = '/S7Ncms';
 
 /**
- * Default protocol used to access the website. Default: http
+ * Force a default protocol to be used by the site. If no site_protocol is specified, then the 
+ * current protocol is used, or when possible, only an absolute path (with no protocol/domain) 
+ * is used.
  */
-$config['site_protocol'] = 'http';
+$config['site_protocol'] = '';
 
 /**
  * Name of the front controller for this application. Default: index.php
@@ -26,7 +30,7 @@ $config['url_suffix'] = '';
  * server bandwidth usage, at the cost of slightly higher CPU usage. Set to
  * the compression level (1-9) that you want to use, or FALSE to disable.
  *
- * @note Do not enable this option if you are using output compression in php.ini!
+ * Do not enable this option if you are using output compression in php.ini!
  */
 $config['output_compression'] = FALSE;
 
@@ -43,6 +47,12 @@ $config['global_xss_filtering'] = FALSE;
 $config['allow_config_set'] = TRUE;
 
 /**
+ * Enable or display displaying of Kohana error pages. This will not affect
+ * logging. Turning this off will disable ALL error pages.
+ */
+$config['display_errors'] = TRUE;
+
+/**
  * Filename prefixed used to determine extensions. For example, an
  * extension to the Controller class would be named MY_Controller.php.
  */
@@ -55,21 +65,10 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array
 (
-	// To enable the demo module; uncomment the following line
-	// 'modules/demo',
-	// To enable local API documentation at /kodoc/, uncomment the following line
-	// 'modules/kodoc',
-	'shared'
+	// MODPATH.'auth',   // Authentication
+	MODPATH.'forge',  // Form generation
+	// MODPATH.'kodoc',  // Self-generating documentation
+	// MODPATH.'media',  // Media caching and compression
+	
+	'shared',
 );
-
-/**
- * Libraries and models to be automatically loaded into every controller. Use
- * a comma-separated list to set multiple items.
- */
-$config['autoload'] = array
-(
-	'libraries' => 'session',
-	'models'    => '',
-);
-
-$config['display_errors'] = TRUE;

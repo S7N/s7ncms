@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Home_Controller extends Controller {
+class Home_Controller extends Admin_Controller {
 
 	public function __construct() {
 		parent::__construct();

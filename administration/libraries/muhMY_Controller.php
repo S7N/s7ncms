@@ -22,13 +22,8 @@ class Controller extends Controller_Core {
         $current_controller = explode('/', $current_url);        
         
         if(!in_array($current_controller[0], $this->not_protected)) {
-        	if ($this->session->get('user_id')) {
-        		$user = new User_Model((int) $this->session->get('user_id'));
-        		if(!$user->has_role('admin')) {
-        			// The user has no access to the admin interface!
-        			Kohana::show_error('No Access', 'You have no access to the administration interface');
-        		}
-        	} else {
+        	
+			if (!Auth::factory()->logged_in('admin')) {
         		$this->session->set('redirect_me_to', $current_url);
         		url::redirect('auth/login');
         	}

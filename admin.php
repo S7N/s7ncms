@@ -19,8 +19,17 @@
 $kohana_application = 'administration';
 
 /**
- * Kohana package files. This directory should contain the core/ directory, and
- * the resources you included in your download of Kohana.
+ * Kohana modules directory. This directory should contain all the modules used
+ * by your application. Modules are enabled and disabled by the application
+ * configuration file.
+ *
+ * This path can be absolute or relative to this file.
+ */
+$kohana_modules = 'modules';
+
+/**
+ * Kohana system directory. This directory should contain the core/ directory,
+ * and the resources you included in your download of Kohana.
  *
  * This path can be absolute or relative to this file.
  */
@@ -45,6 +54,12 @@ ini_set('display_errors', TRUE);
  */
 define('EXT', '.php');
 
+/**
+ * Test to make sure that Kohana is running on PHP 5.1.3 or newer. Once you are
+ * sure that your environment is compatible with Kohana, you can disable this.
+ */
+version_compare(PHP_VERSION, '5.2', '<') and exit('Kohana requires PHP 5.2 or newer.');
+
 //
 // DO NOT EDIT BELOW THIS LINE, UNLESS YOU FULLY UNDERSTAND THE IMPLICATIONS.
 // ----------------------------------------------------------------------------
@@ -53,14 +68,18 @@ define('EXT', '.php');
 
 // Define the front controller name and docroot
 define('DOCROOT', getcwd().DIRECTORY_SEPARATOR);
-define('KOHANA',  substr(__FILE__, strlen(DOCROOT)));
+define('KOHANA',  basename(__FILE__));
+
+// If the front controller is a symlink, change to the real docroot
+is_link(KOHANA) and chdir(dirname(realpath(__FILE__)));
 
 // Define application and system paths
 define('APPPATH', str_replace('\\', '/', realpath($kohana_application)).'/');
+define('MODPATH', str_replace('\\', '/', realpath($kohana_modules)).'/');
 define('SYSPATH', str_replace('\\', '/', realpath($kohana_system)).'/');
 
 // Clean up
-unset($kohana_application, $kohana_system);
+unset($kohana_application, $kohana_modules, $kohana_system);
 
 (is_dir(APPPATH) AND is_dir(APPPATH.'/config')) or die
 (

@@ -1,17 +1,13 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
-/*
- * File: Routes
+/**
+ * @package  Core
  *
- * Supported Shortcuts:
- *  :any - matches any non-blank string
- *  :num - matches any number
- *
- * Options:
- *  _allowed - Permitted URI characters
- *  _default - Default route when no URI segments are found
+ * Permitted URI characters. Note that "?", "#", and "=" are URL characters, and
+ * should not be added here.
  */
-$config = array
-(
-	'_allowed' => 'a-z 0-9~%.:_-',
-	'_default' => 'home'
-);
+$config['_allowed'] = '-a-z 0-9~%.,:_';
+
+/**
+ * Default route to use when no URI segments are available.
+ */
+$config['_default'] = 'home';

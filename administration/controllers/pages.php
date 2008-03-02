@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Pages_Controller extends Controller {
+class Pages_Controller extends Admin_Controller {
 	protected $page;
 	
 	public function __construct() {

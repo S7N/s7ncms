@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class User_Controller extends Controller {
+class User_Controller extends Admin_Controller {
 	protected $user;
 	
 	public function index() {

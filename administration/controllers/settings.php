@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Settings_Controller extends Controller {
+class Settings_Controller extends Admin_Controller {
 	public function index() {
 	    $this->template->content = new View('settings/settings');
-        $this->template->content->default_uri = Settings::item('s7n.default_uri');
+        $this->template->content->default_uri = config::item('s7n.default_uri');
 	}
     
     public function save() {
