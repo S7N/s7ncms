@@ -1,4 +1,4 @@
-# Remove # in the following line if your web hoster is UD Media GmbH
+# Remove # in the following line if needed
 #AddHandler php5-fastcgi .php
 
 # Turn on URL rewriting

@@ -5,7 +5,7 @@ class Dashboard_Controller extends Admin_Controller {
 	public function index()
 	{
         $this->template->title = 'Dashboard';
-		$this->template->content = new View('dashboard/home');
+		$this->template->content = new View('dashboard/index');
     }
 
 }

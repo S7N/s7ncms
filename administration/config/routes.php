@@ -10,4 +10,4 @@ $config['_allowed'] = '-a-z 0-9~%.,:_';
 /**
  * Default route to use when no URI segments are available.
  */
-$config['_default'] = 'home';
+$config['_default'] = 'dashboard';
