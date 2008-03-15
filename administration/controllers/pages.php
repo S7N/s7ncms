@@ -11,11 +11,20 @@ class Pages_Controller extends Admin_Controller {
 		$this->page = new Pages_Model();
 		$this->template->meta .= html::script('media/js/mootabs.js', TRUE);
 		$this->template->meta .= html::stylesheet('media/css/mootabs.css', '', TRUE);
+		
+		$this->template->links = array(
+			array('pages/newpage', 'New Page'),
+			array('pages/settings', 'Edit Page Settings')
+		);
+		
+		$this->template->entries = array(
+			array('pages', 'All Entries')
+		);
 	}
 
 	public function index()
 	{
-		$this->template->title = 'Home';
+		$this->template->title = 'Pages | All Pages';
 		$this->template->content = new View('pages/all');
 		$this->template->content->pages = $this->page->get_all();
 	}
@@ -27,7 +36,7 @@ class Pages_Controller extends Admin_Controller {
 			$this->page->id = (int) $this->input->post('content_id');
 			$this->page->title = htmlspecialchars($this->input->post('title'));
 			
-			if(strstr(Settings::item('page.views'), $this->input->post('view')) !== false)
+			if(strstr(config::item('s7n.page_views'), $this->input->post('view')) !== false)
 			{
 				$this->page->view = trim($this->input->post('view'));
 			}
@@ -58,6 +67,8 @@ class Pages_Controller extends Admin_Controller {
 		{
 			$this->template->content = new View('pages/edit');
 			$this->template->content->page = $this->page->get($this->uri->segment(3));
+			
+			$this->template->title = 'Pages | '. $this->template->content->page->title ;
 		}
 	}
 	
@@ -68,7 +79,7 @@ class Pages_Controller extends Admin_Controller {
 			$this->page->title = htmlspecialchars($this->input->post('title'));
 			$this->page->view = 'default';
 			
-			if(strstr(Settings::item('page.views'), $this->input->post('view')) !== false)
+			if(strstr(config::item('s7n.page_views'), $this->input->post('view')) !== false)
 			{
 				$this->page->view = trim($this->input->post('view'));
 			} 
@@ -98,6 +109,7 @@ class Pages_Controller extends Admin_Controller {
 		}
 		else
 		{
+			$this->template->title = 'Pages | New Entry';
 			$this->template->content = new View('pages/new');
 		}
 	}
@@ -128,7 +140,7 @@ class Pages_Controller extends Admin_Controller {
 		}
 		
 		$this->template->content = new View('pages/settings');
-		$this->template->content->views = Settings::item('page.views');			
+		$this->template->content->views = Config::item('s7n.page_views');			
 	}
 
 }

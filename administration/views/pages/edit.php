@@ -1,4 +1,3 @@
-<h1>Pages - Edit</h1>
 <?php echo form::open('pages/edit', array(), array('id' => $page->id)); ?>
 <?php echo form::hidden('content_id', $page->content_id); ?>
 <div id="myTabs" class="mootabs">

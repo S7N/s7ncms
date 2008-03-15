@@ -16,6 +16,7 @@ class Admin_Controller extends Template_Controller {
 
 		$this->template->title = '';
         $this->template->meta = '';
+		$this->template->links = array();
         $this->template->content = '';
 	}
 
