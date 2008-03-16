@@ -23,7 +23,7 @@ class Pages_Controller extends Admin_Controller {
 	public function index()
 	{
 		$this->template->title = 'Pages | All Pages';
-		$this->template->content = new View('pages/all');
+		$this->template->content = new View('pages/index');
 		$this->template->content->pages = $this->page->get_all();
 	}
 
@@ -57,7 +57,7 @@ class Pages_Controller extends Admin_Controller {
 			
 			$this->page->save();
 			
-			$this->session->set_flash('flash_msg', 'Page edited successfully');
+			$this->session->set_flash('info_message', 'Page edited successfully');
 
 			url::redirect('pages');
 		}
@@ -108,7 +108,7 @@ class Pages_Controller extends Admin_Controller {
 		else
 		{
 			$this->template->title = 'Pages | New Entry';
-			$this->template->content = new View('pages/new');
+			$this->template->content = new View('pages/newpage');
 		}
 	}
 	
@@ -137,6 +137,7 @@ class Pages_Controller extends Admin_Controller {
 			}
 		}
 		
+		$this->template->title = 'Pages | Settings';
 		$this->template->content = new View('pages/settings');
 		$this->template->content->views = Config::item('s7n.page_views');			
 	}

@@ -1,4 +1,3 @@
-<h1>Pages - New</h1>
 <?php echo form::open('pages/newpage') ?>
 <div id="myTabs" class="mootabs">
 
