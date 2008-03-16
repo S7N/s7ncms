@@ -9,8 +9,6 @@ class Pages_Controller extends Admin_Controller {
 		parent::__construct();
 
 		$this->page = new Pages_Model();
-		$this->template->meta .= html::script('media/js/mootabs.js', TRUE);
-		$this->template->meta .= html::stylesheet('media/css/mootabs.css', '', TRUE);
 		
 		$this->template->links = array(
 			array('pages/newpage', 'New Page'),

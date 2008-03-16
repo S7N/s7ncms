@@ -6,7 +6,7 @@
 			<td>Title</td>
 			<td>Last Updated</td>
 			<td>Author</td>
-			<td class="delete">Delete</td>
+			<td class="delete">&nbsp;</td>
 		</tr>
 	</thead>
 	<tbody align="left" valign="middle">
@@ -15,7 +15,13 @@
 			<td><?php echo html::anchor('pages/edit/'.$page->uri, $page->title); ?></td>
 			<td><?php echo $page->modified_on; ?></td>
 			<td><?php echo $page->created_by; ?></td>
-			<td><?php echo html::anchor('pages/delete/'.$page->id, 'x'); ?></td>
+			<td class="delete"><?php echo html::anchor('pages/delete/'.$page->id, html::image(
+				array(
+					'src' => 'media/images/delete.png',
+					'alt' => 'Delete Page',
+					'title' => 'Delete Page'
+					),
+				TRUE)); ?></td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>

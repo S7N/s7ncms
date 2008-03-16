@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="login">
-    <div id="logo"><?php echo html::image('media/img/s7n_logo.png') ?></div>
+    <div id="logo"><?php echo html::image('media/images/s7n_logo.png') ?></div>
     <div id="formular">
         <?php echo $form ?>
     </div>

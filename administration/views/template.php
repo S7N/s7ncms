@@ -7,20 +7,24 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<?php echo html::stylesheet('media/css/layout', 'screen', TRUE) ?>
     <?php echo $meta ?>
-
 </head>
 
 <body>
 	<div id="header">
 		S7Nadmin
+		<div class="info">
+			<?php echo html::anchor('auth/logout', 'Logout'); ?>
+		</div>
 	</div>
 
 	<div id="navigation">
-		<?php echo html::anchor('home', 'Home'); ?>
-		<?php echo html::anchor('settings', 'Settings'); ?>
-		<?php echo html::anchor('user', 'Users'); ?>
-		<?php echo html::anchor('pages', 'Pages'); ?>
-		<?php echo html::anchor('auth/logout', 'Logout'); ?>
+		<ul>
+			<li><?php echo html::anchor('dashboard', 'Dashboard'); ?></li>
+			<li><?php echo html::anchor('settings', 'Settings'); ?></li>
+			<li><?php echo html::anchor('user', 'Users'); ?></li>
+			<li><?php echo html::anchor('pages', 'Pages'); ?></li>
+			<li><?php echo html::anchor('modules', 'Modules'); ?></li>
+		</ul>
 	</div>
 
 	<div id="left">
@@ -44,6 +48,16 @@
 		</div>
 
 		<div id="content">
+			<?php if( ! is_null($message)): ?>
+				<div id="message">
+					<?php echo $message ?>
+				</div>
+			<?php endif; ?>
+			<?php if( ! is_null($error)): ?>
+				<div id="error">
+					<?php echo $error ?>
+				</div>
+			<?php endif; ?>
 			<?php echo $content ?>
 		</div>
 	</div>

@@ -14,10 +14,15 @@ class Admin_Controller extends Template_Controller {
         	url::redirect('auth/login');
         }
 
-		$this->template->title = '';
-        $this->template->meta = '';
+		$this->template->meta .= html::script('media/js/jquery.js', TRUE);
+		$this->template->meta .= html::script('media/js/stuff.js', TRUE);
+		
 		$this->template->links = array();
-        $this->template->content = '';
+		
+        $this->template->title = '';
+        $this->template->message = $this->session->get('info_message', NULL);
+		$this->template->error = $this->session->get('error_message', NULL);
+		$this->template->content = '';
 	}
 
 }
