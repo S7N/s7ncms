@@ -1,5 +1,4 @@
 <?php echo form::open('pages/action'); ?>
-
 <table cellspacing="0" cellpadding="0" class="table">
 	<thead align="left" valign="middle">
 		<tr>
@@ -26,15 +25,4 @@
 	<?php endforeach; ?>
 	</tbody>
 </table>
-<p><!--?php echo form::checkbox('toggle', 'toggle', false, 'onChange="S7N.toggleCheckboxes()"')?> Select all</p>
-<p-->
-<!--?php
-$options = array('' => '- please select -',
-				 'delete' => 'delete',
-				 'publish' => '(un)publish');
-echo form::dropdown('action', $options);
-?-->
-
-<!--?php echo form::submit('submit',' Do It! ')?-->
-</p>
 </form>

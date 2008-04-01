@@ -11,9 +11,6 @@
  */
 class Auth_Core {
 
-	// Session instance
-	protected $session;
-
 	// Configuration
 	protected $config;
 
@@ -44,17 +41,16 @@ class Auth_Core {
 
 	/**
 	 * Loads Session and configuration options.
+	 *
+	 * @return  void
 	 */
 	public function __construct($config = array())
 	{
-		// Load libraries
-		$this->session = Session::instance();
-
 		// Append default auth configuration
 		$config += Config::item('auth');
 
 		// Clean up the salt pattern and split it into an array
-		$config['salt_pattern'] = preg_split('/, ?/', Config::item('auth.salt_pattern'));
+		$config['salt_pattern'] = preg_split('/,\s*/', Config::item('auth.salt_pattern'));
 
 		// Save the config in the object
 		$this->config = $config;
@@ -86,24 +82,23 @@ class Auth_Core {
 			// Everything is okay so far
 			$status = TRUE;
 
-			if ( ! empty($role))
+			if ($role !== NULL)
 			{
 				// Check that the user has the given role
 				$status = $_SESSION['auth_user']->has_role($role);
 			}
 		}
 
-		// Not logged in
 		return $status;
 	}
 
 	/**
 	 * Attempt to log in a user by using an ORM object and plain-text password.
 	 *
-	 * @param   object  user model object
-	 * @param   string  plain-text password to check against
-	 * @param   bool    to allow auto-login, or "remember me" feature
-	 * @return  bool
+	 * @param   object   user model object
+	 * @param   string   plain-text password to check against
+	 * @param   boolean  to allow auto-login, or "remember me" feature
+	 * @return  boolean
 	 */
 	public function login(User_Model $user, $password, $remember = FALSE)
 	{
@@ -111,10 +106,10 @@ class Auth_Core {
 			return FALSE;
 
 		// Create a hashed password using the salt from the stored password
-		$password = $this->hash_password($password,  $this->find_salt($user->password));
+		$password = $this->hash_password($password, $this->find_salt($user->password));
 
-		// If the user has the "login" role and the passwords match, perform a login
-		if ($user->has_role('login') AND $user->password === $password)
+		// If the passwords match, perform a login
+		if ($user->password === $password)
 		{
 			if ($remember === TRUE)
 			{
@@ -142,7 +137,7 @@ class Auth_Core {
 	/**
 	 * Attempt to automatically log a user in by using tokens.
 	 *
-	 * @return  bool
+	 * @return  boolean
 	 */
 	public function auto_login()
 	{
@@ -152,7 +147,7 @@ class Auth_Core {
 			$token = new User_Token_Model($token);
 			$user = new User_Model($token->user_id);
 
-			if ($token->id != 0 AND $user->id != 0)
+			if ($token->id > 0 AND $user->id > 0)
 			{
 				if ($token->user_agent === sha1(Kohana::$user_agent))
 				{
@@ -180,8 +175,8 @@ class Auth_Core {
 	/**
 	 * Log out a user by removing the related session variables.
 	 *
-	 * @param   bool   completely destroy the session
-	 * @return  bool
+	 * @param   boolean   completely destroy the session
+	 * @return  boolean
 	 */
 	public function logout($destroy = FALSE)
 	{
@@ -199,7 +194,8 @@ class Auth_Core {
 			unset($_SESSION['auth_user']);
 		}
 
-		return TRUE;
+		// Double check
+		return ! isset($_SESSION['auth_user']);
 	}
 
 	/**
@@ -277,6 +273,7 @@ class Auth_Core {
 	protected function find_salt($password)
 	{
 		$salt = '';
+
 		foreach($this->config['salt_pattern'] as $i => $offset)
 		{
 			// Find salt characters... take a good long look..
