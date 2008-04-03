@@ -7,10 +7,10 @@ class Pages_Controller extends Admin_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-
+		new Profiler();
 		$this->page = new Pages_Model();
 		
-		$this->template->links = array(
+		$this->template->tasks = array(
 			array('pages/newpage', 'New Page'),
 			array('pages/settings', 'Edit Page Settings')
 		);
@@ -31,19 +31,19 @@ class Pages_Controller extends Admin_Controller {
 	{
 		if($_SERVER["REQUEST_METHOD"] == 'POST')
 		{
-			$this->page->id = (int) $this->input->post('content_id');
-			$this->page->title = htmlspecialchars($this->input->post('title'));
+			$this->page->id = (int) $this->input->post('form_content_id');
+			$this->page->title = htmlspecialchars($this->input->post('form_title'));
 			
-			if(strstr(config::item('s7n.page_views'), $this->input->post('view')) !== false)
+			if(strstr(config::item('s7n.page_views'), $this->input->post('form_view')) !== false)
 			{
-				$this->page->view = trim($this->input->post('view'));
+				$this->page->view = trim($this->input->post('form_view'));
 			}
 			
-			$this->page->intro = $this->input->post('intro');
-			$this->page->body = $this->input->post('body');
-			$this->page->uri = url::title($this->input->post('title'));
+			$this->page->intro = $this->input->post('form_intro');
+			$this->page->body = $this->input->post('form_body');
+			$this->page->uri = url::title($this->input->post('form_title'));
 			
-			$publish_on = trim($this->input->post('publish_on'));        
+			$publish_on = trim($this->input->post('form_publish_on'));        
 
 			if(preg_match('/^\d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}\:\d{2}$/', $publish_on))
 			{                
@@ -51,9 +51,9 @@ class Pages_Controller extends Admin_Controller {
 			}
 			
 			$this->page->modified_on = date("Y-m-d H:i:s");
-			$this->page->modified_by = $this->session->get('user_id');
-			$this->page->sidebar_content = $this->input->post('sidebar_content');
-			$this->page->meta_keywords = htmlspecialchars($this->input->post('meta_keywords'));
+			$this->page->modified_by = $_SESSION['auth_user']->id;
+			$this->page->sidebar_content = $this->input->post('form_sidebar_content');
+			$this->page->meta_keywords = htmlspecialchars($this->input->post('form_meta_keywords'));
 			
 			$this->page->save();
 			
@@ -66,7 +66,7 @@ class Pages_Controller extends Admin_Controller {
 			$this->template->content = new View('pages/edit');
 			$this->template->content->page = $this->page->get($this->uri->segment(3));
 			
-			$this->template->title = 'Pages | '. $this->template->content->page->title ;
+			$this->template->title = 'Pages | Edit: '. $this->template->content->page->title ;
 		}
 	}
 	
@@ -74,35 +74,35 @@ class Pages_Controller extends Admin_Controller {
 	{
 		if($_SERVER["REQUEST_METHOD"] == 'POST')
 		{
-			$this->page->title = htmlspecialchars($this->input->post('title'));
+			$this->page->title = htmlspecialchars($this->input->post('form_title'));
 			$this->page->view = 'default';
 			
-			if(strstr(config::item('s7n.page_views'), $this->input->post('view')) !== false)
+			if(strstr(config::item('s7n.page_views'), $this->input->post('form_view')) !== false)
 			{
-				$this->page->view = trim($this->input->post('view'));
+				$this->page->view = trim($this->input->post('form_view'));
 			} 
 			
-			$this->page->intro = $this->input->post('intro');
-			$this->page->body = $this->input->post('body');
-			$this->page->uri = url::title($this->input->post('title'));
+			$this->page->intro = $this->input->post('form_intro');
+			$this->page->body = $this->input->post('form_body');
+			$this->page->uri = url::title($this->input->post('form_title'));
 			$this->page->created_on = date("Y-m-d H:i:s");
 			
-			$publish_on = trim($this->input->post('publish_on'));        
+			$publish_on = trim($this->input->post('form_publish_on'));        
 			$this->page->publish_on = preg_match('/^\d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}\:\d{2}$/', $publish_on) ? $publish_on : date("Y-m-d H:i:s");
 			
 			$this->page->modified_on = date("Y-m-d H:i:s");
-			$this->page->created_by = $this->session->get('user_id');
-			$this->page->modified_by = $this->session->get('user_id');
+			$this->page->created_by = $_SESSION['auth_user']->id;
+			$this->page->modified_by = $_SESSION['auth_user']->id;
 			$this->page->status = 'published';
 			$this->page->comment_status = 'closed';
 			$this->page->version = 1;
 			
-			$this->page->sidebar_content = $this->input->post('sidebar_content');
-			$this->page->meta_keywords = htmlspecialchars($this->input->post('meta_keywords'));
+			$this->page->sidebar_content = $this->input->post('form_sidebar_content');
+			$this->page->meta_keywords = htmlspecialchars($this->input->post('form_meta_keywords'));
 			
 			$this->page->save();
 			
-			$this->session->set('message', 'Page created successfully');
+			$this->session->set('info_message', 'Page created successfully');
 			url::redirect('pages');
 		}
 		else
@@ -118,7 +118,7 @@ class Pages_Controller extends Admin_Controller {
 		{
 			if($this->input->post('action') == 'delete')
 			{
-				$this->page->delete($this->input->post('page_id'));
+				$this->page->delete($this->input->post('form_page_id'));
 				$this->session->set_flash('flash_msg', 'Pages deleted successfully');
 			}
 		}
@@ -130,7 +130,7 @@ class Pages_Controller extends Admin_Controller {
 	{
 		if($_SERVER["REQUEST_METHOD"] == 'POST')
 		{
-			if(Settings::save('page.views', $this->input->post('views')))
+			if(Settings::save('page.views', $this->input->post('form_views')))
 			{
 				$this->session->set_flash('flash_msg', 'Page Settings edited successfully');
 				url::redirect('pages/settings');

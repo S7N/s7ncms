@@ -1,53 +1,51 @@
 <?php echo form::open('pages/newpage') ?>
-<div id="myTabs" class="mootabs">
+<div id="tabs">
 
-	<ul class="mootabs_title">
-		<li><a class="active" href="#tab_page">Content</a></li>
-		<li><a href="#tab_sidebar">Sidebar</a></li>
-		<li><a href="#tab_advanced">Advanced Settings</a></li>
+	<ul>
+		<li><a class="active" href="#tab_page"><span>Content</span></a></li>
+		<li><a href="#tab_sidebar"><span>Sidebar</span></a></li>
+		<li><a href="#tab_advanced"><span>Advanced Settings</span></a></li>
 	</ul>
 	
-	<div id="tab_page" class="mootabs_panel active">
+	<div id="tab_page">
 		<p>Title:<br />
-		<?php echo form::input('title') ?></p>
+		<?php echo form::input('form_title') ?></p>
 		<p>Template:<br />
-		<?php echo form::input('view', 'default'); ?></p>
+		<?php echo form::input('form_view', 'default'); ?></p>
 		<p>Intro: (Editor
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('intro').show();">an</a> /
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('intro').hide();">aus</a>
+		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_intro').show();">an</a> /
+		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_intro').hide();">aus</a>
 		)<br />
-		<?php echo form::textarea('intro'); ?></p>
+		<?php echo form::textarea('form_intro'); ?></p>
 		<p>Body: (Editor
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('body').show();">an</a> /
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('body').hide();">aus</a>
+		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_body').show();">an</a> /
+		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_body').hide();">aus</a>
 		)<br />
-		<?php echo form::textarea('body'); ?></p>
-		
+		<?php echo form::textarea('form_body'); ?></p>
 	</div>
 	
-	<div id="tab_sidebar" class="mootabs_panel">
-	
+	<div id="tab_sidebar">
 		<p>Sidebar Content: (Editor
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('sidebar_content').show();">an</a> /
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('sidebar_content').hide();">aus</a>
-		)<br />
-		<?php echo form::textarea('sidebar_content'); ?></p>
-	
+			<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_sidebar_content').show();">an</a> /
+			<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_sidebar_content').hide();">aus</a>
+			)<br />
+			<?php echo form::textarea('form_sidebar_content'); ?>
+		</p>
 	</div>
 	
-	<div id="tab_advanced" class="mootabs_panel">
-	
+	<div id="tab_advanced">
 		<p>
 			Keywords (comma separated):<br />
-		    <?php echo form::input('meta_keywords'); ?>
+		    <?php echo form::input('form_meta_keywords'); ?>
 		</p>
-		
 		<p>
 			Change the date of publication: (YYYY-MM-DD hh:mm:ss)<br />
-			<?php echo form::input('publish_on'); ?>
+			<?php echo form::input('form_publish_on'); ?>
 		</p>
 	</div>
-
+	
 </div>
-<p><?php echo form::submit('submit', 'Save'); ?></p>
+
+<p><?php echo form::submit('submit', ' Save '); ?></p>
+
 </form>

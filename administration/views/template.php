@@ -28,13 +28,15 @@
 	</div>
 
 	<div id="left">
-		<p><strong>Tasks:</strong><br />
-		<?php foreach($links as $link): ?>
-			<?php echo html::anchor($link[0], $link[1]); ?><br />
-		<?php endforeach; ?>
-		</p>
+		<?php if(isset($tasks) AND !empty($tasks)): ?>
+			<p><strong>Tasks</strong><br />
+			<?php foreach($tasks as $task): ?>
+				<?php echo html::anchor($task[0], $task[1]); ?><br />
+			<?php endforeach; ?>
+			</p>
+		<?php endif; ?>
 		<?php if(isset($entries)): ?>
-			<p><strong>Entries:</strong><br />
+			<p><strong>Entries</strong><br />
 			<?php foreach($entries as $entry): ?>
 				<?php echo html::anchor($entry[0], $entry[1]); ?><br />
 			<?php endforeach; ?>
@@ -44,16 +46,15 @@
 
 	<div id="main">
 		<div id="title">
-			<?php echo $title ?>
+			<p><?php echo $title ?></p>
 		</div>
-
 		<div id="content">
-			<?php if( ! is_null($message)): ?>
+			<?php if( $message !== NULL ): ?>
 				<div id="message">
 					<?php echo $message ?>
 				</div>
 			<?php endif; ?>
-			<?php if( ! is_null($error)): ?>
+			<?php if( $error !== NULL): ?>
 				<div id="error">
 					<?php echo $error ?>
 				</div>

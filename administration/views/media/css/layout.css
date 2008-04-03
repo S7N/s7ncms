@@ -1,17 +1,23 @@
-html { 
-	padding:0px;
-	margin:0px;
+html, div, body { 
+	padding:0;
+	margin:0;
+	border:0;
 }
-
+form {
+	/*
+	 * http://www.quirksmode.org/bugreports/archives/2005/11/nested_formtable_causes_extra_whitespace.html
+	 */
+	display:inline;
+	padding:0;
+	margin:0;
+}
 body {
 	background-color: #FFFFFF;
 	background-image: url(../images/background.png);
 	background-repeat: repeat-y;
 	font-size: 11px;
-	font-family: Verdana, Sans-Serif;
+	font-family: "Lucida Grande","Lucida Sans Unicode",Geneva,Verdana,Arial,sans-serif;
 	color: #000000;  
-	padding:0px;
-	margin:0px;
 	height: 100%;
 	margin-bottom: -72px;
 }
@@ -97,7 +103,8 @@ img {
 }
 
 #left strong {
-	color: #505D6D;
+	color: #5E6E8F;
+	text-transform: uppercase;
 }
 
 #main {
@@ -106,7 +113,8 @@ img {
 }
 
 #main #title {
-	padding: 10px;
+	padding: 0;
+	margin: 0;
 	font-size: 14px;
 	background-color: #6884AB;
 	color: #FFFFFF;
@@ -114,6 +122,8 @@ img {
 
 #main #content {
 	background-color: #ffffff;
+	padding: 0;
+	margin: 0;
 }
 
 p, h1, h2 {
@@ -136,7 +146,7 @@ a {
 }
 
 table {
-	border: 0pt;
+	border: 0;
 	width: 100%;
 	padding: 0;
 	margin: 0;  
@@ -199,4 +209,12 @@ table {
 	text-align: left;
 	padding: 10px 10px 10px 40px;
 	display: none;
+}
+
+/* forms */
+#main #content input[type=text], #main #content textarea {
+	width: 500px;
+}
+#main #content textarea {
+	height: 250px;
 }

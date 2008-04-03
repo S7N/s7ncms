@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
 	// show messages
 	$('#error').fadeIn("slow");
 	$('#message').fadeIn("slow");
@@ -8,4 +8,7 @@ $(document).ready(function() {
 	
 	// menu
 	$('#navigation li:last').addClass('last');
+	
+	// tabs
+    $("#tabs > ul").tabs();	
 });
