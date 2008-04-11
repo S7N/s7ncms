@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<?php echo html::stylesheet('media/css/login.css', 'screen', TRUE); ?>
+	<?php echo html::stylesheet('media/admin/css/login.css', 'screen'); ?>
 	<title>S7Ncms login</title>
 </head>
 <body>

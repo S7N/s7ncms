@@ -5,7 +5,7 @@
 	<ul>
 		<li><a class="active" href="#tab_page"><span>Content</span></a></li>
 		<li><a href="#tab_sidebar"><span>Sidebar</span></a></li>
-		<li><a href="#tab_advanced"><span>Advanced Settings</span></a></li>
+		<li><a href="#tab_advanced"><span>Advanced</span></a></li>
 	</ul>
 	
 	<div id="tab_page">

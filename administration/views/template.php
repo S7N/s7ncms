@@ -5,7 +5,7 @@
 <head>
     <title>S7Nadmin - <?php echo $title; ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<?php echo html::stylesheet('media/css/layout', 'screen', TRUE) ?>
+	<?php echo html::stylesheet('media/admin/css/layout', 'screen') ?>
     <?php echo $meta ?>
 </head>
 
@@ -35,13 +35,9 @@
 			<?php endforeach; ?>
 			</p>
 		<?php endif; ?>
-		<?php if(isset($entries)): ?>
-			<p><strong>Entries</strong><br />
-			<?php foreach($entries as $entry): ?>
-				<?php echo html::anchor($entry[0], $entry[1]); ?><br />
-			<?php endforeach; ?>
-			</p>
-		<?php endif; ?>
+		
+		<?php echo $this->recent_entries() ?>
+		
 	</div>
 
 	<div id="main">

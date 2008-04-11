@@ -122,7 +122,7 @@ class Pages_Model extends Model {
 
 		$this->db->delete('content');
 		
-		return true;
+		return TRUE;
 	}
     
     public function filter_null($value)
@@ -161,7 +161,7 @@ class Pages_Model extends Model {
         if(count($query) > 0)
             return $query->result();
 
-        return null;
+        return NULL;
 	}
 	
 	public function get($uri)
@@ -204,7 +204,36 @@ class Pages_Model extends Model {
             return $result[0];            
         }
 
-        return null;
+        return NULL;
+	}
+	
+	public function get_latest($number = 10) {
+		$prefix = Config::item('database.default.table_prefix');
+		
+		$query = "
+    		SELECT
+    			pages.id,
+    			pages.content_id,
+    			content.title,
+    			content.uri
+    		FROM
+    		    ".$prefix."pages AS pages
+    		LEFT JOIN
+    		    ".$prefix."content AS content
+    		    ON content.id = pages.content_id
+    		GROUP BY
+    		    pages.id
+    		ORDER BY
+    		    pages.id DESC
+			LIMIT 0, ".(int) $number."
+		";
+		
+		$query = $this->db->query($query);
+		
+        if(count($query) > 0)
+            return $query->result();
+
+        return NULL;
 	}
 	
 }

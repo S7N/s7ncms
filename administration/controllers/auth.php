@@ -41,7 +41,7 @@ class Auth_Controller extends Controller {
 				$user = ORM::factory('user', $form->username->value);
 
 				// Attempt a login
-				if ($user->has_role('login') AND $this->auth->login($user, $form->password->value))
+				if ($this->auth->login($user, $form->password->value))
 				{
 					$url = $this->session->get_once('redirect_me_to');
 					url::redirect(empty($url) ? '' : $url);

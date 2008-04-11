@@ -7,12 +7,12 @@ class Pages_Controller extends Admin_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		new Profiler();
+		
 		$this->page = new Pages_Model();
 		
 		$this->template->tasks = array(
 			array('pages/newpage', 'New Page'),
-			array('pages/settings', 'Edit Page Settings')
+			array('pages/settings', 'Edit Settings')
 		);
 		
 		$this->template->entries = array(
@@ -107,7 +107,8 @@ class Pages_Controller extends Admin_Controller {
 		}
 		else
 		{
-			$this->template->title = 'Pages | New Entry';
+			$this->template->meta .= html::script('vendor/tiny_mce/tiny_mce.js');
+			$this->template->title = 'Pages | New Page';
 			$this->template->content = new View('pages/newpage');
 		}
 	}
@@ -119,10 +120,18 @@ class Pages_Controller extends Admin_Controller {
 			if($this->input->post('action') == 'delete')
 			{
 				$this->page->delete($this->input->post('form_page_id'));
-				$this->session->set_flash('flash_msg', 'Pages deleted successfully');
+				$this->session->set_flash('info_message', 'Pages deleted successfully');
 			}
 		}
 		
+		url::redirect('pages');
+	}
+	
+	public function delete()
+	{
+		
+		$this->page->delete(array($this->uri->segment(3)));
+		$this->session->set_flash('info_message', 'Page deleted successfully');
 		url::redirect('pages');
 	}
 	
@@ -132,7 +141,7 @@ class Pages_Controller extends Admin_Controller {
 		{
 			if(Settings::save('page.views', $this->input->post('form_views')))
 			{
-				$this->session->set_flash('flash_msg', 'Page Settings edited successfully');
+				$this->session->set_flash('info_message', 'Page Settings edited successfully');
 				url::redirect('pages/settings');
 			}
 		}
@@ -140,6 +149,22 @@ class Pages_Controller extends Admin_Controller {
 		$this->template->title = 'Pages | Settings';
 		$this->template->content = new View('pages/settings');
 		$this->template->content->views = Config::item('s7n.page_views');			
+	}
+	
+	public function recent_entries($number = 10)
+	{
+		$this->auto_render = FALSE;
+		$x = $this->page->get_latest($number);
+		$view = new View('pages/recent_entries');
+		
+		$entries = array();
+		$entries[] = array('pages', 'All Entries');
+		foreach ($x as $entry)
+		{
+			$entries[] = array('pages/edit/'.$entry->uri, $entry->title);
+		}
+		$view->entries = $entries;
+		return $view;
 	}
 
 }

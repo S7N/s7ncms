@@ -21,7 +21,7 @@
  */
 $config['default'] = array
 (
-	'benchmark'     => FALSE,
+	'benchmark'     => TRUE, 
 	'persistent'    => FALSE,
 	'connection'    => 'mysql://edy:edy@localhost/s7ncms',
 	'character_set' => 'utf8',
