@@ -16,7 +16,7 @@ class Admin_Controller extends Template_Controller {
         }
 		
 		// Javascripts
-		$this->template->meta .= html::script('media/admin/js/jquery.js');
+		$this->template->meta .= html::script('media/js/jquery.js');
 		$this->template->meta .= html::script('media/admin/js/ui.tabs.js');
 		$this->template->meta .= html::script('media/admin/js/stuff.js');
 		
