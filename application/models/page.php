@@ -1,6 +1,10 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Pages_Model extends Model {
+class Page_Model extends ORM {
+	protected $belongs_to = array('user');
+}
+
+/*class Pages_Model extends Model {
 	
 	public function get($uri = false)
 	{
@@ -39,4 +43,4 @@ class Pages_Model extends Model {
         return null;
 	}
 	
-}
+}*/
