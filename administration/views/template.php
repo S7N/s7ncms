@@ -22,7 +22,7 @@
 			<li><?php echo html::anchor('dashboard', 'Dashboard'); ?></li>
 			<li><?php echo html::anchor('settings', 'Settings'); ?></li>
 			<li><?php echo html::anchor('user', 'Users'); ?></li>
-			<li><?php echo html::anchor('pages', 'Pages'); ?></li>
+			<li><?php echo html::anchor('page', 'Pages'); ?></li>
 			<li><?php echo html::anchor('modules', 'Modules'); ?></li>
 		</ul>
 	</div>

@@ -1,4 +1,3 @@
-<?php echo form::open('pages/action'); ?>
 <table cellspacing="0" cellpadding="0" class="table">
 	<thead align="left" valign="middle">
 		<tr>
@@ -11,18 +10,17 @@
 	<tbody align="left" valign="middle">
 	<?php if($pages) foreach($pages as $page): ?>
 		<tr>
-			<td><?php echo html::anchor('pages/edit/'.$page->uri, $page->title); ?></td>
-			<td><?php echo $page->modified_on; ?></td>
-			<td><?php echo $page->created_by; ?></td>
-			<td class="delete"><?php echo html::anchor('pages/delete/'.$page->id, html::image(
+			<td><?php echo html::anchor('page/edit/'.$page->id, $page->title); ?></td>
+			<td><?php echo $page->modified; ?></td>
+			<td><?php echo $page->user->username; ?></td>
+			<td class="delete"><?php echo html::anchor('page/delete/'.$page->id, html::image(
 				array(
-					'src' => 'media/images/delete.png',
+					'src' => 'media/admin/images/delete.png',
 					'alt' => 'Delete Page',
 					'title' => 'Delete Page'
-					),
-				TRUE)); ?></td>
+					)
+				)); ?></td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>
 </table>
-</form>
