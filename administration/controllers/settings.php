@@ -10,17 +10,24 @@ class Settings_Controller extends Admin_Controller {
     
     public function save()
 	{
-        if($_SERVER["REQUEST_METHOD"] !== 'POST')
+        if($_SERVER["REQUEST_METHOD"] === 'POST')
 		{
-            $this->session->set_flash('flash_msg', 'POST it..');
-            url::redirect('settings');
+            $this->db
+			->update(
+				'config', 
+				array(
+					'value' => $this->input->post('default_uri')
+				),
+				array(
+					'context' => 's7n',
+					'key' => 'default_uri'
+				)
+			);
+
+			$this->session->set_flash('info_message', 'Settings edited successfully');
         }
-        
-        if(Settings::save('s7n.default_uri', $this->input->post('default_uri')))
-		{
-            $this->session->set_flash('flash_msg', 'Settings edited successfully');
-            url::redirect('settings');
-        }
+
+        url::redirect('settings');
     }
 
 }
