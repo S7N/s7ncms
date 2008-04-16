@@ -17,4 +17,4 @@
 </p>
 
 <p><?php echo form::submit('submit', 'Save'); ?></p>
-</form>
+<?php echo form::close(); ?>

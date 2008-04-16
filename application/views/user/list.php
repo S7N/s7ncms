@@ -37,4 +37,4 @@ echo form::dropdown('action', $options);
 
 <?php echo form::submit('submit',' Do It! ')?>
 </p>
-</form>
+<?php echo form::close(); ?>

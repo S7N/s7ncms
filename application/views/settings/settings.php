@@ -4,4 +4,4 @@
 <p>Default URI:<br /><?php echo form::input('default_uri', $default_uri); ?></p>
 
 <p><?php echo form::submit('submit','Save'); ?></p>
-</form>
+<?php echo form::close(); ?>
