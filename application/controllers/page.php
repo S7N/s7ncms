@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Page_Controller extends Template_Controller {
+class Page_Controller extends Website_Controller {
 
 	public function _remap()
 	{

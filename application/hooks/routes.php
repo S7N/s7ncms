@@ -26,8 +26,7 @@ class Newroute {
     	if ($segments[0] === 'admin')
     		return TRUE;
 
-    	$db = new Database();
-        $query = $db->select('id')->limit(1)->getwhere('pages', array('uri =' => $segments[0]));
+    	$query = Database::instance()->select('id')->limit(1)->getwhere('pages', array('uri =' => $segments[0]));
 
     	/**
     	 * how many pages were found?

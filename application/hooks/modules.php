@@ -8,8 +8,7 @@ class LoadModules {
 		$modules = Config::item('core.modules');
 		
 		// attach modules from Database
-		$db = new Database();
-		$query = $db->select('name')->where('status', 'on')->get('modules');
+		$query = Database::instance()->select('name')->where('status', 'on')->get('modules');
 		
 		if(count($query) > 0)
 		{

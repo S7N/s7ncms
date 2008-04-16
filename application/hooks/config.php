@@ -9,9 +9,7 @@ class Newconfig {
 	
 	public function new_config()
 	{
-		$db = new Database();
-		
-		$query = $db->select('key, value')
+		$query = Database::instance()->select('key, value')
 			->from('config')
 			->get();
         
