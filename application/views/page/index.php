@@ -10,10 +10,10 @@
 	<tbody align="left" valign="middle">
 	<?php if($pages) foreach($pages as $page): ?>
 		<tr>
-			<td><?php echo html::anchor('page/edit/'.$page->id, $page->title); ?></td>
+			<td><?php echo html::anchor('admin/page/edit/'.$page->id, $page->title); ?></td>
 			<td><?php echo $page->modified; ?></td>
 			<td><?php echo $page->user->username; ?></td>
-			<td class="delete"><?php echo html::anchor('page/delete/'.$page->id, html::image(
+			<td class="delete"><?php echo html::anchor('admin/page/delete/'.$page->id, html::image(
 				array(
 					'src' => 'media/admin/images/delete.png',
 					'alt' => 'Delete Page',

@@ -1,5 +1,5 @@
 <h1>User - Edit</h1>
-<?php echo form::open('user/edit'); ?>
+<?php echo form::open('admin/user/edit'); ?>
 <?php echo form::hidden('id', $user->id) ?>
 
 <p>Username:<br /><?php echo form::input('username', $user->username); ?></p>

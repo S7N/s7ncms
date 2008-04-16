@@ -8,6 +8,11 @@
 $config['_allowed'] = '-a-z 0-9~%.,:+_/';
 
 /**
+ * Default route to use for administration
+ */
+$config['admin'] = 'admin/dashboard';
+
+/**
  * Default route to use when no URI segments are available.
  */
 $config['_default'] = 'defaultpage';

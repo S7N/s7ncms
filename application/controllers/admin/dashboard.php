@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Dashboard_Controller extends Admin_Controller {
+class Dashboard_Controller extends Administration_Controller {
 
 	public function index()
 	{

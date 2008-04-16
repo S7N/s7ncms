@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Settings_Controller extends Admin_Controller {
+class Settings_Controller extends Administration_Controller {
 	
 	public function index()
 	{
@@ -27,7 +27,7 @@ class Settings_Controller extends Admin_Controller {
 			$this->session->set_flash('info_message', 'Settings edited successfully');
         }
 
-        url::redirect('settings');
+        url::redirect('admin/settings');
     }
 
 }

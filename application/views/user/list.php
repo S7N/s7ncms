@@ -1,11 +1,11 @@
 <h1>Users</h1>
-<p><b><?php echo html::anchor('user/create', 'Create a new user'); ?></b></p>
+<p><b><?php echo html::anchor('admin/user/create', 'Create a new user'); ?></b></p>
 
-<?php echo form::open('user/search'); ?>
+<?php echo form::open('admin/user/search'); ?>
 <p><b>Search Users:</b><br /><?php echo form::input(array('name' => 'search', 'size' => 10)); ?> <?php echo form::submit('submit',' Search! ')?></p>
 <?php echo form::close(); ?>
 
-<?php echo form::open('user/action'); ?>
+<?php echo form::open('admin/user/action'); ?>
 
 <table cellspacing="0" cellpadding="5" class="table">
 	<thead align="left" valign="middle">

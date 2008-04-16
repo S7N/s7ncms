@@ -16,14 +16,14 @@ class Auth_Controller extends Controller {
 	
 	function index()
 	{
-		url::redirect('auth/login');
+		url::redirect('admin/auth/login');
 	}
 
 	public function login()
 	{
 		if ($this->auth->logged_in())
 		{
-			$form = new Forge('auth/logout', 'Log Out');
+			$form = new Forge('admin/auth/logout', 'Log Out');
 
 			$form->submit('Logout Now');
 		}
@@ -66,7 +66,7 @@ class Auth_Controller extends Controller {
 		$this->auth->logout(TRUE);
 
 		// Redirect back to the login page
-		url::redirect('auth/login');
+		url::redirect('admin/auth/login');
 	}
 
 }

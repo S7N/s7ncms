@@ -13,17 +13,17 @@
 	<div id="header">
 		S7Nadmin
 		<div class="info">
-			<?php echo html::anchor('auth/logout', 'Logout'); ?>
+			<?php echo html::anchor('admin/auth/logout', 'Logout'); ?>
 		</div>
 	</div>
 
 	<div id="navigation">
 		<ul>
-			<li><?php echo html::anchor('dashboard', 'Dashboard'); ?></li>
-			<li><?php echo html::anchor('settings', 'Settings'); ?></li>
-			<li><?php echo html::anchor('user', 'Users'); ?></li>
-			<li><?php echo html::anchor('page', 'Pages'); ?></li>
-			<li><?php echo html::anchor('modules', 'Modules'); ?></li>
+			<li><?php echo html::anchor('admin/dashboard', 'Dashboard'); ?></li>
+			<li><?php echo html::anchor('admin/settings', 'Settings'); ?></li>
+			<li><?php echo html::anchor('admin/user', 'Users'); ?></li>
+			<li><?php echo html::anchor('admin/page', 'Pages'); ?></li>
+			<li><?php echo html::anchor('admin/modules', 'Modules'); ?></li>
 		</ul>
 	</div>
 

@@ -1,14 +1,14 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Page_Controller extends Admin_Controller {
+class Page_Controller extends Administration_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
 		$this->template->tasks = array(
-			array('page/newpage', 'New Page'),
-			array('page/settings', 'Edit Settings')
+			array('admin/page/newpage', 'New Page'),
+			array('admin/page/settings', 'Edit Settings')
 		);
 	}
 
@@ -43,7 +43,7 @@ class Page_Controller extends Admin_Controller {
 
 			$this->session->set_flash('info_message', 'Page edited successfully');
 
-			url::redirect('page');
+			url::redirect('admin/page');
 		}
 		else
 		{
@@ -77,7 +77,7 @@ class Page_Controller extends Admin_Controller {
 			$page->save();
 
 			$this->session->set_flash('info_message', 'Page created successfully');
-			url::redirect('page');
+			url::redirect('admin/page');
 		}
 		else
 		{
@@ -91,7 +91,7 @@ class Page_Controller extends Admin_Controller {
 	{
 		ORM::factory('page')->find_by_id((int) $this->uri->segment(3))->delete();
 		$this->session->set_flash('info_message', 'Page deleted successfully');
-		url::redirect('page');
+		url::redirect('admin/page');
 	}
 
 	public function settings()
@@ -101,7 +101,7 @@ class Page_Controller extends Admin_Controller {
 			if(Settings::save('page.views', $this->input->post('form_views')))
 			{
 				$this->session->set_flash('info_message', 'Page Settings edited successfully');
-				url::redirect('page/settings');
+				url::redirect('admin/page/settings');
 			}
 		}
 
@@ -120,7 +120,7 @@ class Page_Controller extends Admin_Controller {
 		$entries = array();
 		foreach ($x as $entry)
 		{
-			$entries[] = array('page/edit/'.$entry->id, $entry->title);
+			$entries[] = array('admin/page/edit/'.$entry->id, $entry->title);
 		}
 		$view->entries = $entries;
 

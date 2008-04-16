@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class User_Controller extends Admin_Controller {
+class User_Controller extends Administration_Controller {
 	protected $user;
 	
 	public function index()
@@ -50,7 +50,7 @@ class User_Controller extends Admin_Controller {
             
             $this->session->set_flash('flash_msg', 'User edited successfully');
 
-            url::redirect('user');
+            url::redirect('admin/user');
     	}
 		else
 		{
@@ -87,7 +87,7 @@ class User_Controller extends Admin_Controller {
 				$this->session->set_flash('flash_msg', 'User created successfully');
 			}
             
-		    url::redirect('user');
+		    url::redirect('admin/user');
     	}
 		else
 		{
@@ -112,12 +112,7 @@ class User_Controller extends Admin_Controller {
     	
     	$this->session->set_flash('flash_msg', 'User created successfully');
 
-    	url::redirect('user');
+    	url::redirect('admin/user');
     }
-	
-	public function roles()
-	{
-	    //$roles = new Role_Model();
-        //echo Kohana::debug($roles->find_all());
-	}
+
 }
