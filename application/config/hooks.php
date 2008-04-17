@@ -6,4 +6,4 @@
  * all hooks. By using an array of hook filenames, you can control
  * which hooks are enabled. Setting this option to FALSE disables hooks.
  */
-$config['enable'] = array('routes', 'config', 'modules');
+$config['enable'] = array('routes', 'cache', 'config', 'modules');

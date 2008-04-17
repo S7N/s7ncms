@@ -1,42 +1,42 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Newroute {
+class hook_routes {
 
-    public function __construct()
+	public function __construct()
 	{
-        Event::add_before('system.routing', array('Router', 'setup'), array($this, 'new_route'));
-    }
+		Event::add_before('system.routing', array('Router', 'setup'), array($this, 'new_route'));
+	}
 
-    public function new_route()
+	public function new_route()
 	{
-        if(empty(Router::$current_uri))
-    		return TRUE;
+		if(empty(Router::$current_uri))
+			return TRUE;
 
-    	$segments = explode('/', Router::$current_uri);
+		$segments = explode('/', Router::$current_uri);
 
-    	/**
-    	 * Don't rewrite the route if we have other than one segments
-    	 */
-    	if (count($segments) != 1)
-    		return TRUE;
-		
-    	/**
-    	 * Don't rewrite the route if the first segment is 'admin'
-    	 */
-    	if ($segments[0] === 'admin')
-    		return TRUE;
+		/**
+		 * Don't rewrite the route if we have other than one segments
+		 */
+		if (count($segments) != 1)
+			return TRUE;
 
-    	$query = Database::instance()->select('id')->limit(1)->getwhere('pages', array('uri =' => $segments[0]));
+		/**
+		 * Don't rewrite the route if the first segment is 'admin'
+		 */
+		if ($segments[0] === 'admin')
+			return TRUE;
 
-    	/**
-    	 * how many pages were found?
-    	 */
-    	if (count($query) != 1)
-    		return true;
+		$query = Database::instance()->select('id')->limit(1)->getwhere('pages', array('uri =' => $segments[0]));
 
-    	Router::$current_uri = '/page/'.$segments[0];
-    }
+		/**
+		 * how many pages were found?
+		 */
+		if (count($query) != 1)
+			return true;
+
+		Router::$current_uri = 'page/'.$segments[0];
+	}
 
 }
 
-new Newroute();
+new hook_routes;
