@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module version="1.0">
+	<name>Modulename</name>
+	<uri>module</uri>
+	<description>This Module is great.</description>
+	<tables>
+		<name>module</name>
+		<name>comments</name>
+		<name>files</name>
+	</tables>
+	<author>Average Joe</author>
+	<email>joe@example.com</email>
+	<homepage>http://joe.example.com</homepage>
+	<version>1.0</version>
+</module>
