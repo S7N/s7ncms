@@ -42,6 +42,7 @@ class Menu_Model extends Model {
 					'level' => $entry->level,
 					'left' => $entry->l,
 					'right' => $entry->r,
+					'is_active' => FALSE
 				);
 			}
 		}

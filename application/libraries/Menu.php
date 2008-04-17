@@ -25,6 +25,16 @@ class Menu_Core {
 		if (strpos($current_url, 'page/') === 0)
 			$current_url = substr($current_url, 5);
 
+		// search for aktive menu item
+		for($i = count($this->menu_as_array)-1; $i >= 0; $i--)
+		{
+			if (strpos($current_url, $this->menu_as_array[$i]['uri']) === 0)
+			{
+				$this->menu_as_array[$i]['is_active'] = TRUE;
+				break;
+			}
+		}
+
 		$html = '<ul>'."\n";
 		$current_level = 1;
 
@@ -32,32 +42,32 @@ class Menu_Core {
 		{
 			$has_children = (bool) ( ($item['right'] - $item['left'] - 1) > 0 );
 			$id = 'item'.$item['id'];
-			$class = (strpos($current_url, $item['uri']) === 0) ? 'active' : '';
-				
-			$value = html::anchor($item['uri'], $item['title']);
+			$class = $item['is_active'] === TRUE ? 'active' : '';
+			
+			$value = html::anchor($item['uri'], $item['title'], array('class' => $class));
 				
 			if ($has_children === TRUE)
 			{
 				if ($current_level > $item['level'])
 				{
 					$html .= str_repeat("</ul></li>\n",($current_level - $item['level']));
-					$html .= '<li class="'.$class.'" id="'.$id.'">'.$value."\n";
+					$html .= '<li id="'.$id.'">'.$value."\n";
 					$html .= '<ul>'."\n";
 				}
 				else
 				{
-					$html .= '<li class="'.$class.'" id="'.$id.'">'.$value."\n";
+					$html .= '<li id="'.$id.'">'.$value."\n";
 					$html .= '<ul>'."\n";
 				}
 			}
 			elseif ($current_level > $item['level'])
 			{
 				$html .= str_repeat("</ul></li>\n",($current_level - $item['level']));
-				$html .= '<li class="'.$class.'" id="'.$id.'">'.$value.'</li>'."\n";
+				$html .= '<li id="'.$id.'">'.$value.'</li>'."\n";
 			}
 			else
 			{
-				$html .= '<li class="'.$class.'" id="'.$id.'">'.$value.'</li>'."\n";
+				$html .= '<li id="'.$id.'">'.$value.'</li>'."\n";
 			}
 
 			$current_level = $item['level'];

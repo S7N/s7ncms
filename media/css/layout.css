@@ -76,11 +76,6 @@ a:hover {
 	padding: 0px;
 }
 
-#menu li.active a {
-	background-color: #FFFFFF;
-	color: #000000;
-}
-
 #menu a {
 	display: block;
 	width: 190px;
@@ -94,6 +89,11 @@ a:hover {
 }
 
 #menu a:hover {
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+#menu a.active {
 	background-color: #FFFFFF;
 	color: #000000;
 }
