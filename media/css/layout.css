@@ -76,7 +76,9 @@ a:hover {
 	padding: 0px;
 }
 
-#menu li {
+#menu li.active a {
+	background-color: #FFFFFF;
+	color: #000000;
 }
 
 #menu a {

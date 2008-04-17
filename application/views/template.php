@@ -18,13 +18,7 @@
     <div id="content">
         <div id="left">
             <div id="menu">
-                <ul>
-                    <li><?php echo html::anchor('home', 'Home') ?></li>
-                    <li><?php echo html::anchor('products', 'Products') ?></li>
-                    <li><?php echo html::anchor('blog', 'Blog') ?></li>
-                    <li><?php echo html::anchor('about-me', 'About Me') ?></li>
-                    <li><?php echo html::anchor('contact-me', 'Contact Me') ?></li>
-                </ul>
+                <?php echo new Menu; ?>
             </div>
 
             <div class="left_column">

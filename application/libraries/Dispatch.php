@@ -1,4 +1,4 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
 /**
  *  http://code.google.com/p/kohana-mptt/source/browse/trunk/Dispatch.php
  *  r28

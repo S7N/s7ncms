@@ -83,3 +83,23 @@ CREATE TABLE `users_roles` (
   `role_id` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`user_id`,`role_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+# Dump of table menu
+# ------------------------------------------------------------
+
+CREATE TABLE `menu` (
+  `id` int(11) NOT NULL auto_increment,
+  `l` int(11) default NULL,
+  `r` int(11) default NULL,
+  `title` varchar(200) default NULL,
+  `uri` varchar(200) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('1','1','12','ROOT',NULL);
+INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('2','2','3','Home','home');
+INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('3','4','5','Products','products');
+INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('4','6','7','Blog','blog');
+INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('5','8','9','About Me','about-me');
+INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('6','10','11','Contact Me','contact-me');
