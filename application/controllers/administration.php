@@ -9,9 +9,9 @@ class Administration_Controller extends Template_Controller {
 	{
 		parent::__construct();
 		
-		(IN_PRODUCTION === FALSE) AND new Profiler;
+		(IN_PRODUCTION === FALSE) AND $this->profiler = new Profiler;
 		
-		$this->session = new Session;
+		$this->session = Session::instance();
 
 		// check if user is logged in or not. also check if he has admin role
 		if ( ! Auth::factory()->logged_in('admin'))
