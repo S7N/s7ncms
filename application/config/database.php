@@ -12,7 +12,11 @@
  * Group Options:
  *  benchmark     - Enable or disable database benchmarking
  *  persistent    - Enable or disable a persistent connection
- *  connection    - DSN identifier: driver://user:password@server/database
+ *  connection    - Array of connection specific parameters; alternatively,
+ *                  you can use a DSN though it is not as fast and certain
+ *                  characters could create problems (like an '@' character
+ *                  in a password):
+ *                  'connection'    => 'mysql://dbuser:secret@localhost/kohana'
  *  character_set - Database character set
  *  table_prefix  - Database table prefix
  *  object        - Enable or disable object results
@@ -21,12 +25,21 @@
  */
 $config['default'] = array
 (
-	'benchmark'     => TRUE, 
+	'benchmark'     => TRUE,
 	'persistent'    => FALSE,
-	'connection'    => 'mysql://edy:edy@localhost/s7ncms',
+	'connection'    => array
+	(
+		'type'     => 'mysqli',
+		'user'     => 'edy',
+		'pass'     => 'edy',
+		'host'     => 'localhost',
+		'port'     => FALSE,
+		'socket'   => FALSE,
+		'database' => 's7ncms'
+	),
 	'character_set' => 'utf8',
 	'table_prefix'  => '',
 	'object'        => TRUE,
-	'cache'         => TRUE,
+	'cache'         => FALSE,
 	'escape'        => TRUE
 );

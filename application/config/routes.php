@@ -2,17 +2,11 @@
 /**
  * @package  Core
  *
- * Permitted URI characters. Note that "?", "#", and "=" are URL characters, and
- * should not be added here.
+ * Default route to use when no URI segments are available.
  */
-$config['_allowed'] = '-a-z 0-9~%.,:+_/';
+$config['_default'] = 'defaultpage';
 
 /**
  * Default route to use for administration
  */
 $config['admin'] = 'admin/dashboard';
-
-/**
- * Default route to use when no URI segments are available.
- */
-$config['_default'] = 'defaultpage';
