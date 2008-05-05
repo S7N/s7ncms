@@ -12,4 +12,12 @@
 	<email>joe@example.com</email>
 	<homepage>http://joe.example.com</homepage>
 	<version>1.0</version>
+	<config>
+		<key>some_key</key>
+		<value>some_value</value>
+	</config>
+	<config>
+		<key>some_other_key</key>
+		<value>some_other_value</value>
+	</config>
 </module>

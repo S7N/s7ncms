@@ -17,9 +17,9 @@
 			<td><?php echo $module['xml']->description ?></td>
 			<td>
 			<?php if($module['db']->status === 'on'): ?>
-			<?php echo html::anchor('admin/modules/status/'.$module['db']->name.'/off', 'deactivate'); ?>
+			<?php echo html::anchor('admin/modules/status/'.$module['db']->name.'/off', 'disable'); ?>
 			<?php else: ?>
-			<?php echo html::anchor('admin/modules/status/'.$module['db']->name.'/on', 'activate'); ?>
+			<?php echo html::anchor('admin/modules/status/'.$module['db']->name.'/on', 'enable'); ?>
 			<?php endif; ?>
 			</td>
 			<td class="delete"><?php echo html::anchor('admin/modules/uninstall/'.$module['db']->name, html::image(

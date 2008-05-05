@@ -149,3 +149,81 @@ a:hover {
 	padding: 0;
 	font-size: 10pt;
 }
+
+/* comments form */
+#comments-container ul, 
+#comments-container ol, 
+#comments-container dl {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#comments-container ul.inline li {
+	display: inline;
+}
+
+
+#comments-container form {
+	margin: 0;
+	padding: 0;
+}
+
+#comments-container input,
+#comments-container select,
+#comments-container textarea {
+	font: 10pt "Verdana", "Arial", "Helvetica", sans-serif;
+	color: #000;
+}
+
+
+#comments-container fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+	width: 450px;
+}
+
+#comments-container fieldset legend,
+#comments-container fieldset label.hidden {
+	display: none;
+}
+
+#comments-container fieldset ol {
+	margin-bottom: 0;
+}
+
+#comments-container fieldset ol li {
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+
+#comments-container fieldset ol li label {
+	float: left;
+	width: 100px;
+}
+
+#comments-container fieldset ol li input,
+#comments-container fieldset ol li select,
+#comments-container fieldset ol li textarea {
+	width: 327px;
+	margin: 0;
+	padding: 3px;
+	border-width: 1px;
+	border-style: solid;
+}
+
+#comments-container {
+	float: left;
+	padding-top: 10px;
+}
+
+#comments-container fieldset ol li textarea {
+	width: 427px;
+	height: 100px;
+}
+
+#comments-container span.error {
+	color: red;
+	margin-left: 100px;
+}

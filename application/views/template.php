@@ -8,6 +8,7 @@
 
     <title>My Website</title>
     <?php echo html::stylesheet('media/css/layout') ?>
+    <?php echo $meta ?>
 </head>
 
 <body>

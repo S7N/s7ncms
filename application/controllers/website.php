@@ -17,6 +17,8 @@ class Website_Controller extends Template_Controller {
 			Event::add('system.display', array($this, 'save_cache'));
 		}
 		
+		$this->session = Session::instance();
+		$this->template->meta = '';
 	}
 	
 	public function save_cache()

@@ -73,6 +73,24 @@ class Modules_Controller extends Administration_Controller {
 	    		}
 	    	}
 	    	
+	    	if(isset($xml->config))
+	    	{
+		    	foreach($xml->config as $item)
+		    	{
+		    		$key = trim((string) $item->key);
+		    		$value = trim((string) $item->value);
+		    		
+		    		if(!empty($key))
+		    		{
+			    		$this->db->insert('config', array(
+			    			'context' => $module,
+			    			'key' => $key,
+			    			'value' => $value
+			    		));
+		    		}
+		    	}
+	    	}
+	    	
 	    	$this->session->set_flash('info_message', 'Module installed successfully.');
 	    	url::redirect('admin/modules/install');
     	}
@@ -99,6 +117,24 @@ class Modules_Controller extends Administration_Controller {
     	
     	// delete entry in modules table
     	$this->db->delete('modules', array('name' => $module));
+    	
+    	if(isset($xml->config))
+    	{
+	    	foreach($xml->config as $item)
+	    	{
+	    		$key = trim((string) $item->key);
+	    		$value = trim((string) $item->value);
+	    		
+	    		if(!empty($key))
+	    		{
+		    		$this->db->insert('config', array(
+		    			'context' => $module,
+		    			'key' => $key,
+		    			'value' => $value
+		    		));
+	    		}
+	    	}
+    	}
     	
     	$this->session->set_flash('info_message', 'Module uninstalled successfully.');
     	

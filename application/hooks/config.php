@@ -9,14 +9,14 @@ class hook_config {
 
 	public function new_config()
 	{
-		$query = Database::instance()->select('key, value')
+		$query = Database::instance()->select('context, key, value')
 			->from('config')
 			->get();
 
 		$result = $query->result();
 
 		foreach ($result as $item)
-		Config::set('s7n.'.$item->key, $item->value);
+		Config::set($item->context.'.'.$item->key, $item->value);
 	}
 
 }

@@ -12,6 +12,11 @@ class Menu_Core {
 
 	public function __toString()
 	{
+		return $this->render();
+	}
+	
+	public function render($id = NULL, $include_anchors = TRUE)
+	{
 		empty($this->menu_as_array)
 			AND $this->menu_as_array = $this->menu->as_array();
 
@@ -35,16 +40,26 @@ class Menu_Core {
 			}
 		}
 
-		$html = '<ul>'."\n";
+		$id = ($id === NULL) ? '' : ' id="'.$id.'"';
+		$html = '<ul'.$id.'>'."\n";
 		$current_level = 1;
 
 		foreach ($this->menu_as_array as $item)
 		{
 			$has_children = (bool) ( ($item['right'] - $item['left'] - 1) > 0 );
+			
 			$id = 'item'.$item['id'];
 			$class = $item['is_active'] === TRUE ? 'active' : '';
 			
-			$value = html::anchor($item['uri'], $item['title'], array('class' => $class));
+			if ($include_anchors === TRUE)
+			{
+				$value = html::anchor($item['uri'], $item['title'], array('class' => $class));
+			}
+			else
+			{
+				//$value = '<span class="test">'.$item['title'].'</span>';
+				$value = $item['title'].' <span class="delete_node">(del)</span>';
+			}
 				
 			if ($has_children === TRUE)
 			{
