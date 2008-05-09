@@ -10,10 +10,13 @@ class Page_Controller extends Administration_Controller {
 			array('admin/page/newpage', 'New Page'),
 			array('admin/page/settings', 'Edit Settings')
 		);
+		
+		$this->head['title']->append('Pages');
 	}
 
 	public function index()
 	{
+		$this->head['title']->append('All Pages');
 		$this->template->title = 'Pages | All Pages';
 		$this->template->content = new View('page/index');
 		$this->template->content->pages = ORM::factory('page')->find_all();
@@ -25,7 +28,7 @@ class Page_Controller extends Administration_Controller {
 		{
 			$page = ORM::factory('page')->find_by_id((int) $this->input->post('form_id'));
 
-			$page->title = htmlspecialchars($this->input->post('form_title'));
+			$page->title = html::specialchars($this->input->post('form_title'));
 
 			if(strstr(config::item('s7n.page_views'), $this->input->post('form_view')) !== false)
 			{
@@ -37,7 +40,7 @@ class Page_Controller extends Administration_Controller {
 			$page->uri = url::title($this->input->post('form_title'));
 
 			$page->modified = date("Y-m-d H:i:s");
-			$page->keywords = htmlspecialchars($this->input->post('form_keywords'));
+			$page->keywords = html::specialchars($this->input->post('form_keywords'));
 
 			$page->save();
 
@@ -47,10 +50,11 @@ class Page_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->template->meta .= html::script('vendor/tiny_mce/tiny_mce.js');
+			$this->head['javascript']->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->template->content = new View('page/edit');
-			$this->template->content->page = ORM::factory('page')->find_by_id((int)$this->uri->segment(3));
-			$this->template->title = 'Pages | Edit: '. $this->template->content->page->title ;
+			$this->template->content->page = ORM::factory('page')->find_by_id((int)$this->uri->segment(4));
+			$this->template->title = 'Pages | Edit: '. $this->template->content->page->title;
+			$this->head['title']->append('Edit: '. $this->template->content->page->title);
 		}
 	}
 
@@ -61,7 +65,7 @@ class Page_Controller extends Administration_Controller {
 			$page = new Page_Model;
 			$page->user_id = $_SESSION['auth_user']->id;
 
-			$page->title = htmlspecialchars($this->input->post('form_title'));
+			$page->title = html::specialchars($this->input->post('form_title'));
 			$page->uri = url::title($this->input->post('form_title'));
 
 			$page->view = 'default';
@@ -72,7 +76,7 @@ class Page_Controller extends Administration_Controller {
 			$page->date = date("Y-m-d H:i:s");
 			$page->modified = date("Y-m-d H:i:s");
 
-			$page->keywords = htmlspecialchars($this->input->post('form_keywords'));
+			$page->keywords = html::specialchars($this->input->post('form_keywords'));
 
 			$page->save();
 
@@ -81,7 +85,9 @@ class Page_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->template->meta .= html::script('vendor/tiny_mce/tiny_mce.js');
+			$this->head['javascript']->append_file('vendor/tiny_mce/tiny_mce.js');
+			$this->head['title']->append('New Page');
+			
 			$this->template->title = 'Pages | New Page';
 			$this->template->content = new View('page/newpage');
 		}
@@ -104,7 +110,9 @@ class Page_Controller extends Administration_Controller {
 				url::redirect('admin/page/settings');
 			}
 		}
-
+		
+		$this->head['title']->append('Settings');
+		
 		$this->template->title = 'Pages | Settings';
 		$this->template->content = new View('page/settings');
 		$this->template->content->views = Config::item('s7n.page_views');			

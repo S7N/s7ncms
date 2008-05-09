@@ -3,10 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>S7Nadmin - <?php echo $title; ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<?php echo html::stylesheet('media/admin/css/layout', 'screen') ?>
-    <?php echo $meta ?>
+	<?php echo $head ?>
 </head>
 
 <body>

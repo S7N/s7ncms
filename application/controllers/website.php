@@ -3,6 +3,7 @@
 class Website_Controller extends Template_Controller {
 	
 	public $cache_enabled = TRUE;
+	public $profiler = FALSE;
 	
 	public function __construct()
 	{
@@ -10,7 +11,7 @@ class Website_Controller extends Template_Controller {
 		
 		if (IN_PRODUCTION === FALSE)
 		{
-			new Profiler;
+			$this->profiler = new Profiler;
 		}
 		else
 		{
@@ -18,7 +19,11 @@ class Website_Controller extends Template_Controller {
 		}
 		
 		$this->session = Session::instance();
-		$this->template->meta = '';
+		$this->head = new Head;
+		$this->head['css']->append_file('media/css/layout');
+		$this->head['title']->set(config::item('s7n.site_title'));
+		
+		$this->template->head = $this->head;
 	}
 	
 	public function save_cache()

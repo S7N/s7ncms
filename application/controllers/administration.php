@@ -19,25 +19,30 @@ class Administration_Controller extends Template_Controller {
         	$this->session->set('redirect_me_to', url::current());
         	url::redirect('admin/auth/login');
         }
+		$this->head = new Head;
 		
 		// Javascripts
-		$this->template->meta .= html::script('media/js/jquery.js');
-		$this->template->meta .= html::script('media/admin/js/ui.tabs.js');
-		$this->template->meta .= html::script('media/admin/js/stuff.js');
+		$this->head['javascript']->append_file('media/js/jquery.js');
+		$this->head['javascript']->append_file('media/admin/js/ui.tabs.js');
+		$this->head['javascript']->append_file('media/admin/js/stuff.js');
 		
 		// Stylesheets
-		$this->template->meta .= html::stylesheet('media/admin/css/ui.tabs.css', 'screen');
-			
+		$this->head['css']->append_file('media/admin/css/layout');
+		$this->head['css']->append_file('media/admin/css/ui.tabs');
+		
+		$this->head['title']->set('S7Nadmin');
+		
 		$this->template->tasks = array();
 		
         $this->template->title = '';
         $this->template->message = $this->session->get('info_message', NULL);
 		$this->template->error = $this->session->get('error_message', NULL);
 		$this->template->content = '';
+		$this->template->head = $this->head;
 	}
 	
 	public function recent_entries($number = 10) {
-		return NULL;
+		return '';
 	}
 
 }

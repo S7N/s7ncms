@@ -9,6 +9,8 @@ class Modules_Controller extends Administration_Controller {
 		$this->template->tasks = array(
 			array('admin/modules/install', 'Install New Modules')
 		);
+		
+		$this->head['title']->append('Modules');
 	}
 	public function index()
 	{
@@ -95,6 +97,7 @@ class Modules_Controller extends Administration_Controller {
 	    	url::redirect('admin/modules/install');
     	}
     	
+    	$this->head['title']->append('Install');
     	$this->template->title = 'Modules | Install';
     	
     	$modules = new Modules_Model;
@@ -111,6 +114,7 @@ class Modules_Controller extends Administration_Controller {
     	foreach($xml->tables->name as $table)
     		$sql .= ' '. Config::item('database.table_prefix') . (string) $table . ',';
 
+    	// Remove last comma
     	$sql = substr($sql, 0, -1);
     	
     	$this->db->query($sql);

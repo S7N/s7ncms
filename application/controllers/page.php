@@ -13,6 +13,7 @@ class Page_Controller extends Website_Controller {
 
 		$this->template->content = new View('page/'.$view);
 		$this->template->content->page = $page;
+		$this->head['title']->append($page->title);
 	}
 
 }

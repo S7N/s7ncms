@@ -34,11 +34,11 @@ class User_Controller extends Administration_Controller {
                 $user->remove_role($role);
             }
             
-            $user->username = htmlspecialchars($this->input->post('username'));
-            $user->email = htmlspecialchars($this->input->post('email'));
-            $user->homepage = htmlspecialchars($this->input->post('homepage'));
-            $user->first_name = htmlspecialchars($this->input->post('first_name'));
-            $user->last_name = htmlspecialchars($this->input->post('last_name'));
+            $user->username = html::specialchars($this->input->post('username'));
+            $user->email = html::specialchars($this->input->post('email'));
+            $user->homepage = html::specialchars($this->input->post('homepage'));
+            $user->first_name = html::specialchars($this->input->post('first_name'));
+            $user->last_name = html::specialchars($this->input->post('last_name'));
             
             $password = trim($this->input->post('password'));
             if(!empty($password))
@@ -75,11 +75,11 @@ class User_Controller extends Administration_Controller {
     		$user = new User_Model();
     		$auth = new Auth();
     		
-    		$user->username = htmlspecialchars($this->input->post('username'));
-            $user->email = htmlspecialchars($this->input->post('email'));
-            $user->homepage = htmlspecialchars($this->input->post('homepage'));
-            $user->first_name = htmlspecialchars($this->input->post('first_name'));
-            $user->last_name = htmlspecialchars($this->input->post('last_name'));
+    		$user->username = html::specialchars($this->input->post('username'));
+            $user->email = html::specialchars($this->input->post('email'));
+            $user->homepage = html::specialchars($this->input->post('homepage'));
+            $user->first_name = html::specialchars($this->input->post('first_name'));
+            $user->last_name = html::specialchars($this->input->post('last_name'));
             $user->password = $this->input->post('password');
             
     		if ($user->save() AND $user->add_role('login'))

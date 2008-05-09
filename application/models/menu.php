@@ -9,7 +9,7 @@ class Menu_Model extends Model {
 		if ( ! empty($this->tree))
 			return $this->tree;
 
-		$table_prefix = Config::item('database.table_prefix');
+		$table_prefix = Config::item('database.default.table_prefix');
 
 		$result = $this->db->query("
 			SELECT

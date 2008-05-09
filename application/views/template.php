@@ -6,9 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <title>My Website</title>
-    <?php echo html::stylesheet('media/css/layout') ?>
-    <?php echo $meta ?>
+    <?php echo $head ?>
 </head>
 
 <body>
