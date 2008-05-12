@@ -1,7 +1,8 @@
 <script language="javascript" type="text/javascript">
 tinyMCE.init({
 	mode : "textareas",
-	width: "500px"
+	width: "500px",
+	theme: 'advanced'
 });
 </script>
 <?php echo form::open('admin/blog/edit', array(), array('form_id' => $post->id)); ?>

@@ -1,7 +1,8 @@
 <script language="javascript" type="text/javascript">
 tinyMCE.init({
 	mode : "textareas",
-	width: "500px"
+	width: "500px",
+	theme: 'advanced'
 });
 
 </script>
