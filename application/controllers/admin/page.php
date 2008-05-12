@@ -95,7 +95,7 @@ class Page_Controller extends Administration_Controller {
 
 	public function delete()
 	{
-		ORM::factory('page')->find_by_id((int) $this->uri->segment(3))->delete();
+		ORM::factory('page')->find_by_id((int) $this->uri->segment(4))->delete();
 		$this->session->set_flash('info_message', 'Page deleted successfully');
 		url::redirect('admin/page');
 	}
