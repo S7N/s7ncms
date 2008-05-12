@@ -6,7 +6,6 @@
       <title><?php echo config::item('s7n.site_title') ?></title>
       <link><?php echo url::site('blog', 'http') ?></link>
       <description></description>
-      <language><?php echo config::item('locale.language') ?></language>
       <generator>S7Ncms - http://www.s7n.de/</generator>
 	  <?php foreach($posts as $item):?>
       <item>

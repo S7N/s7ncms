@@ -115,5 +115,20 @@ class Blog_Controller extends Website_Controller {
 		header('Content-Type: text/xml; charset=UTF-8', TRUE);
 		echo $view;
 	}
+	
+	public function commentfeed()
+	{
+		$this->auto_render = FALSE;
+		if($this->profiler)
+		{
+			$this->profiler->disable();
+		}
+			
+		$view = new View('blog/commentfeed');
+		$view->comments = ORM::factory('comment')->orderby('id', 'desc')->find_all(20);
+		
+		header('Content-Type: text/xml; charset=UTF-8', TRUE);
+		echo $view;
+	}
 
 }
