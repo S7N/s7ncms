@@ -9,8 +9,6 @@ class Administration_Controller extends Template_Controller {
 	{
 		parent::__construct();
 		
-		(IN_PRODUCTION === FALSE) AND $this->profiler = new Profiler;
-		
 		$this->session = Session::instance();
 
 		// check if user is logged in or not. also check if he has admin role
@@ -19,7 +17,7 @@ class Administration_Controller extends Template_Controller {
         	$this->session->set('redirect_me_to', url::current());
         	url::redirect('admin/auth/login');
         }
-		$this->head = new Head;
+		$this->head = Head::instance();
 		
 		// Javascripts
 		$this->head['javascript']->append_file('media/js/jquery.js');

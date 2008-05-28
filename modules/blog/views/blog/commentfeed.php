@@ -9,6 +9,7 @@
       <generator>S7Ncms - http://www.s7n.de/</generator>
 	  <?php foreach($comments as $item):?>
 	  <?php $blogpost = ORM::factory('blogpost')->find_by_id((int) $item->blogpost_id) ?>
+	  <!-- ?php $blogpost = $item->blogpost; //ORM::factory('blogpost')->find_by_id((int) $item->blogpost_id) ?-->
       <item>
          <title>
          	<?php echo $item->author ?>

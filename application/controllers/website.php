@@ -9,17 +9,13 @@ class Website_Controller extends Template_Controller {
 	{
 		parent::__construct();
 		
-		if (IN_PRODUCTION === FALSE)
-		{
-			$this->profiler = new Profiler;
-		}
-		else
+		if (IN_PRODUCTION === TRUE)
 		{
 			Event::add('system.display', array($this, 'save_cache'));
 		}
 		
 		$this->session = Session::instance();
-		$this->head = new Head;
+		$this->head = Head::instance();
 		$this->head['css']->append_file('media/css/layout');
 		$this->head['title']->set(config::item('s7n.site_title'));
 		
