@@ -44,7 +44,7 @@
 			<p><?php echo $title ?></p>
 			<?php if ($searchbar): ?>
 			<?php echo form::open('', array('id' => 'searchbar', 'method' => 'get')) ?>
-			    Filter: <input name="q" id="s" value="<?php echo $searchvalue ?>" class="input-txt" type="text" />
+			    <input name="q" value="<?php echo $searchvalue ?>" type="search" placeholder="Filter by" autosave="s7n.search" />
 			<?php echo form::close() ?>
 			<?php endif ?>
 		</div>
