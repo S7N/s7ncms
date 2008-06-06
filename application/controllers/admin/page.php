@@ -16,10 +16,35 @@ class Page_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$this->head['title']->append('All Pages');
-		$this->template->title = 'Pages | All Pages';
 		$this->template->content = new View('page/index');
-		$this->template->content->pages = ORM::factory('page')->find_all();
+		
+		$this->template->searchbar = TRUE;
+		
+		$q = trim($this->input->get('q'));
+		
+		if ( ! empty($q))
+		{
+			$this->template->searchvalue = $q;
+			
+			$this->template->content->pages = ORM::factory('page')->orlike(
+				array(
+					'title' => '%'.$q.'%',
+					'excerpt' => '%'.$q.'%',
+					'content' => '%'.$q.'%',
+					'tags' => '%'.$q.'%'
+				)
+			)->find_all();
+			
+			$this->template->title = 'Pages | Filter: '.$q;
+			$this->head['title']->append('Filter: '.$q);
+		}
+		else
+		{
+			$this->template->title = 'Pages | All Pages';
+			$this->head['title']->append('All Pages');
+			$this->template->content->pages = ORM::factory('page')->find_all();
+		}
+		
 	}
 
 	public function edit()

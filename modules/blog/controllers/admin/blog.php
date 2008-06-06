@@ -17,11 +17,34 @@ class Blog_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$this->head['title']->append('All Posts');
-
-		$this->template->title .= 'All Posts';
 		$this->template->content = new View('blog/admin/index');
-		$this->template->content->posts = ORM::factory('blogpost')->orderby('id', 'desc')->find_all();
+		
+		$this->template->searchbar = TRUE;
+		
+		$q = trim($this->input->get('q'));
+		
+		if ( ! empty($q))
+		{
+			$this->template->searchvalue = $q;
+			
+			$this->template->content->posts = ORM::factory('blogpost')->orderby('id', 'desc')->orlike(
+				array(
+					'title' => '%'.$q.'%',
+					'excerpt' => '%'.$q.'%',
+					'content' => '%'.$q.'%',
+					'tags' => '%'.$q.'%'
+				)
+			)->find_all();
+			
+			$this->template->title .= 'Filter: '.$q;
+			$this->head['title']->append('Filter: '.$q);
+		}
+		else
+		{
+			$this->template->title .= 'All Posts';
+			$this->head['title']->append('All Posts');
+			$this->template->content->posts = ORM::factory('blogpost')->orderby('id', 'desc')->find_all();
+		}
 	}
 
 	public function newpost()

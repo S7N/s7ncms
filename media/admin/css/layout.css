@@ -127,6 +127,15 @@ img {
 	color: #FFFFFF;
 }
 
+#main #title #searchbar {
+	float: right;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	bottom: 32px;
+	right: 10px;
+}
+
 #main #content {
 	background-color: #ffffff;
 	padding: 0;

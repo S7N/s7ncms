@@ -42,6 +42,11 @@
 	<div id="main">
 		<div id="title">
 			<p><?php echo $title ?></p>
+			<?php if ($searchbar): ?>
+			<?php echo form::open('', array('id' => 'searchbar', 'method' => 'get')) ?>
+			    Filter: <input name="q" id="s" value="<?php echo $searchvalue ?>" class="input-txt" type="text" />
+			<?php echo form::close() ?>
+			<?php endif ?>
 		</div>
 		<div id="content">
 			<?php if( $message !== NULL ): ?>
