@@ -23,8 +23,8 @@
 			<?php endif; ?>
 			</td>
 			<td class="delete"><?php echo html::anchor('admin/modules/uninstall/'.$module['db']->name, html::image(
+				'media/admin/images/delete.png',
 				array(
-					'src' => 'media/admin/images/delete.png',
 					'alt' => 'Uninstall Module',
 					'title' => 'Uninstall Module'
 					)

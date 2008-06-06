@@ -1,4 +1,3 @@
-<h1>Settings</h1>
 <?php echo form::open('admin/settings/save'); ?>
 
 <p>Site Title:<br /><?php echo form::input('site_title', $site_title); ?></p>

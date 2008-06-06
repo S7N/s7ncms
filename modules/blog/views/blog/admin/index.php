@@ -26,8 +26,8 @@
 				<?php endif ?>
 			</td>
 			<td class="delete"><?php echo html::anchor('admin/blog/delete/'.$post->id, html::image(
+				'media/admin/images/delete.png',
 				array(
-					'src' => 'media/admin/images/delete.png',
 					'alt' => 'Delete Page',
 					'title' => 'Delete Page'
 					)

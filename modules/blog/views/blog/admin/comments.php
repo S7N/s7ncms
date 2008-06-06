@@ -15,8 +15,8 @@
 			<td><?php echo strftime('%e. %B %Y, %H:%M', strtotime($comment->date)) ?></td>
 			<td class="delete">(<?php echo html::anchor('admin/blog/comments/edit/'.$comment->id, 'edit') ?>)
 			<?php echo html::anchor('admin/blog/comments/delete/'.$comment->id, html::image(
+				'media/admin/images/delete.png',
 				array(
-					'src' => 'media/admin/images/delete.png',
 					'alt' => 'Delete Page',
 					'title' => 'Delete Page'
 					)

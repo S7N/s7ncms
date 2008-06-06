@@ -14,8 +14,8 @@
 			<td><?php echo $page->modified; ?></td>
 			<td><?php echo $page->user->username; ?></td>
 			<td class="delete"><?php echo html::anchor('admin/page/delete/'.$page->id, html::image(
+				'media/admin/images/delete.png',	
 				array(
-					'src' => 'media/admin/images/delete.png',
 					'alt' => 'Delete Page',
 					'title' => 'Delete Page'
 					)
