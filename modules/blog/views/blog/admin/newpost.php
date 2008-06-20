@@ -27,7 +27,7 @@ tinyMCE.init({
 	
 	<div id="tab_advanced">
 		<p>
-			Keywords (comma separated):<br />
+			Tags (comma separated):<br />
 		    <?php echo form::input('form_tags'); ?>
 		</p>
 	</div>

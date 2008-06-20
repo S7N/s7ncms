@@ -21,9 +21,7 @@
             </div>
 
             <div class="left_column">
-                <h1>Lorem Ipsum</h1>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore</p>
-                <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+            	<?php if (isset($tagcloud)) echo $tagcloud ?>
             </div>
         </div>
 

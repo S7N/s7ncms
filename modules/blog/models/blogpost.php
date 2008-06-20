@@ -54,4 +54,32 @@ class Blogpost_Model extends ORM {
 		return count(Database::instance()->select('id')->get('blogposts'));
 	}
 	
+	public function all_tags()
+	{
+		$tags = array();
+		$query = Database::instance()->select('tags')->get('blogposts');
+		
+		foreach ($query as $result)
+		{   
+            $exploded = explode(',', $result->tags);
+            
+            foreach($exploded as $tag) {
+                $tag = trim($tag);
+                
+                if(empty($tag)) {continue;}
+                
+                if(array_key_exists($tag,$tags))
+                {   
+	                $tags[$tag]++;
+	            }
+	            else
+	            {
+	                $tags[$tag] = 1;
+	            }
+            }
+        }
+        
+        return $tags;
+	}
+	
 }
