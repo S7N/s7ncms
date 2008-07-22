@@ -21,6 +21,7 @@ class Blog_Controller extends Website_Controller {
 		$this->blog = new Blogpost_Model;
 		$this->head->link->append_link('blog/feed');
 		$this->template->tagcloud = new Tagcloud($this->blog->all_tags());
+		new Profiler;
 	}
 
 	public function _remap($method, $arguments)
@@ -48,7 +49,7 @@ class Blog_Controller extends Website_Controller {
 		));
 		
 		$view = new View('blog/index');
-		$view->blogposts = $this->blog->orderby('id', 'desc')->limit((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset())->find_all();
+		$view->blogposts = $this->blog->orderby('id', 'desc')->find_all((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset);
 		
 		$this->template->content = $view;
 		$this->template->content->pagination = $this->pagination;
