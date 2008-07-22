@@ -138,7 +138,7 @@ class Blog_Controller extends Website_Controller {
 		}
 			
 		$view = new View('blog/feed');
-		$view->posts = $this->blog->limit(10)->orderby('id', 'desc')->find_all();
+		$view->posts = $this->blog->orderby('id', 'desc')->find_all(10);
 		
 		header('Content-Type: text/xml; charset=UTF-8', TRUE);
 		echo $view;
@@ -169,7 +169,7 @@ class Blog_Controller extends Website_Controller {
 		));
 		
 		$view = new View('blog/index');
-		$view->blogposts = $this->blog->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->limit((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset())->find_all();
+		$view->blogposts = $this->blog->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->find_all((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset);
 		
 		$this->template->content = $view;
 		$this->template->content->pagination = $this->pagination;

@@ -158,7 +158,7 @@ class Page_Controller extends Administration_Controller {
 	{
 		$this->auto_render = FALSE;
 
-		$x = ORM::factory('page')->limit((int) $number)->find_all();
+		$x = ORM::factory('page')->find_all((int) $number);
 		$view = new View('page/recent_entries');
 
 		$entries = array();
