@@ -21,7 +21,6 @@ class Blog_Controller extends Website_Controller {
 		$this->blog = new Blogpost_Model;
 		$this->head->link->append_link('blog/feed');
 		$this->template->tagcloud = new Tagcloud($this->blog->all_tags());
-		new Profiler;
 	}
 
 	public function _remap($method, $arguments)
