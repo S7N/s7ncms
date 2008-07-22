@@ -2,7 +2,9 @@
 tinyMCE.init({
 	mode : "textareas",
 	width: "500px",
-	theme: 'advanced'
+	theme: 'advanced',
+	
+	convert_urls : false
 });
 
 </script>

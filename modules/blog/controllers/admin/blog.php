@@ -125,9 +125,9 @@ class Blog_Controller extends Administration_Controller {
 
 	public function edit()
 	{
-		if($_SERVER["REQUEST_METHOD"] == 'POST')
+		if($_POST)
 		{
-			$post = ORM::factory('blogpost')->find_by_id((int) $this->input->post('form_id'));
+			$post = ORM::factory('blogpost', (int) $this->input->post('form_id'));
 
 			$post->title = html::specialchars($this->input->post('form_title'));
 			$post->uri = url::title($this->input->post('form_title'));
@@ -146,7 +146,7 @@ class Blog_Controller extends Administration_Controller {
 		else
 		{
 			$this->template->content = new View('blog/admin/edit');
-			$this->template->content->post = ORM::factory('blogpost')->find_by_id((int) $this->uri->segment(4));
+			$this->template->content->post = ORM::factory('blogpost', (int) $this->uri->segment(4));
 				
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: '. $this->template->content->post->title);
@@ -162,9 +162,9 @@ class Blog_Controller extends Administration_Controller {
 			$function_name = 'comments_'.$action;
 				
 			if(ctype_digit($id))
-			$this->$function_name($id);
+				$this->$function_name($id);
 			else
-			Event::run('system.404');
+				Event::run('system.404');
 		}
 		else
 		{
@@ -177,7 +177,7 @@ class Blog_Controller extends Administration_Controller {
 
 	private function comments_view($id)
 	{
-		$post = ORM::factory('blogpost')->find_by_id((int) $id);
+		$post = ORM::factory('blogpost', (int) $id);
 		$this->template->content = new View('blog/admin/comments');
 		$this->template->content->comments = $post->comments;
 
@@ -197,7 +197,7 @@ class Blog_Controller extends Administration_Controller {
 
 	private function comments_status($status, $id)
 	{
-		$post = ORM::factory('blogpost')->find_by_id((int) $id);
+		$post = ORM::factory('blogpost', (int) $id);
 
 		if ($post->id === 0)
 		{
@@ -217,7 +217,7 @@ class Blog_Controller extends Administration_Controller {
 	{
 		if($_SERVER["REQUEST_METHOD"] == 'POST')
 		{
-			$comment = ORM::factory('comment')->find_by_id((int) $id);
+			$comment = ORM::factory('comment', (int) $id);
 			$comment->author = $this->input->post('form_author');
 			$comment->email = $this->input->post('form_email');
 			$comment->url = $this->input->post('form_url');
@@ -231,7 +231,7 @@ class Blog_Controller extends Administration_Controller {
 		else
 		{
 			$this->template->content = new View('blog/admin/editcomment');
-			$this->template->content->comment = ORM::factory('comment')->find_by_id((int) $id);
+			$this->template->content->comment = ORM::factory('comment', (int) $id);
 				
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: Comment #'. $this->template->content->comment->id);
@@ -241,13 +241,13 @@ class Blog_Controller extends Administration_Controller {
 
 	private function comments_delete($id)
 	{
-		$comment = ORM::factory('comment')->find_by_id((int) $id);
+		$comment = ORM::factory('comment', (int) $id);
 		if ($comment->id > 0)
 		{
 			$blogpost_id = $comment->blogpost_id;
 			$comment->delete();
 				
-			$post = ORM::factory('blogpost')->find_by_id((int) $blogpost_id);
+			$post = ORM::factory('blogpost', (int) $blogpost_id);
 			$post->comment_count -= 1;
 			$post->save();
 				
@@ -263,7 +263,7 @@ class Blog_Controller extends Administration_Controller {
 
 	public function delete($id)
 	{
-		$post = ORM::factory('blogpost')->find_by_id((int) $id);
+		$post = ORM::factory('blogpost', (int) $id);
 		if ($post->id > 0)
 		{
 			$post->remove_comments();

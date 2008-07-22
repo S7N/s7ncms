@@ -2,7 +2,9 @@
 tinyMCE.init({
 	mode : "textareas",
 	width: "500px",
-	theme: 'advanced'
+	theme: 'advanced',
+	
+	convert_urls : false
 });
 </script>
 <?php echo form::open('admin/blog/edit', array(), array('form_id' => $post->id)); ?>

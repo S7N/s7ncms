@@ -18,9 +18,8 @@ class Blog_Controller extends Website_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->blog = new Blogpost_Model;
 		$this->head->link->append_link('blog/feed');
-		$this->template->tagcloud = new Tagcloud($this->blog->all_tags());
+		$this->template->tagcloud = new Tagcloud(ORM::factory('blogpost')->all_tags());
 	}
 
 	public function _remap($method, $arguments)
@@ -43,12 +42,12 @@ class Blog_Controller extends Website_Controller {
 		$this->pagination = new Pagination(array(
 			'uri_segment'    => 'page',
 			'items_per_page' => (int) Kohana::config('blog.items_per_page'),
-			'total_items'    => $this->blog->count_posts(),
+			'total_items'    => ORM::factory('blogpost')->count_posts(),
 			'style'          => 'digg'
 		));
 		
 		$view = new View('blog/index');
-		$view->blogposts = $this->blog->orderby('id', 'desc')->find_all((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset);
+		$view->blogposts = ORM::factory('blogpost')->orderby('id', 'desc')->find_all((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset);
 		
 		$this->template->content = $view;
 		$this->template->content->pagination = $this->pagination;
@@ -57,7 +56,7 @@ class Blog_Controller extends Website_Controller {
 	public function view($uri)
 	{
 		$view = new View('blog/view');
-		$view->blogpost = $this->blog->find((string) $uri);
+		$view->blogpost = ORM::factory('blogpost', (string) $uri);
 		
 		// Show 404 if we don't find blogposts
 		if ((int) $view->blogpost->id === 0)
@@ -66,10 +65,10 @@ class Blog_Controller extends Website_Controller {
 		$this->head->javascript->append_file('media/js/jquery.js');
 		$this->head->javascript->append_file('modules/blog/media/js/comments.js');
 		
-		$view->comments = $this->blog->comments;
+		$view->comments = $view->blogpost->comments;
 		$view->form = '';
 		
-		if ($this->blog->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
+		if ($view->blogpost->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
 		{
 			$form = new Forge();
 			$form->error_format('<span class="error">{message}</span><br />');
@@ -93,21 +92,7 @@ class Blog_Controller extends Website_Controller {
 				// our 'honeypot'
 				if($this->input->post('location') === 'none' OR $this->session->get('location') === 'none')
 				{
-					// TODO FIX THIS!
-					//$this->blog->add('comment', $comment->id);
-					//$this->blog->add_comment($comment);					
-					$comment->blogpost_id = $this->blog->id;
-					
-					
-					$this->blog->comment_count += 1;
-					
-					if(isset($_SESSION['auth_user']))
-					{
-						$comment->user_id = $_SESSION['auth_user']->id;
-					}
-					
-					$comment->save();
-					$this->blog->save();
+					$view->blogpost->add_comment($comment);
 					
 					$this->session->delete('location');
 				}
@@ -137,7 +122,7 @@ class Blog_Controller extends Website_Controller {
 		}
 			
 		$view = new View('blog/feed');
-		$view->posts = $this->blog->orderby('id', 'desc')->find_all(10);
+		$view->posts = ORM::factory('blogpost')->orderby('id', 'desc')->find_all(10);
 		
 		header('Content-Type: text/xml; charset=UTF-8', TRUE);
 		echo $view;
@@ -161,7 +146,7 @@ class Blog_Controller extends Website_Controller {
 	public function tag($tag)
 	{
 		$view = new View('blog/index');
-		$view->blogposts = $this->blog->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->find_all();
+		$view->blogposts = ORM::factory('blogpost')->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->find_all();
 		
 		$this->template->content = $view;
 	}

@@ -19,8 +19,11 @@ class Comment_Model extends ORM {
 		/*
 		 * We need to convert these keys with htmlspecialchars
 		 */
-		$keys = array('author', 'content', 'agent', 'url');		
-		in_array($key, $keys) AND $value = html::specialchars($value, TRUE);
+		$keys = array('author', 'content', 'agent', 'url');
+		if(in_array($key, $keys))
+		{
+			$value = html::specialchars($value, TRUE);
+		}
 		
 		parent::__set($key, $value);
 	}

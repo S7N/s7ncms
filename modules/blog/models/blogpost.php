@@ -21,7 +21,7 @@ class Blogpost_Model extends ORM {
 	 */
 	public function unique_key($id = NULL)
 	{
-		if(! ctype_digit($id))
+		if( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
 		{
 			return 'uri';
 		}
@@ -34,23 +34,20 @@ class Blogpost_Model extends ORM {
 	 */
 	public function add_comment($object)
 	{
-		$this->comment_count += 1;
-		//echo Kohana::debug($object->id); exit;
 		/*
 		 * set the user_id if the poster is logged in
 		 */
 		if(isset($_SESSION['auth_user']))
 		{
 			$object->user_id = $_SESSION['auth_user']->id;
-			$object->save();
 		}
 
-		// we have to call __call because add_ is a magic method
-		//parent::__call('add_comment', array($object));
-		$this->add('comment', $object->id);
+		$object->blogpost_id = $this->id;
+		$object->save();
 		
-		// save comment count update
+		$this->comment_count += 1;
 		$this->save();
+		
 	}
 	
 	public function count_posts()

@@ -8,12 +8,10 @@
       <description></description>
       <generator>S7Ncms - http://www.s7n.de/</generator>
 	  <?php foreach($comments as $item):?>
-	  <?php $blogpost = ORM::factory('blogpost')->find_by_id((int) $item->blogpost_id) ?>
-	  <!-- ?php $blogpost = $item->blogpost; //ORM::factory('blogpost')->find_by_id((int) $item->blogpost_id) ?-->
+	  <?php $blogpost = $item->blogpost; ?>
       <item>
-         <title>
-         	<?php echo $item->author ?>
-         </title>
+         <title>New comment for: <?php echo $blogpost->title ?></title>
+         <author><?php echo $item->author ?></author>
          <link><?php echo url::site('blog/'.$blogpost->uri, 'http') ?></link>
          <description>
 			<![CDATA[
