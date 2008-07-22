@@ -13,18 +13,6 @@
  */
 class Auth_Controller extends Controller {
 
-	public function __construct()
-	{
-		parent::__construct();
-
-		// Load some libraries
-		foreach(array('auth', 'session') as $lib)
-		{
-			$class = ucfirst($lib);
-			$this->$lib = new $class();
-		}
-	}
-	
 	function index()
 	{
 		url::redirect('admin/auth/login');
@@ -32,7 +20,7 @@ class Auth_Controller extends Controller {
 
 	public function login()
 	{
-		if ($this->auth->logged_in())
+		if (Auth::instance()->logged_in())
 		{
 			$form = new Forge('admin/auth/logout', 'Log Out');
 
@@ -40,7 +28,7 @@ class Auth_Controller extends Controller {
 		}
 		else
 		{
-			$form = new Forge;
+			$form = new Forge(NULL);
 
 			$form->input('username')->label(TRUE)->rules('required|length[3,32]');
 			$form->password('password')->label(TRUE)->rules('required|length[4,40]');
@@ -52,9 +40,9 @@ class Auth_Controller extends Controller {
 				$user = ORM::factory('user', $form->username->value);
 
 				// Attempt a login
-				if ($this->auth->login($user, $form->password->value))
+				if (Auth::instance()->login($user, $form->password->value))
 				{
-					$url = $this->session->get_once('redirect_me_to');
+					$url = Session::instance()->get_once('redirect_me_to');
 					url::redirect(empty($url) ? '' : $url);
 				}
 				else
@@ -74,7 +62,7 @@ class Auth_Controller extends Controller {
 	public function logout()
 	{
 		// Load auth and log out
-		$this->auth->logout(TRUE);
+		Auth::instance()->logout(TRUE);
 
 		// Redirect back to the login page
 		url::redirect('admin/auth/login');
