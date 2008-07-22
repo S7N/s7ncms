@@ -4,4 +4,4 @@
 	<p><?php echo $post->content ?></p>
 <?php endforeach; ?>
 
-<p><?php echo $pagination ?></p>
+<p><?php if (isset($pagination)) echo $pagination ?></p>
