@@ -22,7 +22,7 @@ class Modules_Model extends Model {
 			$modules = array();
 			foreach($query->result() as $result)
 			{
-				if( ! file_exists(MODPATH.$result->name.'/module.xml'))
+				if( ! is_file(MODPATH.$result->name.'/module.xml'))
 					continue;
 					
 				$modules[] = array(
@@ -51,7 +51,7 @@ class Modules_Model extends Model {
     	{
     		while(($file = readdir($dh)) !== FALSE)
     		{
-    			if (file_exists(MODPATH.$file.'/module.xml'))
+    			if (is_file(MODPATH.$file.'/module.xml'))
     			{
     				$modules[] = $file;
     			}

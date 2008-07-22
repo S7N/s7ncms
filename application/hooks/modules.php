@@ -16,20 +16,22 @@ class hook_modules {
 	public function __construct()
 	{
 		// fetch Modules from config
-		$modules = Config::item('core.modules');
+		$modules = Kohana::config('core.modules');
 
 		// attach modules from Database
 		$query = Database::instance()->select('name')->where('status', 'on')->get('modules');
 
 		if(count($query) > 0)
 		{
+			$new_modules = array();
+			
 			$result = $query->result();
 			foreach ($result as $item)
 			{
-				$modules[] = MODPATH.$item->name;
+				$new_modules[] = MODPATH.$item->name;
 			}
 
-			Config::set('core.modules', $modules);
+			Kohana::config_set('core.modules', array_merge($new_modules,$modules));
 		}
 	}
 

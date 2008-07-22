@@ -42,13 +42,13 @@ class Blog_Controller extends Website_Controller {
 	{
 		$this->pagination = new Pagination(array(
 			'uri_segment'    => 'page',
-			'items_per_page' => (int) config::item('blog.items_per_page'),
+			'items_per_page' => (int) Kohana::config('blog.items_per_page'),
 			'total_items'    => $this->blog->count_posts(),
 			'style'          => 'digg'
 		));
 		
 		$view = new View('blog/index');
-		$view->blogposts = $this->blog->orderby('id', 'desc')->limit((int) config::item('blog.items_per_page'), $this->pagination->sql_offset())->find_all();
+		$view->blogposts = $this->blog->orderby('id', 'desc')->limit((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset())->find_all();
 		
 		$this->template->content = $view;
 		$this->template->content->pagination = $this->pagination;
@@ -69,7 +69,7 @@ class Blog_Controller extends Website_Controller {
 		$view->comments = $this->blog->find_related_comments();
 		$view->form = '';
 		
-		if ($this->blog->comment_status === 'open' AND config::item('blog.comment_status') === 'open')
+		if ($this->blog->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
 		{
 			$form = new Forge();
 			$form->error_format('<span class="error">{message}</span><br />');
@@ -147,13 +147,13 @@ class Blog_Controller extends Website_Controller {
 	{
 		$this->pagination = new Pagination(array(
 			'uri_segment'    => 'page',
-			'items_per_page' => (int) config::item('blog.items_per_page'),
+			'items_per_page' => (int) Kohana::config('blog.items_per_page'),
 			'total_items'    => $this->blog->count_posts(),
 			'style'          => 'digg'
 		));
 		
 		$view = new View('blog/index');
-		$view->blogposts = $this->blog->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->limit((int) config::item('blog.items_per_page'), $this->pagination->sql_offset())->find_all();
+		$view->blogposts = $this->blog->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->limit((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset())->find_all();
 		
 		$this->template->content = $view;
 		$this->template->content->pagination = $this->pagination;

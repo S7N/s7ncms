@@ -15,12 +15,12 @@ class Tagcloud_Core {
 	private $config;
 	private $tags = array();
 
-	public function __construct($tags = array(), $config = array())
+	public function __construct(array $tags, $config = array())
 	{
-		$this->config = (array) $config + Config::item('tagcloud');
+		$this->config = (array) $config + Kohana::config('tagcloud');
 
 
-		if(is_null($this->config['uri']))
+		if (is_null($this->config['uri']))
 		{
 			$uri = explode('/', Router::$current_uri);
 			$this->config['uri'] = $uri[0];
@@ -52,9 +52,9 @@ class Tagcloud_Core {
 	  
 	  
 		$tags = array();
-		foreach($this->tags as $tag => $weight)
+		foreach ($this->tags as $tag => $weight)
 		{
-			if($range > 0)
+			if ($range > 0)
 			{
 				$size = ceil($this->config['maxsize'] * ($weight - $min) / $range);
 			}

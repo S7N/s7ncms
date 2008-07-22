@@ -54,7 +54,7 @@ class Modules_Controller extends Administration_Controller {
     		}
     		
     		
-    		if ( ! file_exists(MODPATH.$module.'/module.xml'))
+    		if ( ! is_file(MODPATH.$module.'/module.xml'))
     		{
     			$this->session->set_flash('error_message', 'Could not install module. The file module.xml was not found.');
     			url::redirect('admin/modules/install');
@@ -71,10 +71,10 @@ class Modules_Controller extends Administration_Controller {
     		
     		$this->db->insert('modules', array('name' => $uri, 'status' => 'on'));
     		
-	    	if (file_exists(MODPATH.$module.'/module.sql'))
+	    	if (is_file(MODPATH.$module.'/module.sql'))
 	    	{
 	    		$sql = file_get_contents(MODPATH.$module.'/module.sql');
-	    		$sql = preg_replace('/\{table_prefix\}/i', Config::item('database.default.table_prefix'), $sql);
+	    		$sql = preg_replace('/\{table_prefix\}/i', Kohana::config('database.default.table_prefix'), $sql);
 	    		$queries = preg_split("/;[\r?\n]+/i", $sql);
 	    		foreach ($queries as $query)
 	    		{
@@ -123,7 +123,7 @@ class Modules_Controller extends Administration_Controller {
     	// delete tables
     	$sql = 'DROP TABLE IF EXISTS';
     	foreach($xml->tables->name as $table)
-    		$sql .= ' '. Config::item('database.default.table_prefix') . (string) $table . ',';
+    		$sql .= ' '. Kohana::config('database.default.table_prefix') . (string) $table . ',';
 
     	// Remove last comma
     	$sql = substr($sql, 0, -1);

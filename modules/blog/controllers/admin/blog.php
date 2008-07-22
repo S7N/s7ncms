@@ -308,8 +308,8 @@ class Blog_Controller extends Administration_Controller {
 			$this->template->title .= 'Settings';
 				
 			$this->template->content = new View('blog/admin/settings');
-			$this->template->content->items_per_page = config::item('blog.items_per_page');
-			$this->template->content->comment_status = (bool) (config::item('blog.comment_status') == 'open' ? TRUE : FALSE);
+			$this->template->content->items_per_page = Kohana::config('blog.items_per_page');
+			$this->template->content->comment_status = (bool) (Kohana::config('blog.comment_status') == 'open' ? TRUE : FALSE);
 		}
 	}
 

@@ -66,7 +66,7 @@ class Page_Controller extends Administration_Controller {
 
 			$page->title = html::specialchars($this->input->post('form_title'));
 
-			if(strstr(config::item('s7n.page_views'), $this->input->post('form_view')) !== false)
+			if(strstr(Kohana::config('s7n.page_views'), $this->input->post('form_view')) !== false)
 			{
 				$page->view = trim($this->input->post('form_view'));
 			}
@@ -151,7 +151,7 @@ class Page_Controller extends Administration_Controller {
 		
 		$this->template->title = 'Pages | Settings';
 		$this->template->content = new View('page/settings');
-		$this->template->content->views = Config::item('s7n.page_views');			
+		$this->template->content->views = Kohana::config('s7n.page_views');			
 	}
 
 	public function recent_entries($number = 10)
