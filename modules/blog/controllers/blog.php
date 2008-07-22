@@ -161,18 +161,10 @@ class Blog_Controller extends Website_Controller {
 	
 	public function tag($tag)
 	{
-		$this->pagination = new Pagination(array(
-			'uri_segment'    => 'page',
-			'items_per_page' => (int) Kohana::config('blog.items_per_page'),
-			'total_items'    => $this->blog->count_posts(),
-			'style'          => 'digg'
-		));
-		
 		$view = new View('blog/index');
-		$view->blogposts = $this->blog->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->find_all((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset);
+		$view->blogposts = $this->blog->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->find_all();
 		
 		$this->template->content = $view;
-		$this->template->content->pagination = $this->pagination;
 	}
 
 }
