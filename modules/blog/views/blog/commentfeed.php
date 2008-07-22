@@ -8,11 +8,10 @@
       <description></description>
       <generator>S7Ncms - http://www.s7n.de/</generator>
 	  <?php foreach($comments as $item):?>
-	  <?php $blogpost = $item->blogpost; ?>
-      <item>
-         <title>New comment for: <?php echo $blogpost->title ?></title>
+	  <item>
+         <title>New comment for: <?php echo $item->blogpost->title ?></title>
          <author><?php echo $item->author ?></author>
-         <link><?php echo url::site('blog/'.$blogpost->uri, 'http') ?></link>
+         <link><?php echo url::site('blog/'.$item->blogpost->uri, 'http') ?></link>
          <description>
 			<![CDATA[
 				<?php echo $item->content ?>
