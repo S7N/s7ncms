@@ -10,4 +10,3 @@ $config['sortby'] = 'name'; // name, size
 
 // base uri for tags
 $config['uri'] = NULL;
-?>
