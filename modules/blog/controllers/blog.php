@@ -19,7 +19,7 @@ class Blog_Controller extends Website_Controller {
 	{
 		parent::__construct();
 		$this->blog = new Blogpost_Model;
-		$this->head['link']->append_link('blog/feed');
+		$this->head->link->append_link('blog/feed');
 		$this->template->tagcloud = new Tagcloud($this->blog->all_tags());
 	}
 
@@ -63,10 +63,10 @@ class Blog_Controller extends Website_Controller {
 		if ((int) $view->blogpost->id === 0)
 			Event::run('system.404');
 			
-		$this->head['javascript']->append_file('media/js/jquery.js');
-		$this->head['javascript']->append_file('modules/blog/media/js/comments.js');
+		$this->head->javascript->append_file('media/js/jquery.js');
+		$this->head->javascript->append_file('modules/blog/media/js/comments.js');
 		
-		$view->comments = $this->blog->find_related_comments();
+		$view->comments = $this->blog->comments;
 		$view->form = '';
 		
 		if ($this->blog->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
@@ -93,7 +93,22 @@ class Blog_Controller extends Website_Controller {
 				// our 'honeypot'
 				if($this->input->post('location') === 'none' OR $this->session->get('location') === 'none')
 				{
-					$this->blog->add_comment($comment);
+					// TODO FIX THIS!
+					//$this->blog->add('comment', $comment->id);
+					//$this->blog->add_comment($comment);					
+					$comment->blogpost_id = $this->blog->id;
+					
+					
+					$this->blog->comment_count += 1;
+					
+					if(isset($_SESSION['auth_user']))
+					{
+						$comment->user_id = $_SESSION['auth_user']->id;
+					}
+					
+					$comment->save();
+					$this->blog->save();
+					
 					$this->session->delete('location');
 				}
 				
@@ -110,7 +125,7 @@ class Blog_Controller extends Website_Controller {
 		
 		$this->template->content = $view;
 		
-		$this->head['title']->prepend($view->blogpost->title);
+		$this->head->title->prepend($view->blogpost->title);
 	}
 	
 	public function feed()

@@ -18,14 +18,14 @@ class Page_Model extends ORM {
 	/**
 	 * Allows Pages to be loaded by id or uri title.
 	 */
-	protected function where_key($id = NULL)
+	public function unique_key($id = NULL)
 	{
 		if(! ctype_digit($id))
 		{
 			return 'uri';
 		}
 
-		return parent::where_key($id);
+		return parent::unique_key($id);
 	}
 
 }

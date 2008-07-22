@@ -21,7 +21,7 @@ class Modules_Controller extends Administration_Controller {
 			array('admin/modules/install', 'Install New Modules')
 		);
 		
-		$this->head['title']->append('Modules');
+		$this->head->title->append('Modules');
 	}
 	public function index()
 	{
@@ -108,7 +108,7 @@ class Modules_Controller extends Administration_Controller {
 	    	url::redirect('admin/modules/install');
     	}
     	
-    	$this->head['title']->append('Install');
+    	$this->head->title->append('Install');
     	$this->template->title = 'Modules | Install';
     	
     	$modules = new Modules_Model;

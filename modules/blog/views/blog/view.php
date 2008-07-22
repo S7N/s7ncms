@@ -4,6 +4,7 @@
 
 <?php if(count($comments) > 0): ?>
 	<h1><?php echo $blogpost->comment_count ?> Kommentar(e):</h1>
+	
 	<?php foreach ($comments as $comment): ?>
 		<p>
 			<b><?php echo $comment->author ?></b>

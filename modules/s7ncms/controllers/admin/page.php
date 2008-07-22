@@ -22,7 +22,7 @@ class Page_Controller extends Administration_Controller {
 			array('admin/page/settings', 'Edit Settings')
 		);
 		
-		$this->head['title']->append('Pages');
+		$this->head->title->append('Pages');
 	}
 
 	public function index()
@@ -47,12 +47,12 @@ class Page_Controller extends Administration_Controller {
 			)->find_all();
 			
 			$this->template->title = 'Pages | Filter: '.$q;
-			$this->head['title']->append('Filter: '.$q);
+			$this->head->title->append('Filter: '.$q);
 		}
 		else
 		{
 			$this->template->title = 'Pages | All Pages';
-			$this->head['title']->append('All Pages');
+			$this->head->title->append('All Pages');
 			$this->template->content->pages = ORM::factory('page')->find_all();
 		}
 		
@@ -86,11 +86,11 @@ class Page_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->head['javascript']->append_file('vendor/tiny_mce/tiny_mce.js');
+			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->template->content = new View('page/edit');
 			$this->template->content->page = ORM::factory('page')->find_by_id((int)$this->uri->segment(4));
 			$this->template->title = 'Pages | Edit: '. $this->template->content->page->title;
-			$this->head['title']->append('Edit: '. $this->template->content->page->title);
+			$this->head->title->append('Edit: '. $this->template->content->page->title);
 		}
 	}
 
@@ -121,8 +121,8 @@ class Page_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->head['javascript']->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head['title']->append('New Page');
+			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
+			$this->headtitle->append('New Page');
 			
 			$this->template->title = 'Pages | New Page';
 			$this->template->content = new View('page/newpage');
@@ -147,7 +147,7 @@ class Page_Controller extends Administration_Controller {
 			}
 		}
 		
-		$this->head['title']->append('Settings');
+		$this->head->title->append('Settings');
 		
 		$this->template->title = 'Pages | Settings';
 		$this->template->content = new View('page/settings');

@@ -31,15 +31,15 @@ class Administration_Controller extends Template_Controller {
 		$this->head = Head::instance();
 
 		// Javascripts
-		$this->head['javascript']->append_file('media/js/jquery.js');
-		$this->head['javascript']->append_file('media/admin/js/ui.tabs.js');
-		$this->head['javascript']->append_file('media/admin/js/stuff.js');
+		$this->head->javascript->append_file('media/js/jquery.js');
+		$this->head->javascript->append_file('media/admin/js/ui.tabs.js');
+		$this->head->javascript->append_file('media/admin/js/stuff.js');
 
 		// Stylesheets
-		$this->head['css']->append_file('media/admin/css/layout');
-		$this->head['css']->append_file('media/admin/css/ui.tabs');
+		$this->head->css->append_file('media/admin/css/layout');
+		$this->head->css->append_file('media/admin/css/ui.tabs');
 
-		$this->head['title']->set('S7Nadmin');
+		$this->head->title->set('S7Nadmin');
 
 		$this->template->tasks = array();
 

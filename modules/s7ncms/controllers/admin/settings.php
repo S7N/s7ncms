@@ -15,7 +15,7 @@ class Settings_Controller extends Administration_Controller {
 	
 	public function index()
 	{
-		$this->head['title']->append('Settings');
+		$this->head->title->append('Settings');
 		
 		$this->template->title = 'Settings';
 	    $this->template->content = new View('settings/settings');

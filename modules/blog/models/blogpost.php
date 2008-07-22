@@ -19,14 +19,14 @@ class Blogpost_Model extends ORM {
 	/**
 	 * Allows Blogposts to be loaded by id or uri title.
 	 */
-	protected function where_key($id = NULL)
+	public function unique_key($id = NULL)
 	{
 		if(! ctype_digit($id))
 		{
 			return 'uri';
 		}
 		
-		return parent::where_key($id);
+		return parent::unique_key($id);
 	}
 	
 	/**
@@ -35,15 +35,19 @@ class Blogpost_Model extends ORM {
 	public function add_comment($object)
 	{
 		$this->comment_count += 1;
-		
+		//echo Kohana::debug($object->id); exit;
 		/*
 		 * set the user_id if the poster is logged in
 		 */
 		if(isset($_SESSION['auth_user']))
+		{
 			$object->user_id = $_SESSION['auth_user']->id;
+			$object->save();
+		}
 
 		// we have to call __call because add_ is a magic method
-		parent::__call('add_comment', array($object));
+		//parent::__call('add_comment', array($object));
+		$this->add('comment', $object->id);
 		
 		// save comment count update
 		$this->save();
