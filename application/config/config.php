@@ -95,7 +95,7 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array
 (
-	MODPATH.'s7ncms',
+	MODPATH.'s7ncms', // Must always be the first module
 		
 	MODPATH.'auth',   // Authentication
 	MODPATH.'forge',  // Form generation

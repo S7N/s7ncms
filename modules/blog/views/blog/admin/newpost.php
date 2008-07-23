@@ -18,7 +18,8 @@ tinyMCE.init({
 	
 	<div id="tab_post">
 		<p>Title:<br />
-		<?php echo form::input('form_title') ?></p>
+			<?php echo form::input('form_title') ?>
+		</p>
 		<p>Content: (Editor
 		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_content').show();">an</a> /
 		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_content').hide();">aus</a>

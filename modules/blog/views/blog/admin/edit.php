@@ -6,6 +6,7 @@ tinyMCE.init({
 	
 	convert_urls : false
 });
+
 </script>
 <?php echo form::open('admin/blog/edit', array(), array('form_id' => $post->id)); ?>
 <div id="tabs">
@@ -17,7 +18,8 @@ tinyMCE.init({
 	
 	<div id="tab_post">
 		<p>Title:<br />
-		<?php echo form::input('form_title', $post->title); ?></p>
+			<?php echo form::input('form_title', htmlspecialchars_decode($post->title)); ?>
+		</p>
 		<p>Content: (Editor
 		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_content').show();">an</a> /
 		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_content').hide();">aus</a>

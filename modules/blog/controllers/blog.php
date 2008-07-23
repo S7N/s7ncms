@@ -81,12 +81,12 @@ class Blog_Controller extends Website_Controller {
 			if ($form->validate())
 			{
 			    $comment = new Comment_Model;
-				$comment->author = $form->form_name->value;
+				$comment->author = html::specialchars($form->form_name->value, TRUE);
 				$comment->email = $form->form_email->value;
-				$comment->url = $form->form_homepage->value;
+				$comment->url = html::specialchars($form->form_homepage->value, TRUE);
 				$comment->ip = $this->input->ip_address();
-				$comment->agent = Kohana::$user_agent;
-				$comment->content = $form->form_comment->value;
+				$comment->agent = html::specialchars(Kohana::$user_agent, TRUE);
+				$comment->content = html::specialchars($form->form_comment->value, TRUE);
 				$comment->date = date("Y-m-d H:i:s", time());
 				
 				// our 'honeypot'

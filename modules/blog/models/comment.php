@@ -12,19 +12,7 @@
  * @version $Id$
  */
 class Comment_Model extends ORM {
+
 	protected $belongs_to = array('blogpost', 'user');
-	
-	public function __set($key, $value)
-	{
-		/*
-		 * We need to convert these keys with htmlspecialchars
-		 */
-		$keys = array('author', 'content', 'agent', 'url');
-		if(in_array($key, $keys))
-		{
-			$value = html::specialchars($value, TRUE);
-		}
-		
-		parent::__set($key, $value);
-	}
+
 }
