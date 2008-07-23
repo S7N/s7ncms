@@ -1,14 +1,54 @@
-# CocoaMySQL dump
-# Version 0.7b5
-# http://cocoamysql.sourceforge.net
-#
-# Host: localhost (MySQL 5.0.51a)
-# Database: s7ncms
-# Generation Time: 2008-04-12 02:15:29 +0200
-# ************************************************************
+-- 
+-- Tabellenstruktur für Tabelle `blogposts`
+-- 
 
-# Dump of table config
-# ------------------------------------------------------------
+CREATE TABLE `blogposts` (
+  `id` int(11) NOT NULL auto_increment,
+  `user_id` int(11) NOT NULL,
+  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `content` longtext NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `excerpt` text,
+  `status` varchar(20) NOT NULL default 'published',
+  `comment_status` varchar(20) NOT NULL default 'open',
+  `ping_status` varchar(20) NOT NULL default 'open',
+  `password` varchar(20) default '',
+  `uri` varchar(200) NOT NULL default '',
+  `modified` datetime NOT NULL default '0000-00-00 00:00:00',
+  `comment_count` bigint(20) NOT NULL default '0',
+  `tags` text,
+  PRIMARY KEY  (`id`),
+  KEY `uri` (`uri`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `comments`
+-- 
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL auto_increment,
+  `blogpost_id` int(11) NOT NULL,
+  `author` varchar(200) NOT NULL,
+  `email` varchar(100) default NULL,
+  `url` varchar(200) default NULL,
+  `ip` varchar(100) NOT NULL default '0.0.0.0',
+  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `content` text,
+  `approved` varchar(20) NOT NULL default '1',
+  `agent` varchar(255) default NULL,
+  `type` varchar(20) NOT NULL default 'comment',
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `blogposts_id` (`blogpost_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `config`
+-- 
 
 CREATE TABLE `config` (
   `id` int(11) NOT NULL auto_increment,
@@ -16,14 +56,68 @@ CREATE TABLE `config` (
   `key` varchar(200) NOT NULL,
   `value` varchar(200) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO `config` (`id`,`context`,`key`,`value`) VALUES ('1','s7n','default_uri','home');
-INSERT INTO `config` (`id`,`context`,`key`,`value`) VALUES ('2','s7n','page_views','default, extended');
+-- 
+-- Daten für Tabelle `config`
+-- 
 
+INSERT INTO `config` VALUES (1, 's7n', 'default_uri', 'home');
+INSERT INTO `config` VALUES (2, 's7n', 'page_views', 'default, extended');
+INSERT INTO `config` VALUES (3, 'blog', 'comment_status', 'open');
+INSERT INTO `config` VALUES (4, 's7n', 'site_title', 'My Cool Website');
+INSERT INTO `config` VALUES (5, 'blog', 'items_per_page', '5');
 
-# Dump of table pages
-# ------------------------------------------------------------
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `menu`
+-- 
+
+CREATE TABLE `menu` (
+  `id` int(11) NOT NULL auto_increment,
+  `l` int(11) default NULL,
+  `r` int(11) default NULL,
+  `title` varchar(200) default NULL,
+  `uri` varchar(200) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- 
+-- Daten für Tabelle `menu`
+-- 
+
+INSERT INTO `menu` VALUES (1, 1, 12, 'ROOT', NULL);
+INSERT INTO `menu` VALUES (2, 2, 3, 'Home', 'home');
+INSERT INTO `menu` VALUES (3, 6, 7, 'Products', 'products');
+INSERT INTO `menu` VALUES (4, 4, 5, 'Blog', 'blog');
+INSERT INTO `menu` VALUES (5, 8, 9, 'About Me', 'about-me');
+INSERT INTO `menu` VALUES (6, 10, 11, 'Contact Me', 'contact-me');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `modules`
+-- 
+
+CREATE TABLE `modules` (
+  `id` int(10) NOT NULL auto_increment,
+  `name` varchar(200) default NULL,
+  `status` varchar(200) default 'on',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- 
+-- Daten für Tabelle `modules`
+-- 
+
+INSERT INTO `modules` VALUES (1, 'blog', 'on');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `pages`
+-- 
 
 CREATE TABLE `pages` (
   `id` int(11) NOT NULL auto_increment,
@@ -40,11 +134,23 @@ CREATE TABLE `pages` (
   `password` varchar(200) default NULL,
   `status` varchar(200) default 'published',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+-- 
+-- Daten für Tabelle `pages`
+-- 
 
-# Dump of table roles
-# ------------------------------------------------------------
+INSERT INTO `pages` VALUES (23, NULL, 1, '2008-04-11 23:13:30', 'Impressum', NULL, '<p><strong>Verantwortlich</strong>: niemand</p>', 'impressum', NULL, 'default', '2008-07-23 14:45:54', NULL, NULL);
+INSERT INTO `pages` VALUES (24, NULL, 1, '2008-04-11 23:50:20', 'Home', NULL, '<p>Meine <strong>Heimat</strong>!</p>', 'home', NULL, 'default', '2008-04-12 01:44:08', NULL, NULL);
+INSERT INTO `pages` VALUES (27, NULL, 1, '2008-04-12 01:32:07', 'Contact Me', NULL, '<p>Hallo, kontaktier mich bitte mal! :)</p>', 'contact-me', NULL, 'default', '2008-04-12 01:32:07', NULL, NULL);
+INSERT INTO `pages` VALUES (30, NULL, 1, '2008-04-12 01:45:07', 'About me', NULL, '<p>Hi, thats me!</p>', 'about-me', NULL, 'default', '2008-04-12 01:45:07', NULL, 'published');
+INSERT INTO `pages` VALUES (31, NULL, 1, '2008-04-12 01:45:42', 'Products', NULL, '<p>Prudukt 1</p>\n<p>Produkt 2</p>\n<p>Produkt 3</p>', 'products', NULL, 'default', '2008-04-12 01:45:42', NULL, 'published');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `roles`
+-- 
 
 CREATE TABLE `roles` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -52,11 +158,32 @@ CREATE TABLE `roles` (
   `description` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+-- 
+-- Daten für Tabelle `roles`
+-- 
 
-# Dump of table users
-# ------------------------------------------------------------
+INSERT INTO `roles` VALUES (1, 'login', 'Login privileges, granted after account confirmation');
+INSERT INTO `roles` VALUES (2, 'admin', 'Administrative user, has access to everything.');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `roles_users`
+-- 
+
+CREATE TABLE `roles_users` (
+  `user_id` int(10) unsigned NOT NULL,
+  `role_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`user_id`,`role_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `users`
+-- 
 
 CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -72,34 +199,4 @@ CREATE TABLE `users` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `uniq_username` (`username`),
   UNIQUE KEY `uniq_email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
-
-# Dump of table users_roles
-# ------------------------------------------------------------
-
-CREATE TABLE `users_roles` (
-  `user_id` int(10) unsigned NOT NULL,
-  `role_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`user_id`,`role_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-# Dump of table menu
-# ------------------------------------------------------------
-
-CREATE TABLE `menu` (
-  `id` int(11) NOT NULL auto_increment,
-  `l` int(11) default NULL,
-  `r` int(11) default NULL,
-  `title` varchar(200) default NULL,
-  `uri` varchar(200) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('1','1','12','ROOT',NULL);
-INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('2','2','3','Home','home');
-INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('3','4','5','Products','products');
-INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('4','6','7','Blog','blog');
-INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('5','8','9','About Me','about-me');
-INSERT INTO `menu` (`id`,`l`,`r`,`title`,`uri`) VALUES ('6','10','11','Contact Me','contact-me');
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
