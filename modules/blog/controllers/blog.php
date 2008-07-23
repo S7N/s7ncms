@@ -18,7 +18,7 @@ class Blog_Controller extends Website_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->head->link->append_link('blog/feed');
+		$this->head->link->append('blog/feed');
 		$this->template->tagcloud = new Tagcloud(ORM::factory('blogpost')->all_tags());
 	}
 

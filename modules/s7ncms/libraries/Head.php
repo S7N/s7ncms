@@ -225,7 +225,7 @@ class Head_Css_Style extends Head_Partial {
 
 class Head_Link extends Head_Partial {
 
-	public function append_link($link, $rel = 'alternate', $type = 'application/rss+xml')
+	public function append($link, $rel = 'alternate', $type = 'application/rss+xml')
 	{
 		$this[] = array($link, $rel, $type);
 	}
