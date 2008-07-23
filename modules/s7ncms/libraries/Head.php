@@ -22,11 +22,11 @@ class Head_Core extends ArrayObject {
 
 	public function __construct()
 	{
-		$this['title']		= new Head_Title;
-		$this['base']		= new Head_Base;
-		$this['javascript']	= new Head_Javascript;
-		$this['css']		= new Head_Css;
-		$this['link']		= new Head_Link;
+		$this['title']      = new Head_Title;
+		$this['base']       = new Head_Base;
+		$this['javascript'] = new Head_Javascript;
+		$this['css']        = new Head_Css;
+		$this['link']       = new Head_Link;
 
 		$this->setFlags(ArrayObject::ARRAY_AS_PROPS);
 
@@ -46,7 +46,7 @@ class Head_Core extends ArrayObject {
 		{
 			$html .= $field->render();
 		}
-		
+
 		return $html;
 	}
 }
@@ -57,7 +57,6 @@ class Head_Partial extends Head_Core {
 	{
 		$this->setFlags(ArrayObject::ARRAY_AS_PROPS);
 	}
-
 
 }
 
@@ -71,16 +70,19 @@ class Head_Title extends Head_Partial {
 	public function set($title)
 	{
 		$this['title'] = $title;
+		return $this;
 	}
-	
+
 	public function append($title)
 	{
 		$this['title'] .= ' &mdash; '.$title;
+		return $this;
 	}
-	
+
 	public function prepend($title)
 	{
 		$this['title'] = $title.' &mdash; '.$this['title'];
+		return $this;
 	}
 
 	public function render()
@@ -89,7 +91,7 @@ class Head_Title extends Head_Partial {
 		{
 			return (string) '<title>'.$this['title'].'</title>'."\n\r";
 		}
-		
+
 		return '';
 	}
 }
@@ -104,6 +106,7 @@ class Head_Base extends Head_Partial {
 	public function set($base_href)
 	{
 		$this['base_href'] = $base_href;
+		return $this;
 	}
 
 	public function render()
@@ -112,7 +115,7 @@ class Head_Base extends Head_Partial {
 		{
 			return (string) '<base href="'.$this['base_href'].'" />'."\n\r";
 		}
-		
+
 		return '';
 	}
 
@@ -150,7 +153,7 @@ class Head_Javascript_File extends Head_Partial {
 		{
 			$html .= html::script($field);
 		}
-		
+
 		return $html;
 	}
 }
@@ -164,7 +167,7 @@ class Head_Js_Script extends Head_Partial {
 		{
 			$html .= '<script type="text/javascript">'.$script.'</script>'."\r\n";
 		}
-		
+
 		return $html;
 	}
 
@@ -202,7 +205,7 @@ class Head_Css_File extends Head_Partial {
 		{
 			$html .= html::stylesheet($field[0], $field[1]);
 		}
-		
+
 		return $html;
 	}
 
@@ -228,6 +231,7 @@ class Head_Link extends Head_Partial {
 	public function append($link, $rel = 'alternate', $type = 'application/rss+xml')
 	{
 		$this[] = array($link, $rel, $type);
+		return $this;
 	}
 
 	public function render()
