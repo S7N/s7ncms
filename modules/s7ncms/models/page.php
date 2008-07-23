@@ -20,7 +20,7 @@ class Page_Model extends ORM {
 	 */
 	public function unique_key($id = NULL)
 	{
-		if(! ctype_digit($id))
+		if( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
 		{
 			return 'uri';
 		}
