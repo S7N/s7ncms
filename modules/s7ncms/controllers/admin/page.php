@@ -60,9 +60,9 @@ class Page_Controller extends Administration_Controller {
 
 	public function edit()
 	{
-		if($_SERVER["REQUEST_METHOD"] == 'POST')
+		if($_POST)
 		{
-			$page = ORM::factory('page')->find_by_id((int) $this->input->post('form_id'));
+			$page = ORM::factory('page', (int) $this->input->post('form_id'));
 
 			$page->title = html::specialchars($this->input->post('form_title'));
 
@@ -88,7 +88,7 @@ class Page_Controller extends Administration_Controller {
 		{
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->template->content = new View('page/edit');
-			$this->template->content->page = ORM::factory('page')->find_by_id((int)$this->uri->segment(4));
+			$this->template->content->page = ORM::factory('page', (int) $this->uri->segment(4));
 			$this->template->title = 'Pages | Edit: '. $this->template->content->page->title;
 			$this->head->title->append('Edit: '. $this->template->content->page->title);
 		}
@@ -131,7 +131,7 @@ class Page_Controller extends Administration_Controller {
 
 	public function delete()
 	{
-		ORM::factory('page')->find_by_id((int) $this->uri->segment(4))->delete();
+		ORM::factory('page', (int) $this->uri->segment(4))->delete();
 		$this->session->set_flash('info_message', 'Page deleted successfully');
 		url::redirect('admin/page');
 	}

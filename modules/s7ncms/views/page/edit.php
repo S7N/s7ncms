@@ -3,6 +3,8 @@ tinyMCE.init({
 	mode : "textareas",
 	width: "500px",
 	theme: 'advanced',
+	plugins : "inlinepopups",
+	entity_encoding : "raw",
 	
 	convert_urls : false
 });

@@ -43,7 +43,7 @@ class Auth_Controller extends Controller {
 				if (Auth::instance()->login($user, $form->password->value))
 				{
 					$url = Session::instance()->get_once('redirect_me_to');
-					url::redirect(empty($url) ? '' : $url);
+					url::redirect(empty($url) ? 'admin' : $url);
 				}
 				else
 				{

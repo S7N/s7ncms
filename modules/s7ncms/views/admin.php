@@ -43,7 +43,7 @@
 		<div id="title">
 			<p><?php echo $title ?></p>
 			<?php if ($searchbar): ?>
-			<?php echo form::open('', array('id' => 'searchbar', 'method' => 'get')) ?>
+			<?php echo form::open(NULL, array('id' => 'searchbar', 'method' => 'get')) ?>
 			    <input name="q" value="<?php echo $searchvalue ?>" type="search" placeholder="Filter by" autosave="s7n.search" />
 			<?php echo form::close() ?>
 			<?php endif ?>

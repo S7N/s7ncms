@@ -70,7 +70,7 @@ class Blog_Controller extends Website_Controller {
 		
 		if ($view->blogpost->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
 		{
-			$form = new Forge();
+			$form = new Forge(NULL);
 			$form->error_format('<span class="error">{message}</span><br />');
 			$form->input('form_name')->label('Name')->rules('required|length[3,40]');
 			$form->input('form_email')->label('E-Mail')->rules('valid_email');
