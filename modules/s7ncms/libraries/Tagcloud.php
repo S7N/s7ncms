@@ -11,7 +11,7 @@
  * @copyright Eduard Baun, 2007-2008
  * @version $Id:Tagcloud.php 151 2008-07-24 16:06:21Z eduardbaun $
  */
-class Cloud_Widget extends Widget {
+class Tagcloud_Widget extends Widget {
 	
 	private $tags = array();
 	
