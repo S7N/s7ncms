@@ -25,14 +25,14 @@ class Widget_Core {
 		if ($file = Kohana::find_file('libraries', $widget))
 		{
 			require $file;
-			
+				
 			$widget = ucfirst($widget).'_Widget';
-			return new $widget($config);
+
+			if (class_exists($widget))
+				return new $widget($config);
 		}
-		else
-		{
-			throw new Kohana_Exception('core.resource_not_found', 'Widget', $widget);
-		}
+
+		throw new Kohana_Exception('core.resource_not_found', 'Widget', $widget);
 	}
 
 	public function __toString()
