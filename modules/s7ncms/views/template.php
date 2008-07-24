@@ -21,7 +21,7 @@
             </div>
 
             <div class="left_column">
-            	<?php if (isset($tagcloud)) echo $tagcloud ?>
+            	<?php echo Sidebar::instance() ?>
             </div>
         </div>
 

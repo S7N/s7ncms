@@ -22,14 +22,17 @@ class Widget_Core {
 
 	public static function factory($widget, $config = array())
 	{
+		$class_name = ucfirst($widget).'_Widget';
+		
+		if (class_exists($class_name))
+			return new $class_name($config);
+				
 		if ($file = Kohana::find_file('widgets', $widget))
 		{
 			require $file;
 				
-			$widget = ucfirst($widget).'_Widget';
-
-			if (class_exists($widget))
-				return new $widget($config);
+			if (class_exists($class_name))
+				return new $class_name($config);
 		}
 
 		throw new Kohana_Exception('core.resource_not_found', 'Widget', $widget);

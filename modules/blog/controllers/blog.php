@@ -19,11 +19,15 @@ class Blog_Controller extends Website_Controller {
 	{
 		parent::__construct();
 		$this->head->link->append('blog/feed');
-		$config = array
+		
+		Sidebar::instance()->add
 		(
-			'tags' => ORM::factory('blogpost')->all_tags()
+			'Tagcloud',
+			array
+			(
+				'tags' => ORM::factory('blogpost')->all_tags()
+			)
 		);
-		$this->template->tagcloud = Widget::factory('Tagcloud', $config);
 	}
 
 	public function _remap($method, $arguments)
