@@ -11,48 +11,39 @@
  * @copyright Eduard Baun, 2007-2008
  * @version $Id$
  */
-class Tagcloud_Core {
-	private $config;
+class Cloud_Widget extends Widget {
+	
 	private $tags = array();
-
-	public function __construct(array $tags, $config = array())
+	
+	public function initialize($config = array())
 	{
 		$this->config = (array) $config + Kohana::config('tagcloud');
-
 
 		if (is_null($this->config['uri']))
 		{
 			$uri = explode('/', Router::$current_uri);
 			$this->config['uri'] = $uri[0];
 		}
-
-		$this->tags = $tags;
 	}
-
-	public function __toString()
-	{
-		return View::factory('tagcloud')->set('tags', $this->render())->render();
-	}
-
+	
 	public function render()
 	{
-		asort($this->tags);
-		$min = current($this->tags);
-		$max = end($this->tags);
+		asort($this->config['tags']);
+		$min = current($this->config['tags']);
+		$max = end($this->config['tags']);
 		$range = $max - $min;
 	  
 		if ($this->config['sortby'] === 'name')
 		{
-			ksort($this->tags);
+			ksort($this->config['tags']);
 		}
 		else
 		{
-			arsort($this->tags);
+			arsort($this->config['tags']);
 		}
 	  
-	  
 		$tags = array();
-		foreach ($this->tags as $tag => $weight)
+		foreach ($this->config['tags'] as $tag => $weight)
 		{
 			if ($range > 0)
 			{
@@ -69,10 +60,11 @@ class Tagcloud_Core {
 			(
 	        	'name' => $tag,
 	        	'size' => $size,
-	        	'uri' => $this->config['uri'].'/tag/'.$tag
+	        	'uri'  => $this->config['uri'].'/tag/'.$tag
 			);
 		}
-
-		return $tags;
+	
+		return View::factory('tagcloud')->set('tags', $tags)->render();
 	}
+	
 }
