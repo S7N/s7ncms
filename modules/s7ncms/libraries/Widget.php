@@ -22,7 +22,7 @@ class Widget_Core {
 
 	public static function factory($widget, $config = array())
 	{
-		if ($file = Kohana::find_file('libraries', $widget))
+		if ($file = Kohana::find_file('widgets', $widget))
 		{
 			require $file;
 				
