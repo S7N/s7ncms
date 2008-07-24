@@ -13,7 +13,7 @@
  */
 class Widget_Core {
 
-	private $config = array();
+	protected $config = array();
 
 	public function __construct($config = array())
 	{
