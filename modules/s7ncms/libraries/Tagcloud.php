@@ -9,7 +9,7 @@
  *
  * @author Eduard Baun <eduard at baun.de>
  * @copyright Eduard Baun, 2007-2008
- * @version $Id$
+ * @version $Id:Tagcloud.php 151 2008-07-24 16:06:21Z eduardbaun $
  */
 class Cloud_Widget extends Widget {
 	
