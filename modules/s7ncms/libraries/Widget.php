@@ -40,11 +40,6 @@ class Widget_Core {
 		return $this->render();
 	}
 
-	public function render()
-	{
-		return '';
-	}
-
 	public function initialize($config = array())
 	{
 		$this->config = $config;
