@@ -13,14 +13,14 @@
  */
 class Defaultpage_Controller extends Controller {
 
-    public function index()
+	public function index()
 	{
-    	$redirect = Kohana::config('s7n.default_uri');
+		$redirect = Kohana::config('s7n.default_uri');
 
-        if(is_null($redirect))
-        	Kohana::show_error('No start page defined', "The system couldn't find a start page to display.");
+		if(is_null($redirect))
+			throw new Kohana_User_Exception('No start page defined', "The system couldn't find a start page to display.");
 
-    	url::redirect($redirect);
-    }
+		url::redirect($redirect);
+	}
 
 }

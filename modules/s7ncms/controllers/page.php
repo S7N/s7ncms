@@ -13,9 +13,9 @@
  */
 class Page_Controller extends Website_Controller {
 
-	public function _remap()
+	public function __call($method, $rguments)
 	{
-		$page = ORM::factory('page')->find($this->uri->segment(2));
+		$page = ORM::factory('page')->find($method);
 
 		if(is_null($page))
     		Event::run('system.404');

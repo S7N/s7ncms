@@ -30,7 +30,7 @@ class Blog_Controller extends Website_Controller {
 		);
 	}
 
-	public function _remap($method, $arguments)
+	public function __call($method, $arguments)
 	{
 		if ($method == 'page')
 		{
@@ -39,7 +39,7 @@ class Blog_Controller extends Website_Controller {
 		elseif ( ! method_exists($this, $method))
 		{
 			$arguments = $method;
-			$method = 'view';				
+			$method = '_view';				
 		}
 		
 		call_user_func_array(array($this, $method), $arguments);
@@ -61,7 +61,7 @@ class Blog_Controller extends Website_Controller {
 		$this->template->content->pagination = $this->pagination;
 	}
 	
-	public function view($uri)
+	private function _view($uri)
 	{
 		$view = new View('blog/view');
 		$view->blogpost = ORM::factory('blogpost', (string) $uri);
