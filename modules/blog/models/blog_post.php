@@ -55,6 +55,11 @@ class Blog_post_Model extends ORM {
 		return count(Database::instance()->select('id')->get('blog_posts'));
 	}
 	
+	public function get_url()
+    {
+        return 'blog/'.$this->uri;
+    }
+	
 	public function all_tags()
 	{
 		$tags = array();

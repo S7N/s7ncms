@@ -105,7 +105,7 @@ class Blog_Controller extends Website_Controller {
 					$this->session->delete('location');
 				}
 				
-				url::redirect('blog/'.$uri);
+				url::redirect($view->blogpost->get_url());
 			}
 			else
 			{

@@ -27,5 +27,10 @@ class Page_Model extends ORM {
 
 		return parent::unique_key($id);
 	}
+	
+	public function get_url()
+    {
+        return $this->uri;
+    }
 
 }

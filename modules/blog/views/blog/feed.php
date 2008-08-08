@@ -10,10 +10,10 @@
 	  <?php foreach($posts as $item):?>
       <item>
          <title><?php echo $item->title ?></title>
-         <link><?php echo url::site('blog/'.$item->uri, 'http') ?></link>
+         <link><?php echo url::site($item->get_url(), 'http') ?></link>
          <description><![CDATA[<?php echo $item->content ?>]]></description>
          <pubDate><?php echo date('r', strtotime($item->date)) ?></pubDate>
-         <guid><?php echo url::site('blog/'.$item->uri, 'http') ?></guid>
+         <guid><?php echo url::site($item->get_url(), 'http') ?></guid>
       </item>
       <?php endforeach ?>
    </channel>

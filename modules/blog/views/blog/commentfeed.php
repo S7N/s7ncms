@@ -9,9 +9,9 @@
       <generator>S7Ncms - http://www.s7n.de/</generator>
 	  <?php foreach($comments as $item):?>
 	  <item>
-         <title>New comment for: <?php echo $item->blogpost->title ?></title>
+         <title>New comment for: <?php echo $item->blog_post->title ?></title>
          <author><?php echo $item->author ?></author>
-         <link><?php echo url::site('blog/'.$item->blogpost->uri, 'http') ?></link>
+         <link><?php echo url::site($item->blog_post->get_url(), 'http') ?></link>
          <description>
 			<![CDATA[
 				<?php echo $item->content ?>
