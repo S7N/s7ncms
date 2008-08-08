@@ -11,9 +11,9 @@
  * @copyright Eduard Baun, 2007-2008
  * @version $Id$
  */
-class Blogpost_Model extends ORM {
+class Blog_post_Model extends ORM {
 	
-	protected $has_many = array('comments');
+	protected $has_many = array('blog_comments');
 	protected $belongs_to = array('user');
 	
 	/**
@@ -42,7 +42,7 @@ class Blogpost_Model extends ORM {
 			$object->user_id = $_SESSION['auth_user']->id;
 		}
 
-		$object->blogpost_id = $this->id;
+		$object->blog_post_id = $this->id;
 		$object->save();
 		
 		$this->comment_count += 1;
@@ -52,13 +52,13 @@ class Blogpost_Model extends ORM {
 	
 	public function count_posts()
 	{
-		return count(Database::instance()->select('id')->get('blogposts'));
+		return count(Database::instance()->select('id')->get('blog_posts'));
 	}
 	
 	public function all_tags()
 	{
 		$tags = array();
-		$query = Database::instance()->select('tags')->get('blogposts');
+		$query = Database::instance()->select('tags')->get('blog_posts');
 		
 		foreach ($query as $result)
 		{   

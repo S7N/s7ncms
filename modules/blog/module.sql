@@ -1,4 +1,4 @@
-CREATE TABLE `{table_prefix}blogposts` (
+CREATE TABLE `{table_prefix}blog_posts` (
 	`id` bigint(20) unsigned NOT NULL auto_increment,
 	`user_id` bigint(20) NOT NULL default '0',
 	`date` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -17,9 +17,9 @@ CREATE TABLE `{table_prefix}blogposts` (
 	KEY `uri` (`uri`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `{table_prefix}comments` (
+CREATE TABLE `{table_prefix}blog_comments` (
 	`id` bigint(20) unsigned NOT NULL auto_increment,
-	`blogpost_id` int(11) NOT NULL default '0',
+	`blog_post_id` int(11) NOT NULL default '0',
 	`author` varchar(200) NOT NULL,
 	`email` varchar(100) default NULL,
 	`url` varchar(200) default NULL,
@@ -31,5 +31,5 @@ CREATE TABLE `{table_prefix}comments` (
 	`type` varchar(20) NOT NULL default 'comment',
 	`user_id` bigint(20) NOT NULL default '0',
 	PRIMARY KEY  (`id`),
-	KEY `blogposts_id` (`blogpost_id`)
+	KEY `blog_posts_id` (`blog_post_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

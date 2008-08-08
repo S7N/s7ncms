@@ -11,8 +11,8 @@
  * @copyright Eduard Baun, 2007-2008
  * @version $Id$
  */
-class Comment_Model extends ORM {
+class Blog_comment_Model extends ORM {
 
-	protected $belongs_to = array('blogpost', 'user');
+	protected $belongs_to = array('blog_post', 'user');
 
 }

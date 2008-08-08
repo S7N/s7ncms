@@ -38,7 +38,7 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$this->template->searchvalue = $q;
 			
-			$this->template->content->posts = ORM::factory('blogpost')->orderby('id', 'desc')->orlike(
+			$this->template->content->posts = ORM::factory('blog_post')->orderby('id', 'desc')->orlike(
 				array(
 					'title' => '%'.$q.'%',
 					'excerpt' => '%'.$q.'%',
@@ -54,7 +54,7 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$this->template->title .= 'All Posts';
 			$this->head->title->append('All Posts');
-			$this->template->content->posts = ORM::factory('blogpost')->orderby('id', 'desc')->find_all();
+			$this->template->content->posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all();
 		}
 	}
 
@@ -62,7 +62,7 @@ class Blog_Controller extends Administration_Controller {
 	{
 		if($_SERVER["REQUEST_METHOD"] == 'POST')
 		{
-			$post = new Blogpost_Model;
+			$post = new Blog_post_Model;
 			$post->user_id = $_SESSION['auth_user']->id;
 
 			$post->title = html::specialchars($this->input->post('form_title'));
@@ -70,7 +70,7 @@ class Blog_Controller extends Administration_Controller {
 			$uri = url::title($this->input->post('form_title'));
 
 			// Check if uri already exists and add a suffix
-			$result = $this->db->select('uri')->like('uri', $uri.'%')->get('blogposts');
+			$result = $this->db->select('uri')->like('uri', $uri.'%')->get('blog_posts');
 			if (count($result) > 0)
 			{
 				$new_uri = $uri;
@@ -127,7 +127,7 @@ class Blog_Controller extends Administration_Controller {
 	{
 		if($_POST)
 		{
-			$post = ORM::factory('blogpost', (int) $this->input->post('form_id'));
+			$post = ORM::factory('blog_post', (int) $this->input->post('form_id'));
 
 			$post->title = html::specialchars($this->input->post('form_title'));
 			$post->uri = url::title($this->input->post('form_title'));
@@ -146,7 +146,7 @@ class Blog_Controller extends Administration_Controller {
 		else
 		{
 			$this->template->content = new View('blog/admin/edit');
-			$this->template->content->post = ORM::factory('blogpost', (int) $this->uri->segment(4));
+			$this->template->content->post = ORM::factory('blog_post', (int) $this->uri->segment(4));
 				
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: '. $this->template->content->post->title);
@@ -177,9 +177,9 @@ class Blog_Controller extends Administration_Controller {
 
 	private function comments_view($id)
 	{
-		$post = ORM::factory('blogpost', (int) $id);
+		$post = ORM::factory('blog_post', (int) $id);
 		$this->template->content = new View('blog/admin/comments');
-		$this->template->content->comments = $post->comments;
+		$this->template->content->comments = $post->blog_comments;
 
 		$this->head->title->append('Comments for: '. $post->title);
 		$this->template->title .= 'Comments for: '. $post->title;
@@ -197,7 +197,7 @@ class Blog_Controller extends Administration_Controller {
 
 	private function comments_status($status, $id)
 	{
-		$post = ORM::factory('blogpost', (int) $id);
+		$post = ORM::factory('blog_post', (int) $id);
 
 		if ($post->id === 0)
 		{
@@ -217,7 +217,7 @@ class Blog_Controller extends Administration_Controller {
 	{
 		if($_SERVER["REQUEST_METHOD"] == 'POST')
 		{
-			$comment = ORM::factory('comment', (int) $id);
+			$comment = ORM::factory('blog_comment', (int) $id);
 			$comment->author = $this->input->post('form_author');
 			$comment->email = $this->input->post('form_email');
 			$comment->url = $this->input->post('form_url');
@@ -226,12 +226,12 @@ class Blog_Controller extends Administration_Controller {
 
 			$this->session->set_flash('info_message', 'Comment edited successfully');
 
-			url::redirect('admin/blog/comments/'.$comment->blogpost_id);
+			url::redirect('admin/blog/comments/'.$comment->blog_post_id);
 		}
 		else
 		{
 			$this->template->content = new View('blog/admin/editcomment');
-			$this->template->content->comment = ORM::factory('comment', (int) $id);
+			$this->template->content->comment = ORM::factory('blog_comment', (int) $id);
 				
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: Comment #'. $this->template->content->comment->id);
@@ -241,18 +241,17 @@ class Blog_Controller extends Administration_Controller {
 
 	private function comments_delete($id)
 	{
-		$comment = ORM::factory('comment', (int) $id);
+		$comment = ORM::factory('blog_comment', (int) $id);
 		if ($comment->id > 0)
 		{
-			$blogpost_id = $comment->blogpost_id;
 			$comment->delete();
 				
-			$post = ORM::factory('blogpost', (int) $blogpost_id);
+			$post = ORM::factory('blog_post', (int) $comment->blog_post_id);
 			$post->comment_count -= 1;
 			$post->save();
 				
 			$this->session->set_flash('info_message', 'Comment deleted successfully');
-			url::redirect('admin/blog/comments/'.$blogpost_id);
+			url::redirect('admin/blog/comments/'.$comment->blog_post_id);
 		}
 		else
 		{
@@ -263,10 +262,14 @@ class Blog_Controller extends Administration_Controller {
 
 	public function delete($id)
 	{
-		$post = ORM::factory('blogpost', (int) $id);
-		if ($post->id > 0)
+		$post = ORM::factory('blog_post', (int) $id);
+
+		if ($post->loaded)
 		{
-			$post->remove_comments();
+			// remove comments first
+			Database::instance()->where('blog_post_id', (int) $post->id)->delete('blog_comments');
+			
+			// then delete the post
 			$post->delete();
 				
 			$this->session->set_flash('info_message', 'Post deleted sucsessfully');
