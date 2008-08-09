@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /*
  * We need this empty config file!
  */

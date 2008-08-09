@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
  * S7Ncms - www.s7n.de
  *

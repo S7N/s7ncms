@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
  *  http://code.google.com/p/kohana-mptt/source/browse/trunk/test/Head.php
  *  r56
