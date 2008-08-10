@@ -5,29 +5,29 @@
 		<fieldset>
 			<ol>
 				<li>
-					<label for="form_author"><?php echo $form_name->label() ?></label>
-					<?php echo $form_name->render() ?>
-					<?php echo $form_name_errors; ?>
+					<?php echo form::label('author', 'Name') ?>
+					<?php echo form::input('author', $fields['author']) ?>
+					<?php if ( ! empty($errors['author'])): ?><span class="error"><?php echo $errors['author'] ?></span><?php endif ?>
 				</li>
 
 				<li>
-					<label for="form_email"><?php echo $form_email->label() ?></label>
-					<?php echo $form_email->render() ?>
-					<?php echo $form_email_errors; ?>
+					<?php echo form::label('email', 'E-Mail') ?>
+					<?php echo form::input('email', $fields['email']) ?>
+					<?php if ( ! empty($errors['email'])): ?><span class="error"><?php echo $errors['email'] ?></span><?php endif ?>
 				</li>
 
 				<li>
-					<label for="form_url"><?php echo $form_homepage->label() ?></label>
-					<?php echo $form_homepage->render() ?>
-					<?php echo $form_homepage_errors; ?>
+					<?php echo form::label('url', 'Homepage') ?>
+					<?php echo form::input('url', $fields['url']) ?>
+					<?php if ( ! empty($errors['url'])): ?><span class="error"><?php echo $errors['url'] ?></span><?php endif ?>
 				</li>
 
 				<li>
-					<?php echo $form_comment->render() ?>
-					<?php echo $form_comment_errors; ?>
+					<?php echo form::textarea('content', $fields['content']) ?>
+					<?php if ( ! empty($errors['content'])): ?><span class="error"><?php echo $errors['content'] ?></span><?php endif ?>
 				</li>
 				<li>
-					<input name="submit" type="submit" value="Abschicken!" />
+					<?php echo form::submit('submit', ' Abschicken ') ?>
 				</li>
 			</ol>
 		</fieldset>
