@@ -28,7 +28,10 @@ class hook_config {
 		$result = $query->result();
 
 		foreach ($result as $item)
-			Kohana::config_set($item->context.'.'.$item->key, $item->value);
+		{
+			if(Kohana::find_file('config', $item->context))
+				Kohana::config_set($item->context.'.'.$item->key, $item->value);
+		}
 	}
 
 }
