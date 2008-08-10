@@ -97,6 +97,7 @@ class Blog_Controller extends Website_Controller {
 				->pre_filter('trim')
 
 				->post_filter('html::specialchars', 'author', 'url', 'content')
+				->post_filter('format::url', 'url')
 
 				->add_rules('author', 'required', 'length[2,40]')
 				->add_rules('email', 'valid::email')
