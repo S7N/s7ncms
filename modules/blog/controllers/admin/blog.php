@@ -109,6 +109,9 @@ class Blog_Controller extends Administration_Controller {
 			$post->tags = html::specialchars($this->input->post('form_tags'));
 
 			$post->save();
+			
+			// delete feed cache
+			Cache::instance()->delete('s7n_blog_feed');
 
 			$this->session->set_flash('info_message', 'Post created successfully');
 			url::redirect('admin/blog');
@@ -139,6 +142,9 @@ class Blog_Controller extends Administration_Controller {
 
 			$post->save();
 
+			// delete feed cache
+			Cache::instance()->delete('s7n_blog_feed');
+			
 			$this->session->set_flash('info_message', 'Post edited successfully');
 
 			url::redirect('admin/blog');
