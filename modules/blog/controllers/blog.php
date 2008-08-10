@@ -125,7 +125,7 @@ class Blog_Controller extends Website_Controller {
 				}
 				else
 				{
-					// our 'honeypot' part zwo
+					// our 'honeypot' part two
 					if ($this->input->post('location') === 'none')
 						$this->session->set('location', 'none');
 
