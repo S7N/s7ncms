@@ -6,12 +6,36 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<?php echo html::stylesheet('media/admin/css/login.css', 'screen'); ?>
 	<title>S7Ncms login</title>
+	<script type="text/javascript">
+        function focusElement() {
+            document.getElementById('username').focus();
+        }
+        window.onload = focusElement;
+    </script>
 </head>
 <body>
 <div id="login">
     <div id="logo"><?php echo html::image('media/images/s7n_logo.png') ?></div>
     <div id="formular">
-        <?php echo $form ?>
+        <div id="message">
+        <?php foreach ($errors as $error): ?>
+        	<?php echo $error ?><br />
+        <?php endforeach ?>
+        </div>
+
+        <?php echo form::open(NULL) ?>
+        	<p class="email">
+        		<?php echo form::label('username', 'Username') ?><br />
+        		<?php echo form::input('username', $fields['username']) ?>
+        	</p>
+        	<p class="password">
+        		<?php echo form::label('password', 'Password') ?><br />
+        		<?php echo form::input('password') ?>
+        	</p>
+        	<p class="submit">
+        		<?php echo form::submit('submit', ' Login ') ?>
+        	</p>
+        <?php echo form::close() ?>
     </div>
 </div>
 </body>

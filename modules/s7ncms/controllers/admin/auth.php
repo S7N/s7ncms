@@ -20,41 +20,56 @@ class Auth_Controller extends Controller {
 
 	public function login()
 	{
+		$fields = array
+		(
+			'username' => '',
+			'password' => ''
+		);
+		
+		$errors = $fields;
+		
 		if (Auth::instance()->logged_in())
 		{
-			$form = new Forge('admin/auth/logout', 'Log Out');
-
-			$form->submit('Logout Now');
+			url::redirect('admin');
 		}
-		else
+		
+		if ($_POST)
 		{
-			$form = new Forge(NULL);
-
-			$form->input('username')->label(TRUE)->rules('required|length[3,32]');
-			$form->password('password')->label(TRUE)->rules('required|length[4,40]');
-			$form->submit('Login');
-
-			if ($form->validate())
+			$_POST = new Validation($_POST);
+			
+			$_POST
+				->add_rules('username', 'required')
+				->add_rules('password', 'required');
+			
+			if ($_POST->validate())
 			{
 				// Load the user
-				$user = ORM::factory('user', $form->username->value);
-
+				$user = ORM::factory('user', $_POST['username']);
+				
 				// Attempt a login
-				if (Auth::instance()->login($user, $form->password->value))
+				if (Auth::instance()->login($user, $_POST['password']))
 				{
 					$url = Session::instance()->get_once('redirect_me_to');
 					url::redirect(empty($url) ? 'admin' : $url);
 				}
 				else
 				{
-					$form->password->add_error('login_failed', 'Invalid username or password.');
+					$_POST->add_error('password', 'default');
+					$fields = arr::overwrite($_POST->safe_array('username'));
+					$errors = arr::overwrite($_POST->errors('login_error_messages'));
 				}
+			}
+			else
+			{
+				$fields = arr::overwrite($_POST->safe_array('username'));
+				$errors = arr::overwrite($_POST->errors('login_error_messages'));
 			}
 		}
 
 		// Display the form
 		$login = new View('login');
-		$login->form = $form;		
+		$login->fields = $fields;
+		$login->errors = $errors;
 		echo $login;
 
 	}
