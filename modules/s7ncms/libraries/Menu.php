@@ -52,7 +52,7 @@ class Menu_Core {
 		}
 
 		$id = ($id === NULL) ? '' : ' id="'.$id.'"';
-		$html = '<ul'.$id.'>'."\n";
+		$html = '<ul'.$id.' class="menu">'."\n";
 		$current_level = 1;
 
 		foreach ($this->menu_as_array as $item)
@@ -77,23 +77,23 @@ class Menu_Core {
 				if ($current_level > $item['level'])
 				{
 					$html .= str_repeat("</ul></li>\n",($current_level - $item['level']));
-					$html .= '<li id="'.$id.'">'.$value."\n";
+					$html .= '<li id="'.$id.'" class="'.$class.'">'.$value."\n";
 					$html .= '<ul>'."\n";
 				}
 				else
 				{
-					$html .= '<li id="'.$id.'">'.$value."\n";
+					$html .= '<li id="'.$id.'" class="'.$class.'">'.$value."\n";
 					$html .= '<ul>'."\n";
 				}
 			}
 			elseif ($current_level > $item['level'])
 			{
 				$html .= str_repeat("</ul></li>\n",($current_level - $item['level']));
-				$html .= '<li id="'.$id.'">'.$value.'</li>'."\n";
+				$html .= '<li id="'.$id.'" class="'.$class.'">'.$value.'</li>'."\n";
 			}
 			else
 			{
-				$html .= '<li id="'.$id.'">'.$value.'</li>'."\n";
+				$html .= '<li id="'.$id.'" class="'.$class.'">'.$value.'</li>'."\n";
 			}
 
 			$current_level = $item['level'];

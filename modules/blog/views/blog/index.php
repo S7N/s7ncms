@@ -1,7 +1,17 @@
+<div id="article">
 <?php foreach ($posts as $post): ?>
-	<h1><?php echo html::anchor($post->get_url(), $post->title) ?> <sup><?php echo $post->comment_count ?> Kommentare</sup></h1>
-	<p>Geschrieben von <strong><?php echo $post->user->username ?></strong> am <?php echo strftime('%e. %B %Y, %H:%M', strtotime($post->date)) ?></p>
-	<p><?php echo $post->content ?></p>
+	<div class="entry">
+		<div class="entrytitle">
+			<h2><?php echo html::anchor($post->get_url(), $post->title) ?></h2>
+			<h3 class="date">
+				<?php echo strftime('%e. %B %Y, %H:%M', strtotime($post->date)) ?> (<?php echo $post->comment_count ?> Kommentar(e))
+			</h3>
+		</div>
+		<?php echo $post->content ?>
+	</div>
 <?php endforeach; ?>
 
-<p><?php if (isset($pagination)) echo $pagination ?></p>
+	<div class="navigation">
+		<?php if (isset($pagination)) echo $pagination ?>
+	</div>
+</div>
