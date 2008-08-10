@@ -145,36 +145,6 @@ class Blog_Controller extends Website_Controller {
 		$this->head->title->prepend($view->post->title);
 	}
 
-	public function feed()
-	{
-		$this->auto_render = FALSE;
-		if($this->profiler)
-		{
-			$this->profiler->disable();
-		}
-			
-		$view = new View('blog/feed');
-		$view->posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all(10);
-
-		header('Content-Type: text/xml; charset=UTF-8', TRUE);
-		echo $view;
-	}
-
-	public function commentfeed()
-	{
-		$this->auto_render = FALSE;
-		if($this->profiler)
-		{
-			$this->profiler->disable();
-		}
-			
-		$view = new View('blog/commentfeed');
-		$view->comments = ORM::factory('blog_comment')->orderby('id', 'desc')->find_all(20);
-
-		header('Content-Type: text/xml; charset=UTF-8', TRUE);
-		echo $view;
-	}
-
 	public function tag($tag)
 	{
 		$view = new View('blog/index');
