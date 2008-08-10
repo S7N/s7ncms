@@ -64,7 +64,7 @@ class Tagcloud_Widget extends Widget {
 			);
 		}
 	
-		return View::factory('tagcloud')->set('tags', $tags)->render();
+		return View::factory('widgets/tagcloud')->set('tags', $tags)->render();
 	}
 	
 }

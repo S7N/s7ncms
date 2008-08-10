@@ -122,7 +122,7 @@ class Page_Controller extends Administration_Controller {
 		else
 		{
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->headtitle->append('New Page');
+			$this->head->title->append('New Page');
 			
 			$this->template->title = 'Pages | New Page';
 			$this->template->content = new View('page/newpage');
@@ -138,20 +138,60 @@ class Page_Controller extends Administration_Controller {
 
 	public function settings()
 	{
-		if($_SERVER["REQUEST_METHOD"] == 'POST')
+		if($_POST)
 		{
-			if(Settings::save('page.views', $this->input->post('form_views')))
-			{
-				$this->session->set_flash('info_message', 'Page Settings edited successfully');
-				url::redirect('admin/page/settings');
-			}
+			// Default Sidebar Title
+            Database::instance()
+			->update(
+				'config', 
+				array(
+					'value' => $this->input->post('views')
+				),
+				array(
+					'context' => 's7n',
+					'key' => 'views'
+				)
+			);
+			
+			// Default Sidebar Title
+            Database::instance()
+			->update(
+				'config', 
+				array(
+					'value' => $this->input->post('default_sidebar_title')
+				),
+				array(
+					'context' => 's7n',
+					'key' => 'default_sidebar_title'
+				)
+			);
+			
+			// Default Sidebar Content
+            Database::instance()
+			->update(
+				'config', 
+				array(
+					'value' => $this->input->post('default_sidebar_content')
+				),
+				array(
+					'context' => 's7n',
+					'key' => 'default_sidebar_content'
+				)
+			);
+			
+			$this->session->set_flash('info_message', 'Page Settings edited successfully');
+
+			url::redirect('admin/page/settings');
 		}
 		
 		$this->head->title->append('Settings');
 		
 		$this->template->title = 'Pages | Settings';
 		$this->template->content = new View('page/settings');
-		$this->template->content->views = Kohana::config('s7n.page_views');			
+		$this->template->content->views = Kohana::config('s7n.page_views');
+
+		$this->template->content->default_sidebar_title = Kohana::config('s7n.default_sidebar_title');
+        $this->template->content->default_sidebar_content = Kohana::config('s7n.default_sidebar_content');
 	}
 
 	public function recent_entries($number = 10)
