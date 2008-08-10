@@ -100,7 +100,7 @@ a:hover {
 
 /* Content */
 
-#content {
+body > #content {
 	width: 700px;
 	margin: 0 auto;
 	border: 5px solid #3C606E;
