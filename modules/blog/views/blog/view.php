@@ -1,9 +1,9 @@
-<h1><?php echo $blogpost->title ?></h1>
-<p>Geschrieben von: <?php echo $blogpost->user->username ?></p>
-<p><?php echo $blogpost->content ?></p>
+<h1><?php echo $post->title ?></h1>
+<p>Geschrieben von: <?php echo $post->user->username ?></p>
+<p><?php echo $post->content ?></p>
 
 <?php if (count($comments) > 0): ?>
-	<h1><?php echo $blogpost->comment_count ?> Kommentar(e):</h1>
+	<h1><?php echo $post->comment_count ?> Kommentar(e):</h1>
 	
 	<?php foreach ($comments as $comment): ?>
 		<p>

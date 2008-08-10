@@ -55,7 +55,7 @@ class Blog_Controller extends Website_Controller {
 		));
 
 		$view = new View('blog/index');
-		$view->blogposts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset);
+		$view->posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all((int) Kohana::config('blog.items_per_page'), $this->pagination->sql_offset);
 
 		$this->template->content = $view;
 		$this->template->content->pagination = $this->pagination;
@@ -64,19 +64,19 @@ class Blog_Controller extends Website_Controller {
 	private function _view($uri)
 	{
 		$view = new View('blog/view');
-		$view->blogpost = ORM::factory('blog_post', (string) $uri);
+		$view->post = ORM::factory('blog_post', (string) $uri);
 
-		// Show 404 if we don't find blogposts
-		if ((int) $view->blogpost->id === 0)
-		Event::run('system.404');
+		// Show 404 if we don't find posts
+		if ( ! $view->post->loaded)
+			Event::run('system.404');
 
 		$this->head->javascript->append_file('media/js/jquery.js');
 		$this->head->javascript->append_file('modules/blog/media/js/comments.js');
 
-		$view->comments = $view->blogpost->blog_comments;
+		$view->comments = $view->post->blog_comments;
 		$view->form = '';
 
-		if ($view->blogpost->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
+		if ($view->post->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
 		{
 
 			$fields = array
@@ -113,17 +113,15 @@ class Blog_Controller extends Website_Controller {
 					$comment->agent   = html::specialchars(Kohana::$user_agent);
 					$comment->date    = date("Y-m-d H:i:s", time());
 
-					$view->blogpost->add_comment($comment);
-
 					// our 'honeypot' part one
 					if($this->input->post('location') === 'none' OR $this->session->get('location') === 'none')
 					{
-						$view->blogpost->add_comment($comment);
+						$view->post->add_comment($comment);
 			
 						$this->session->delete('location');
 					}
 
-					url::redirect($view->blogpost->get_url());
+					url::redirect($view->post->get_url());
 				}
 				else
 				{
@@ -143,7 +141,7 @@ class Blog_Controller extends Website_Controller {
 
 		$this->template->content = $view;
 
-		$this->head->title->prepend($view->blogpost->title);
+		$this->head->title->prepend($view->post->title);
 	}
 
 	public function feed()
@@ -179,7 +177,7 @@ class Blog_Controller extends Website_Controller {
 	public function tag($tag)
 	{
 		$view = new View('blog/index');
-		$view->blogposts = ORM::factory('blog_post')->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->find_all();
+		$view->posts = ORM::factory('blog_post')->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->find_all();
 
 		$this->template->content = $view;
 	}
