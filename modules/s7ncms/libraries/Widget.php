@@ -40,7 +40,7 @@ class Widget_Core {
 
 	public function __toString()
 	{
-		return View::factory('widget')->set('widget', $this->render())->render();
+		return $this->render();
 	}
 
 	public function initialize($config = array())
