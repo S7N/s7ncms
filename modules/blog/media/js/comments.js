@@ -1,6 +1,6 @@
 $(function() {
-	$('form #content').focus(function(e) {
-		$('form #content').after('<input type="hidden" name="location" value="none" />');
-		$('form #content').unbind('focus');
+	$('#commentform #content').focus(function(e) {
+		$('#commentform #content').after('<input type="hidden" name="location" value="none" />');
+		$('#commentform #content').unbind('focus');
 	});	
 });
