@@ -105,5 +105,4 @@ $config['modules'] = array
 	MODPATH.'s7ncms', // Must always be the first module
 		
 	MODPATH.'auth',   // Authentication
-	MODPATH.'forge',  // Form generation
 );
