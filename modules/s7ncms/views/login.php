@@ -30,7 +30,7 @@
         	</p>
         	<p class="password">
         		<?php echo form::label('password', 'Password') ?><br />
-        		<?php echo form::input('password') ?>
+        		<?php echo form::password('password') ?>
         	</p>
         	<p class="submit">
         		<?php echo form::submit('submit', ' Login ') ?>

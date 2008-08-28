@@ -130,7 +130,7 @@ class Blog_Controller extends Website_Controller {
 					if ($this->input->post('location') === 'none')
 						$this->session->set('location', 'none');
 
-					$fields   = arr::overwrite($_POST->as_array());
+					$fields = arr::overwrite($_POST->as_array());
 					$errors = arr::overwrite($_POST->errors('blog_form_error_messages'));
 				}
 			}

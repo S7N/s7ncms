@@ -42,6 +42,13 @@ $kohana_modules = 'modules';
 $kohana_system = 'system';
 
 /**
+ * Upload directory.
+ *
+ * This path can be absolute or relative to this file.
+ */
+$s7n_upload = 'upload';
+
+/**
  * Test to make sure that Kohana is running on PHP 5.2 or newer. Once you are
  * sure that your environment is compatible with Kohana, you can comment this
  * line out. When running an application on a new server, uncomment this line
@@ -86,8 +93,10 @@ define('APPPATH', str_replace('\\', '/', realpath($kohana_application)).'/');
 define('MODPATH', str_replace('\\', '/', realpath($kohana_modules)).'/');
 define('SYSPATH', str_replace('\\', '/', realpath($kohana_system)).'/');
 
+define('UPLOADPATH', str_replace('\\', '/', realpath($s7n_upload)).'/');
+
 // Clean up
-unset($kohana_application, $kohana_modules, $kohana_system);
+unset($kohana_application, $kohana_modules, $kohana_system, $s7n_upload);
 
 if ( ! IN_PRODUCTION)
 {

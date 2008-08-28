@@ -1,7 +1,7 @@
-$(function() {
+$(function(){
 	// show messages
-	$('#error').fadeIn("slow");
-	$('#message').fadeIn("slow");
+	$('#error_message').fadeIn("slow");
+	$('#info_message').fadeIn("slow");
 	
 	// zebra tables
 	$("tr:nth-child(even)").addClass("even");
@@ -10,5 +10,5 @@ $(function() {
 	$('#navigation li:last').addClass('last');
 	
 	// tabs
-    $("#tabs > ul").tabs();	
+    $("#contentmenu").tabs();	
 });

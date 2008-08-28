@@ -15,12 +15,15 @@ class Administration_Controller extends Template_Controller {
 
 	public $template = 'admin';
 	public $session;
+	public $db;
+	public $head;
 
 	public function __construct()
 	{
 		parent::__construct();
 
 		$this->session = Session::instance();
+		$this->db = Database::instance();
 
 		// check if user is logged in or not. also check if he has admin role
 		if ( ! Auth::factory()->logged_in('admin'))

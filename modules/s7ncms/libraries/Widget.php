@@ -22,7 +22,7 @@ class Widget_Core {
 
 	public static function factory($widget, $config = array())
 	{
-		$class_name = ucfirst($widget).'_Widget';
+		$class_name = ucfirst(strtolower($widget)).'_Widget';
 		
 		if (class_exists($class_name))
 			return new $class_name($config);

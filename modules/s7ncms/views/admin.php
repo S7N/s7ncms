@@ -27,6 +27,9 @@
 	</div>
 
 	<div id="left">
+	
+		<?php echo Sidebar::instance() ?>
+	
 		<?php if(isset($tasks) AND !empty($tasks)): ?>
 			<p><strong>Tasks</strong><br />
 			<?php foreach($tasks as $task): ?>
@@ -47,16 +50,20 @@
 			    <input name="q" value="<?php echo $searchvalue ?>" type="search" placeholder="Filter by" autosave="s7n.search" />
 			<?php echo form::close() ?>
 			<?php endif ?>
+			<!-- ul id="contentmenu">
+				<li><a href="#tab_content"><span>Content</span></a></li>
+                <li><a href="#tab_metadata"><span>Metadata</span></a></li>
+            </ul-->
 		</div>
 		<div id="content">
 			<?php if( $message !== NULL ): ?>
-				<div id="message">
-					<?php echo $message ?>
+				<div id="info_message">
+					<p><?php echo $message ?></p>
 				</div>
 			<?php endif; ?>
 			<?php if( $error !== NULL): ?>
-				<div id="error">
-					<?php echo $error ?>
+				<div id="error_message">
+					<p><?php echo $error ?></p>
 				</div>
 			<?php endif; ?>
 			<?php echo $content ?>
