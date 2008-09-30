@@ -252,7 +252,7 @@ class Menu_Core {
 
 		$tree = array();
 
-		if(count($result) > 1)
+		if(count($result) > 0)
 		{
 			foreach ($result as $entry)
 			{
