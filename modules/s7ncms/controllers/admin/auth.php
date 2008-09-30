@@ -20,6 +20,14 @@ class Auth_Controller extends Controller {
 
 	public function login()
 	{
+		if (Auth::instance()->logged_in())
+		{
+			if (Auth::instance()->logged_in('admin'))
+				url::redirect('admin');
+			else
+				url::redirect();
+		}
+		
 		$fields = array
 		(
 			'username' => '',
@@ -27,11 +35,6 @@ class Auth_Controller extends Controller {
 		);
 		
 		$errors = $fields;
-		
-		if (Auth::instance()->logged_in())
-		{
-			url::redirect('admin');
-		}
 		
 		if ($_POST)
 		{
@@ -71,7 +74,6 @@ class Auth_Controller extends Controller {
 		$login->fields = $fields;
 		$login->errors = $errors;
 		echo $login;
-
 	}
 
 	public function logout()

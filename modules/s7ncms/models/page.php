@@ -11,7 +11,9 @@
  * @copyright Eduard Baun, 2007-2008
  * @version $Id$
  */
-class Page_Model extends ORM {
+class Page_Model extends ORM_MPTT {
+	
+	protected $children = 'pages';
 
 	protected $belongs_to = array('user');
 

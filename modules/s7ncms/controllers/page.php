@@ -13,18 +13,32 @@
  */
 class Page_Controller extends Website_Controller {
 
-	public function __call($method, $rguments)
+	public function index($id)
 	{
-		$page = ORM::factory('page')->find($method);
+		$page = ORM::factory('page', $id);
 
-		if(is_null($page))
+		if( ! $page->loaded)
     		Event::run('system.404');
 
 		$view = is_null($page->view) ? 'default' : $page->view;
 
 		$this->template->content = new View('page/'.$view);
 		$this->template->content->page = $page;
+		
 		$this->head->title->append($page->title);
+		
+		if ($page->lft > 1)
+		{
+			Sidebar::instance()->add
+			(
+				'Static',
+				array
+				(
+					'title'   => 'Submenu',
+					'content' => Menu::instance()->submenu($page)
+				)
+			);
+		}
 		
 		Sidebar::instance()->add
 		(

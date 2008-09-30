@@ -374,3 +374,49 @@ table {
 }
 
 /* @end */
+
+ul.sortable {
+	margin: 0;
+	padding: 0;
+	
+}
+ul.sortable li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+ul.sortable .folder {
+	height: 20px;
+	line-height: 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #F1F5FA;
+}
+
+ul.sortable a span {
+	font-weight: bold;
+	height: 20px;
+}
+
+ul.sortable .movehandle {
+	background: url(../images/icon_move.gif) no-repeat 4px;
+	padding-left: 16px;
+	color: #999999;
+	cursor: move;
+	margin-right: 10px;
+}
+
+ul.sortable .hover {
+	background-color: #bcbcbc;
+}
+
+ul.sortable .hover-up {
+	border-bottom: 3px solid red;
+}
+
+ul.sortable .hover-down {
+	border-top: 3px solid red;
+}

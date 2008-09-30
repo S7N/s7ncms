@@ -27,35 +27,18 @@ class Page_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$this->template->content = new View('page/index');
+		$this->head->javascript->append_file('media/admin/js/ui.core.js');
+		$this->head->javascript->append_file('media/admin/js/ui.draggable.js');
+		$this->head->javascript->append_file('media/admin/js/ui.droppable.js');
+		$this->head->javascript->append_file('media/admin/js/ui.sortable.js');
+		$this->head->javascript->append_file('media/admin/js/ui.tree.js');
 		
-		$this->template->searchbar = TRUE;
+		$this->template->content = new View('page/index_tree');
 		
-		$q = trim($this->input->get('q'));
-		
-		if ( ! empty($q))
-		{
-			$this->template->searchvalue = $q;
+		$this->head->title->append('All Pages');
 			
-			$this->template->content->pages = ORM::factory('page')->orlike(
-				array(
-					'title' => '%'.$q.'%',
-					'excerpt' => '%'.$q.'%',
-					'content' => '%'.$q.'%',
-					'tags' => '%'.$q.'%'
-				)
-			)->find_all();
-			
-			$this->template->title = 'Pages | Filter: '.$q;
-			$this->head->title->append('Filter: '.$q);
-		}
-		else
-		{
-			$this->template->title = 'Pages | All Pages';
-			$this->head->title->append('All Pages');
-			$this->template->content->pages = ORM::factory('page')->find_all();
-		}
-		
+		$this->template->title = 'Pages | All Pages';
+		$this->template->content->pages = ORM::factory('page')->orderby('lft', 'ASC')->find_all();
 	}
 
 	public function edit()
@@ -64,9 +47,9 @@ class Page_Controller extends Administration_Controller {
 		{
 			$page = ORM::factory('page', (int) $this->input->post('form_id'));
 
-			$page->title = html::specialchars($this->input->post('form_title'));
+			$page->title = html::specialchars($this->input->post('form_title'), FALSE);
 
-			if(strstr(Kohana::config('s7n.page_views'), $this->input->post('form_view')) !== false)
+			if(strstr(Kohana::config('s7n.page_views'), $this->input->post('form_view')) !== FALSE)
 			{
 				$page->view = trim($this->input->post('form_view'));
 			}
@@ -76,7 +59,7 @@ class Page_Controller extends Administration_Controller {
 			$page->uri = url::title($this->input->post('form_title'));
 
 			$page->modified = date("Y-m-d H:i:s");
-			$page->keywords = html::specialchars($this->input->post('form_keywords'));
+			$page->keywords = html::specialchars($this->input->post('form_keywords'), FALSE);
 
 			$page->save();
 
@@ -101,7 +84,7 @@ class Page_Controller extends Administration_Controller {
 			$page = new Page_Model;
 			$page->user_id = $_SESSION['auth_user']->id;
 
-			$page->title = html::specialchars($this->input->post('form_title'));
+			$page->title = html::specialchars($this->input->post('form_title'), FALSE);
 			$page->uri = url::title($this->input->post('form_title'));
 
 			$page->view = 'default';
@@ -112,7 +95,7 @@ class Page_Controller extends Administration_Controller {
 			$page->date = date("Y-m-d H:i:s");
 			$page->modified = date("Y-m-d H:i:s");
 
-			$page->keywords = html::specialchars($this->input->post('form_keywords'));
+			$page->keywords = html::specialchars($this->input->post('form_keywords'), FALSE);
 
 			$page->save();
 
@@ -129,9 +112,9 @@ class Page_Controller extends Administration_Controller {
 		}
 	}
 
-	public function delete()
+	public function delete($id)
 	{
-		ORM::factory('page', (int) $this->uri->segment(4))->delete();
+		ORM::factory('page', (int) $id)->delete();
 		$this->session->set_flash('info_message', 'Page deleted successfully');
 		url::redirect('admin/page');
 	}
@@ -194,7 +177,7 @@ class Page_Controller extends Administration_Controller {
         $this->template->content->default_sidebar_content = Kohana::config('s7n.default_sidebar_content');
 	}
 
-	public function recent_entries($number = 10)
+	/*public function recent_entries($number = 10)
 	{
 		$this->auto_render = FALSE;
 
@@ -209,6 +192,61 @@ class Page_Controller extends Administration_Controller {
 		$view->entries = $entries;
 
 		return $view;
+	}*/
+	
+	public function save_tree()
+	{
+		$tree = json_decode($this->input->post('tree', NULL), TRUE);
+		
+		$this->counter = 0;
+		$this->tree = array();
+		
+		$this->calculate_mptt($tree);
+		
+		foreach($this->tree as $node)
+		{
+			$this->db
+				->set(array('parent_id' => $node['parent_id'], 'level' => $node['level'], 'lft' => $node['lft'], 'rgt' => $node['rgt']))
+				->where('id', $node['id'])
+				->update('pages');
+		}
+		
+		$this->session->set_flash('info_message', 'läuft');
+		exit;
 	}
+	
+	private function calculate_mptt($tree, $parent = 0, $level = 0)
+	{
+		foreach ($tree as $key => $value)
+		{
+			$id = substr($key, 5);
+			$children = $value;
+			$left = ++$this->counter;
+			if ( ! empty($children))
+			{
+				$this->calculate_mptt($children, $id, $level+1);
+			}
+			$right = ++$this->counter;
+			
+			$this->tree[] = array(
+				'id' => $id,
+				'parent_id' => $parent,
+				'level' => $level,
+				'lft' => $left,
+				'rgt' => $right 
+			);
+		}
+	}
+	
+/*
 
+"SELECT *, count(*) AS level
+FROM ".$this->table_name. ' AS v, '.$this->table_name.' AS s'."
+WHERE
+	v.".$this->left_column. ' <= s.'.$this->left_column."
+	AND s.".$this->left_column. ' <= v.'.$this->right_column."
+GROUP BY s.".$this->primary_key."
+ORDER BY s.".$this->left_column." ASC"
+
+*/
 }

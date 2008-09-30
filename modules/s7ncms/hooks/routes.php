@@ -20,32 +20,63 @@ class hook_routes {
 
 	public function new_route()
 	{
+		$tree = Database::instance()
+		->select('id, uri, level')
+		->orderby('lft', 'ASC')
+		->get('pages');
+
 		if(empty(Router::$current_uri))
+		{
+			Router::$current_uri = 'page/index/'.$tree->current()->id;
 			return TRUE;
+		}
 
-		$segments = explode('/', Router::$current_uri);
+		$uri = explode('/', Router::$current_uri);
 
-		/**
-		 * Don't rewrite the route if we have other than one segments
-		 */
-		if (count($segments) != 1)
+		if($uri[0] === 'admin')
+		{
 			return TRUE;
+		}
 
-		/**
-		 * Don't rewrite the route if the first segment is 'admin'
-		 */
-		if ($segments[0] === 'admin')
-			return TRUE;
+		foreach ($tree as $row)
+		{
+			if ($row->level == 0) continue;
+				
+			$pages[$row->level][] = array(
+				'id' => $row->id,
+				'uri' => $row->uri
+			);
+		}
 
-		$query = Database::instance()->select('id')->limit(1)->getwhere('pages', array('uri =' => $segments[0]));
+		// the page does not exist if we have more uri segments than levels
+		// TODO implement modules and other controllers here
+		if (count($uri) > count($pages))
+		{
+			Event::run('system.404');
+		}
 
-		/**
-		 * how many pages were found?
-		 */
-		if (count($query) != 1)
-			return true;
 
-		Router::$current_uri = 'page/'.$segments[0];
+		$id = NULL;
+		for ($level = 1; $level <= count($uri); $level++)
+		{
+			$found = FALSE;
+			foreach($pages[$level] as $page)
+			{
+				if($page['uri'] == $uri[$level-1])
+				{
+					$id = $page['id'];
+					$found = TRUE;
+					continue 2;
+				}
+			}
+				
+			if ( ! $found)
+			{
+				Event::run('system.404');
+			}
+		}
+
+		Router::$current_uri = 'page/index/'.$id;
 	}
 
 }
