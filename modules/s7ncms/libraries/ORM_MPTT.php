@@ -15,16 +15,16 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 
 	// Left number column name
 	protected $level_column = 'level';
-	
+
 	// Left number column name
 	protected $left_column = 'lft';
-	
+
 	// Right number column name
 	protected $right_column = 'rgt';
-	
+
 	// Path of a Node
 	protected $path = array();
-	
+
 	/**
 	 * Overload ORM::__get to support "descendants" property.
 	 *
@@ -46,10 +46,10 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 
 			return $this->related[$column];
 		}
-		
+
 		return parent::__get($column);
 	}
-	
+
 	/**
 	 * Counts the number of children of the current node
 	 *
@@ -59,17 +59,17 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 	{
 		return ($this->object[$this->right_column] - $this->object[$this->left_column] - 1) / 2;
 	}
-	
+
 	/**
 	 * Checks if a node has children
 	 *
-	 * @return  boolean  
+	 * @return  boolean
 	 */
 	public function has_children()
 	{
 		return (bool) $this->count_children();
 	}
-	
+
 	/**
 	 * Calculates the path from the rootnode to the current node
 	 *
@@ -88,10 +88,10 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 					->find_all();
 			}
 		}
-		
+
 		return $this->path;
 	}
-	
+
 	/**
 	 * Adds a Child to the current node
 	 *
@@ -102,19 +102,19 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 	{
 		if ( ! $this->loaded)
 			return FALSE;
-		
+
 		// adjust left and right values
 		$this->db->query("UPDATE ".$this->table_name." SET ".$this->left_column."=".$this->left_column."+2 WHERE ".$this->left_column." > ".$this->object[$this->right_column]);
 		$this->db->query("UPDATE ".$this->table_name." SET ".$this->right_column."=".$this->right_column."+2 WHERE ".$this->right_column." >= ".$this->object[$this->right_column]);
-		
+
 		$model->object[$this->parent_key] = $this->id;
 		$model->object[$this->left_column] = $this->object[$this->right_column];
 		$model->object[$this->right_column] = $this->object[$this->right_column] + 1;
 		$model->save();
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Deletes the current node and its descendants
 	 *
@@ -123,22 +123,22 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 	public function delete($id = NULL)
 	{
 		$move = 2 * ($this->count_children() + 1);
-		
+
 		// adjust left and right values
 		$this->db->query('UPDATE '.$this->table_name.' SET '.$this->left_column.'='.$this->left_column.'-'.$move.' WHERE '.$this->left_column.' > '.$this->object[$this->right_column]);
-		$this->db->query('UPDATE '.$this->table_name.' SET '.$this->right_column.'='.$this->right_column.'-'.$move.' WHERE '.$this->right_column.' > '.$this->object[$this->right_column]);			
-		
+		$this->db->query('UPDATE '.$this->table_name.' SET '.$this->right_column.'='.$this->right_column.'-'.$move.' WHERE '.$this->right_column.' > '.$this->object[$this->right_column]);
+
 		// delete children
 		$this->db
 			->where($this->left_column.' < '.$this->object[$this->right_column])
 			->where($this->left_column.' > '.$this->object[$this->left_column])
 			->delete($this->table_name);
-		
+
 		// delete entry
 		return parent::delete($id);
 	}
-	
-	
+
+
 	/**
 	 * Saves the current node. If the node is new
 	 * it will be the child of the root node
@@ -150,7 +150,7 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 		$level_column = $this->level_column;
 		$left_column = $this->left_column;
 		$right_column = $this->right_column;
-		
+
 		if (is_null($this->parent_id))
 		{
 			// get root node
@@ -158,7 +158,7 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 
 			// adjust the right value of the root node
 			$this->db->query('UPDATE '.$this->table_name.' SET '.$this->right_column.'='.($query->$right_column + 2).' WHERE id = '.$query->id);
-			
+				
 			// add parent_id, left and right to the new node
 			$this->object[$this->parent_key] = $query->id;
 			$this->object[$this->level_column] = $query->$level_column;
