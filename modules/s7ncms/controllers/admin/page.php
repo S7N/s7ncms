@@ -176,23 +176,6 @@ class Page_Controller extends Administration_Controller {
 		$this->template->content->default_sidebar_title = Kohana::config('s7n.default_sidebar_title');
         $this->template->content->default_sidebar_content = Kohana::config('s7n.default_sidebar_content');
 	}
-
-	/*public function recent_entries($number = 10)
-	{
-		$this->auto_render = FALSE;
-
-		$x = ORM::factory('page')->find_all((int) $number);
-		$view = new View('page/recent_entries');
-
-		$entries = array();
-		foreach ($x as $entry)
-		{
-			$entries[] = array('admin/page/edit/'.$entry->id, $entry->title);
-		}
-		$view->entries = $entries;
-
-		return $view;
-	}*/
 	
 	public function save_tree()
 	{
@@ -211,7 +194,7 @@ class Page_Controller extends Administration_Controller {
 				->update('pages');
 		}
 		
-		$this->session->set_flash('info_message', 'läuft');
+		$this->session->set_flash('info_message', 'Page order saved successfully');
 		exit;
 	}
 	
@@ -237,16 +220,4 @@ class Page_Controller extends Administration_Controller {
 			);
 		}
 	}
-	
-/*
-
-"SELECT *, count(*) AS level
-FROM ".$this->table_name. ' AS v, '.$this->table_name.' AS s'."
-WHERE
-	v.".$this->left_column. ' <= s.'.$this->left_column."
-	AND s.".$this->left_column. ' <= v.'.$this->right_column."
-GROUP BY s.".$this->primary_key."
-ORDER BY s.".$this->left_column." ASC"
-
-*/
 }

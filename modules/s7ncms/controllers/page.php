@@ -27,7 +27,7 @@ class Page_Controller extends Website_Controller {
 		
 		$this->head->title->append($page->title);
 		
-		if ($page->lft > 1)
+		if ($page->has_children() AND $page->level > 0)
 		{
 			Sidebar::instance()->add
 			(

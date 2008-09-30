@@ -250,6 +250,8 @@ class Menu_Core {
 			$result = $object;
 		}
 
+		$tree = array();
+
 		if(count($result) > 1)
 		{
 			foreach ($result as $entry)
