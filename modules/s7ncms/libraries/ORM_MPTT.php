@@ -14,6 +14,9 @@
 class ORM_MPTT_Core extends ORM_Tree_Core {
 
 	// Left number column name
+	protected $level_column = 'level';
+	
+	// Left number column name
 	protected $left_column = 'lft';
 	
 	// Right number column name
@@ -34,15 +37,10 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 		{
 			if (empty($this->related[$column]))
 			{
-				$left_column = $this->left_column;
-				
 				$this->related[$column] = ORM::factory(inflector::singular($this->table_name))
-					->from($this->table_name. ' AS v, '.$this->table_name.' AS s')
-					->where('v.'.$this->left_column. ' <= s.'.$this->left_column)
-					->where('s.'.$this->left_column. ' <= v.'.$this->right_column)
-					->where('s.'.$this->left_column. ' != '.$this->$left_column)
-					->groupby('s.'.$this->primary_key)
-					->orderby('s.'.$this->left_column, 'ASC')
+					->where($this->left_column.' > '. $this->object[$this->left_column])
+					->where($this->right_column.' < '. $this->object[$this->right_column])
+					->orderby($this->left_column, 'ASC')
 					->find_all();
 			}
 
@@ -59,10 +57,7 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 	 */
 	public function count_children()
 	{
-		$left_column = $this->left_column;
-		$right_column = $this->right_column;
-		
-		return ($this->$right_column - $this->$left_column - 1) / 2;
+		return ($this->object[$this->right_column] - $this->object[$this->left_column] - 1) / 2;
 	}
 	
 	/**
@@ -72,10 +67,7 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 	 */
 	public function has_children()
 	{
-		$left_column = $this->left_column;
-		$right_column = $this->right_column;
-		
-		return ($this->$right_column - $this->$left_column) > 1;
+		return (bool) $this->count_children();
 	}
 	
 	/**
@@ -89,12 +81,9 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 		{
 			if ($this->loaded)
 			{
-				$left_column = $this->left_column;
-				$right_column = $this->right_column;
-				
 				$this->path = $this
-					->where($this->left_column.' <= '.$this->$left_column)
-					->where($this->right_column.' >= '.$this->$right_column)
+					->where($this->left_column.' <= '.$this->object[$this->left_column])
+					->where($this->right_column.' >= '.$this->object[$this->right_column])
 					->orderby($this->left_column, 'ASC')
 					->find_all();
 			}
@@ -114,17 +103,13 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 		if ( ! $this->loaded)
 			return FALSE;
 		
-		$left_column = $this->left_column;
-		$right_column = $this->right_column;
-		
 		// adjust left and right values
-		$this->db->query("UPDATE ".$this->table_name." SET ".$this->left_column."=".$this->left_column."+2 WHERE ".$this->left_column." > ".$this->$right_column);
-		$this->db->query("UPDATE ".$this->table_name." SET ".$this->right_column."=".$this->right_column."+2 WHERE ".$this->right_column." >= ".$this->$right_column);
+		$this->db->query("UPDATE ".$this->table_name." SET ".$this->left_column."=".$this->left_column."+2 WHERE ".$this->left_column." > ".$this->object[$this->right_column]);
+		$this->db->query("UPDATE ".$this->table_name." SET ".$this->right_column."=".$this->right_column."+2 WHERE ".$this->right_column." >= ".$this->object[$this->right_column]);
 		
-		$parent_key = $this->parent_key;
-		$model->$parent_key = $this->id;
-		$model->$left_column = $this->$right_column;
-		$model->$right_column = $this->$right_column + 1;
+		$model->object[$this->parent_key] = $this->id;
+		$model->object[$this->left_column] = $this->object[$this->right_column];
+		$model->object[$this->right_column] = $this->object[$this->right_column] + 1;
 		$model->save();
 		
 		return $this;
@@ -137,19 +122,16 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 	 */
 	public function delete($id = NULL)
 	{
-		$left_column = $this->left_column;
-		$right_column = $this->right_column;
-		
 		$move = 2 * ($this->count_children() + 1);
 		
 		// adjust left and right values
-		$this->db->query('UPDATE '.$this->table_name.' SET '.$this->left_column.'='.$this->left_column.'-'.$move.' WHERE '.$this->left_column.' > '.$this->$right_column);
-		$this->db->query('UPDATE '.$this->table_name.' SET '.$this->right_column.'='.$this->right_column.'-'.$move.' WHERE '.$this->right_column.' > '.$this->$right_column);			
+		$this->db->query('UPDATE '.$this->table_name.' SET '.$this->left_column.'='.$this->left_column.'-'.$move.' WHERE '.$this->left_column.' > '.$this->object[$this->right_column]);
+		$this->db->query('UPDATE '.$this->table_name.' SET '.$this->right_column.'='.$this->right_column.'-'.$move.' WHERE '.$this->right_column.' > '.$this->object[$this->right_column]);			
 		
 		// delete children
 		$this->db
-			->where($this->left_column.' < '.$this->$right_column)
-			->where($this->left_column.' > '.$this->$left_column)
+			->where($this->left_column.' < '.$this->object[$this->right_column])
+			->where($this->left_column.' > '.$this->object[$this->left_column])
 			->delete($this->table_name);
 		
 		// delete entry
@@ -165,22 +147,23 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 	 */
 	public function save()
 	{
-		$parent_key = $this->parent_key;
+		$level_column = $this->level_column;
 		$left_column = $this->left_column;
 		$right_column = $this->right_column;
 		
 		if (is_null($this->parent_id))
 		{
 			// get root node
-			$query = $this->db->select('id', $this->left_column, $this->right_column)->where($this->left_column, 1)->limit(1)->get($this->table_name)->current();
+			$query = $this->db->select('id', $this->level_column, $this->left_column, $this->right_column)->where($this->left_column, 1)->limit(1)->get($this->table_name)->current();
 
 			// adjust the right value of the root node
 			$this->db->query('UPDATE '.$this->table_name.' SET '.$this->right_column.'='.($query->$right_column + 2).' WHERE id = '.$query->id);
 			
 			// add parent_id, left and right to the new node
-			$this->$parent_key = $query->id;
-			$this->$left_column = $query->$right_column;
-			$this->$right_column = $query->$right_column + 1;
+			$this->object[$this->parent_key] = $query->id;
+			$this->object[$this->level_column] = $query->$level_column;
+			$this->object[$this->left_column] = $query->$right_column;
+			$this->object[$this->right_column] = $query->$right_column + 1;
 		}
 			
 		return parent::save();
