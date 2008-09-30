@@ -107,9 +107,10 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 		$this->db->query("UPDATE ".$this->table_name." SET ".$this->left_column."=".$this->left_column."+2 WHERE ".$this->left_column." > ".$this->object[$this->right_column]);
 		$this->db->query("UPDATE ".$this->table_name." SET ".$this->right_column."=".$this->right_column."+2 WHERE ".$this->right_column." >= ".$this->object[$this->right_column]);
 
-		$model->object[$this->parent_key] = $this->id;
-		$model->object[$this->left_column] = $this->object[$this->right_column];
-		$model->object[$this->right_column] = $this->object[$this->right_column] + 1;
+		$this->__set($this->parent_key, $this->object[$this->id]);
+		$this->__set($this->level_column, $this->object[$this->level_column] + 1);
+		$this->__set($this->left_column, $this->object[$this->right_column]);
+		$this->__set($this->right_column, $this->object[$this->right_column] + 1);
 		$model->save();
 
 		return $this;
@@ -155,7 +156,7 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 		{
 			// get root node
 			$query = $this->db->select('id', $this->level_column, $this->left_column, $this->right_column)->where($this->left_column, 1)->limit(1)->get($this->table_name);
-				
+
 			// do we have a root node?
 			if (count($query) > 0)
 			{
@@ -165,10 +166,10 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 				$this->db->query('UPDATE '.$this->table_name.' SET '.$this->right_column.'='.($query->$right_column + 2).' WHERE id = '.$query->id);
 					
 				// add parent_id, left and right to the new node
-				$this->object[$this->parent_key] = $query->id;
-				$this->object[$this->level_column] = $query->$level_column;
-				$this->object[$this->left_column] = $query->$right_column;
-				$this->object[$this->right_column] = $query->$right_column + 1;
+				$this->__set($this->parent_key, $query->id);
+				$this->__set($this->level_column, $query->$level_column + 1);
+				$this->__set($this->left_column, $query->$right_column);
+				$this->__set($this->right_column, $query->$right_column + 1);
 			}
 			else
 			{
