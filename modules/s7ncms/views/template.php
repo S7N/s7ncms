@@ -14,7 +14,7 @@
 				</div>
 				<div class="clear"></div>
 				
-				<?php echo new Menu; ?>
+				<?php echo Menu::instance(); ?>
 			</div>
 		</div>
 		<div id="content">
