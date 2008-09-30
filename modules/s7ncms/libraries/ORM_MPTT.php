@@ -174,10 +174,10 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 			else
 			{
 				// add parent_id, left and right to the new node
-				$this->object[$this->parent_key] = 0;
-				$this->object[$this->level_column] = 0;
-				$this->object[$this->left_column] = 1;
-				$this->object[$this->right_column] = 2;
+				$this->__set($this->parent_key, 0);
+				$this->__set($this->level_column, 0);
+				$this->__set($this->left_column, 1);
+				$this->__set($this->right_column, 2);
 			}
 		}
 			
