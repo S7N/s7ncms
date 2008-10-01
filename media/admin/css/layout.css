@@ -180,7 +180,7 @@ p, h1, h2 {
 }
 
 h1 {
-	font-size: 14px;	
+	font-size: 16px;	
 	font-weight: bold;
 	color: #6884ab;
 }
@@ -317,7 +317,7 @@ table {
 	margin: 0;
 	padding: 0;
 	border-bottom: none;
-	font-size: 14px;	
+	font-size: 13px;	
 	font-weight: bold;
 	color: #6884ab;
 }

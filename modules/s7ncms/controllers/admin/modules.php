@@ -17,10 +17,6 @@ class Modules_Controller extends Administration_Controller {
 	{
 		parent::__construct();
 		
-		$this->template->tasks = array(
-			array('admin/modules/install', 'Install New Modules')
-		);
-		
 		$this->head->title->append('Modules');
 	}
 	public function index()
@@ -30,6 +26,7 @@ class Modules_Controller extends Administration_Controller {
 		
 		$modules = new Modules_Model;
 		$this->template->content->modules = $modules->get();
+		$this->template->content->not_installed_modules = $modules->not_installed();
     }
     
     public function status()

@@ -120,7 +120,8 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$this->head->title->append('New Post');
 			$this->template->title .= 'New Post';
-				
+			$this->template->tabs = array('Content', 'Advanced');
+			
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->template->content = new View('blog/admin/newpost');
 		}
@@ -153,7 +154,8 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$this->template->content = new View('blog/admin/edit');
 			$this->template->content->post = ORM::factory('blog_post', (int) $this->uri->segment(4));
-				
+			$this->template->tabs = array('Content', 'Advanced');
+			
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: '. $this->template->content->post->title);
 			$this->template->title .= 'Edit: '. $this->template->content->post->title;

@@ -27,19 +27,6 @@ class Settings_Controller extends Administration_Controller {
 	{
         if($_SERVER["REQUEST_METHOD"] === 'POST')
 		{
-			// Default URI
-            $this->db
-			->update(
-				'config', 
-				array(
-					'value' => $this->input->post('default_uri')
-				),
-				array(
-					'context' => 's7n',
-					'key' => 'default_uri'
-				)
-			);
-			
 			// Site Title
 			$this->db
 			->update(

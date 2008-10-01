@@ -5,49 +5,33 @@ tinyMCE.init({
 	theme: 'advanced',
 	plugins : "inlinepopups",
 	entity_encoding : "raw",
-	
 	convert_urls : false
 });
 
 </script>
-<?php echo form::open('admin/page/edit', array(), array('form_id' => $page->id)); ?>
+<?php echo form::open('admin/page/edit', array(), array('form_id' => $page->id)) ?>
 <div id="tabs">
-
-	<ul>
-		<li><a class="active" href="#tab_page"><span>Content</span></a></li>
-		<li><a href="#tab_advanced"><span>Advanced</span></a></li>
-	</ul>
-	
-	<div id="tab_page">
-		<p>Title:<br />
-		<?php echo form::input('form_title', $page->title); ?></p>
-		<p>Template:<br />
-		<?php echo form::input('form_view', $page->view); ?></p>
-		
-		<p>Content: (Editor
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_content').show();">an</a> /
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_content').hide();">aus</a>
-		)<br />
-		<?php echo form::textarea('form_content', $page->content); ?>
-		</p>
-		
-		<p>Excerpt: (Editor
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_excerpt').show();">an</a> /
-		<a href="javascript:void(0);" onmousedown="tinyMCE.get('form_excerpt').hide();">aus</a>
-		)<br />
-		<?php echo form::textarea('form_excerpt', $page->excerpt); ?>
-		</p>
+	<div id="tab_content">
+		<p><?php echo form::label('form_title', 'Title').form::input('form_title', $page->title) ?></p>
+		<p><?php echo form::label('form_content', 'Content').form::textarea('form_content', $page->content) ?></p>
+		<p><?php echo form::submit('submit', 'Save') ?></p>
 	</div>
-	
 	<div id="tab_advanced">
 		<p>
-			Keywords (comma separated):<br />
-		    <?php echo form::input('form_keywords', $page->keywords); ?>
+		<?php
+			$select = array('none' => 'No Module');
+			foreach ($modules as $module)
+			{
+				$select[$module['db']->name] = $module['xml']->name;
+			}
+			
+			echo form::label('form_module', 'Module');
+		?>
+		<?php echo form::dropdown('form_module', $select, $page->module) ?>
 		</p>
+		<p><?php echo form::label('form_view', 'Template').form::input('form_view', $page->view) ?></p>
+		<p><?php echo form::label('form_content', 'Keywords: <small>(Comma separated)</small>').form::input('form_keywords', $page->keywords) ?></p>
 	</div>
-
 </div>
 
-<p><?php echo form::submit('submit', 'Save'); ?></p>
-
-<?php echo form::close(); ?>
+<?php echo form::close() ?>

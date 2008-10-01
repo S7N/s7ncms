@@ -54,13 +54,12 @@ class Page_Controller extends Administration_Controller {
 				$page->view = trim($this->input->post('form_view'));
 			}
 
-			$page->excerpt = $this->input->post('form_excerpt');
 			$page->content = $this->input->post('form_content');
 			$page->uri = url::title($this->input->post('form_title'));
 
 			$page->modified = date("Y-m-d H:i:s");
 			$page->keywords = html::specialchars($this->input->post('form_keywords'), FALSE);
-
+			$page->module = $this->input->post('form_module') === 'none' ? NULL : $this->input->post('form_module');
 			$page->save();
 
 			$this->session->set_flash('info_message', 'Page edited successfully');
@@ -72,7 +71,11 @@ class Page_Controller extends Administration_Controller {
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->template->content = new View('page/edit');
 			$this->template->content->page = ORM::factory('page', (int) $this->uri->segment(4));
+			
+			$modules = new Modules_Model;
+			$this->template->content->modules = $modules->get();
 			$this->template->title = 'Pages | Edit: '. $this->template->content->page->title;
+			$this->template->tabs = array('Content', 'Advanced');
 			$this->head->title->append('Edit: '. $this->template->content->page->title);
 		}
 	}
@@ -107,8 +110,12 @@ class Page_Controller extends Administration_Controller {
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('New Page');
 			
+			$this->template->tabs = array('Content', 'Advanced');
 			$this->template->title = 'Pages | New Page';
 			$this->template->content = new View('page/newpage');
+			
+			$modules = new Modules_Model;
+			$this->template->content->modules = $modules->get();
 		}
 	}
 

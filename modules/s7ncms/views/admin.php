@@ -49,10 +49,14 @@
 			    <input name="q" value="<?php echo $searchvalue ?>" type="search" placeholder="Filter by" autosave="s7n.search" />
 			<?php echo form::close() ?>
 			<?php endif ?>
-			<!-- ul id="contentmenu">
-				<li><a href="#tab_content"><span>Content</span></a></li>
-                <li><a href="#tab_metadata"><span>Metadata</span></a></li>
-            </ul-->
+			
+			<?php if(isset($tabs)): ?>
+			<ul id="contentmenu">
+				<?php foreach ($tabs as $tab): ?>
+                	<li><a href="#tab_<?php echo url::title($tab) ?>"><span><?php echo $tab ?></span></a></li>
+                <?php endforeach ?>
+            </ul>
+			<?php endif ?>
 		</div>
 		<div id="content">
 			<?php if( $message !== NULL ): ?>

@@ -117,7 +117,7 @@ class hook_routes {
 		}
 		else
 		{
-			if ( ! $found)
+			if ( ! $found OR ! empty($routed_arguments))
 			{
 				Event::run('system.404');
 			}
