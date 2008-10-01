@@ -18,7 +18,8 @@ class Blog_Controller extends Website_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->head->link->append('blog/feed');
+		// TODO: this is buggy in 2.2.1. needs to be fixed
+		//$this->head->link->append(Router::$routed_uri.'/feed');
 
 		Sidebar::instance()->add
 		(
@@ -105,7 +106,7 @@ class Blog_Controller extends Website_Controller {
 
 				if ($_POST->validate())
 				{
-					$comment = new Blog_comment_Model;
+					$comment = new Blog_Comment_Model;
 					$comment->author  = $_POST['author'];
 					$comment->email   = $_POST['email'];
 					$comment->content = $_POST['content'];

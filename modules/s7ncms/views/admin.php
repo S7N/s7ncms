@@ -20,7 +20,6 @@
 			<li><?php echo html::anchor('admin/dashboard', 'Dashboard'); ?></li>
 			<li><?php echo html::anchor('admin/page', 'Pages'); ?></li>
 			<li><?php echo html::anchor('admin/modules', 'Modules'); ?></li>
-			<li><?php echo html::anchor('admin/menu', 'Menu'); ?></li>
 			<li><?php echo html::anchor('admin/user', 'Users'); ?></li>
 			<li><?php echo html::anchor('admin/settings', 'Settings'); ?></li>
 		</ul>

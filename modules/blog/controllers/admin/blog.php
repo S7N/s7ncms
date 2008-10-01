@@ -65,7 +65,7 @@ class Blog_Controller extends Administration_Controller {
 			$post = new Blog_post_Model;
 			$post->user_id = $_SESSION['auth_user']->id;
 
-			$post->title = html::specialchars($this->input->post('form_title'));
+			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
 			
 			$uri = url::title($this->input->post('form_title'));
 
@@ -106,7 +106,7 @@ class Blog_Controller extends Administration_Controller {
 			$post->date = date("Y-m-d H:i:s");
 			$page->modified = date("Y-m-d H:i:s");
 				
-			$post->tags = html::specialchars($this->input->post('form_tags'));
+			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
 
 			$post->save();
 			
@@ -132,13 +132,13 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$post = ORM::factory('blog_post', (int) $this->input->post('form_id'));
 
-			$post->title = html::specialchars($this->input->post('form_title'));
+			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
 			$post->uri = url::title($this->input->post('form_title'));
 				
 			$post->content = $this->input->post('form_content');
 				
 			$post->modified = date("Y-m-d H:i:s");
-			$post->tags = html::specialchars($this->input->post('form_tags'));
+			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
 
 			$post->save();
 

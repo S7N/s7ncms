@@ -21,8 +21,7 @@ class Tagcloud_Widget extends Widget {
 
 		if (is_null($this->config['uri']))
 		{
-			$uri = explode('/', Router::$current_uri);
-			$this->config['uri'] = $uri[0];
+			$this->config['uri'] = Router::$routed_uri;
 		}
 	}
 	

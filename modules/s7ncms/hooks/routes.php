@@ -21,7 +21,7 @@ class hook_routes {
 	public function new_route()
 	{
 		$tree = Database::instance()
-		->select('id, uri, level')
+		->select('id, uri, level, module')
 		->orderby('lft', 'ASC')
 		->get('pages');
 
@@ -44,7 +44,8 @@ class hook_routes {
 				
 			$pages[$row->level][] = array(
 				'id' => $row->id,
-				'uri' => $row->uri
+				'uri' => $row->uri,
+				'module' => $row->module
 			);
 		}
 
@@ -52,31 +53,77 @@ class hook_routes {
 		// TODO implement modules and other controllers here
 		if (count($uri) > count($pages))
 		{
-			Event::run('system.404');
+			//Event::run('system.404');
+			
+			
 		}
 
 
 		$id = NULL;
-		for ($level = 1; $level <= count($uri); $level++)
+		$routed_uri = array();
+		$routed_arguments = array();
+		$load_module = FALSE;
+		
+		$uri_size = count($uri);
+		$pages_size = count($pages);
+		for ($level = 1; $level <= $uri_size; $level++)
 		{
+			if ($level > $pages_size)
+			{
+				$routed_arguments[] = $uri[$level-1];
+				continue;
+			}
+			if ($load_module !== FALSE)
+			{
+				$routed_arguments[] = $uri[$level-1];
+			}
 			$found = FALSE;
 			foreach($pages[$level] as $page)
 			{
+				
+				
 				if($page['uri'] == $uri[$level-1])
 				{
 					$id = $page['id'];
+					
 					$found = TRUE;
+					
+					
+					$routed_uri[] = $page['uri'];
+					
+					
+					// check, if we have to load a controller
+					if ( ! empty($page['module']))
+					{
+						$load_module = $page['module'];
+					}
+					
 					continue 2;
 				}
 			}
-				
+			
+		}
+		
+		Router::$current_id = $id;
+		
+		if ($load_module !== FALSE)
+		{
+			define('EDY', implode('/', $routed_uri));
+			
+			Router::$routed_uri = implode('/', $routed_uri);
+			
+			Kohana::config_set('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.implode('/', $routed_arguments));
+			//echo Kohana::debug('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.implode('/', $routed_arguments));
+		}
+		else
+		{
 			if ( ! $found)
 			{
 				Event::run('system.404');
 			}
+			
+			Router::$current_uri = 'page/index/'.$id;
 		}
-
-		Router::$current_uri = 'page/index/'.$id;
 	}
 
 }

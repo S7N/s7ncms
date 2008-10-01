@@ -18,7 +18,7 @@
 			<li class="alt">
 				<div class="commentcount"><?php echo $counter++ ?></div>
 				<cite><?php echo $comment->author ?></cite><br />
-				<small class="commentmetadata"><?php echo strftime('%e. %B %Y, %H:%M', strtotime($post->date)) ?></small>
+				<small class="commentmetadata"><?php echo strftime('%e. %B %Y, %H:%M', strtotime($comment->date)) ?></small>
 				<?php echo nl2br($comment->content) ?>
 			</li>
 			<?php endforeach ?>

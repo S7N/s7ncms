@@ -57,7 +57,7 @@ class Blog_post_Model extends ORM {
 	
 	public function get_url()
     {
-        return 'blog/'.$this->uri;
+        return Router::$routed_uri.'/'.$this->uri;
     }
 	
 	public function all_tags()

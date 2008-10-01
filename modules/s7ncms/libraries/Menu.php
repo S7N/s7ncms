@@ -141,15 +141,10 @@ class Menu_Core {
 		if ($size == 0)
 			return null;
 
-		// remove 'page/' from current uri
-		$current_url = url::current();
-		if (strpos($current_url, 'page/index/') === 0)
-			$current_url = substr($current_url, 11);
-
 		// search for active menu item
 		for($i = $size-1; $i >= 0; $i--)
 		{
-			if ($current_url == $this->menu[$i]['id'])
+			if (Router::$current_id == $this->menu[$i]['id'])
 			{
 				$this->menu[$i]['is_active'] = TRUE;
 

@@ -19,10 +19,6 @@ class Feed_Controller extends Controller {
 	{
 		parent::__construct();
 
-		$config = array
-		(
-			'lifetime' => 60*60
-		);
 		$this->cache = new Cache(array
 			(
 				'lifetime' => 60*60
@@ -46,7 +42,7 @@ class Feed_Controller extends Controller {
 			(
 				'title' => Kohana::config('s7n.site_title'),
 				'description' => '',
-				'link' => 'blog',
+				'link' => Router::$routed_uri,
 				'generator' => 'S7Ncms - http://www.s7n.de/'
 			);
 
@@ -85,7 +81,7 @@ class Feed_Controller extends Controller {
 			$info = array
 			(
 				'title' => Kohana::config('s7n.site_title').' (Latest Comments)',
-				'link' => 'blog',
+				'link' => Router::$routed_uri,
 				'generator' => 'S7Ncms - http://www.s7n.de/'
 			);
 	
