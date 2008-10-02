@@ -91,10 +91,10 @@ CREATE TABLE `pages` (
   `user_id` int(11) NOT NULL default '0',
   `date` datetime NOT NULL default '0000-00-00 00:00:00',
   `title` varchar(200) NOT NULL,
-  `excerpt` text,
-  `content` longtext NOT NULL,
+  `excerpt` text default NULL,
+  `content` longtext default NULL,
   `uri` varchar(200) NOT NULL,
-  `tags` text,
+  `tags` text default NULL,
   `view` varchar(200) default NULL,
   `modified` datetime default NULL,
   `password` varchar(200) default NULL,
@@ -103,7 +103,7 @@ CREATE TABLE `pages` (
   `level` int(11) NOT NULL,
   `lft` int(11) default NULL,
   `rgt` int(11) default NULL,
-  `module` varchar(250) NOT NULL,
+  `module` varchar(250) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -111,11 +111,11 @@ CREATE TABLE `pages` (
 -- Daten für Tabelle `pages`
 -- 
 
-INSERT INTO `pages` VALUES (1, NULL, 1, '2008-08-08 08:08:08', 'Home', NULL, '<h1>Willkommen!<br /></h1>\n<p>Mit <strong>S7Ncms</strong> wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei <strong>S7Ncms</strong> handelt es sich um ein speziell für die Anforderungen professioneller Webseiten                     entwickeltes Content Management System.</p>\n<p><strong>S7Ncms</strong> bietet dem Benutzer eine einfach zu verstehende Verwaltungsplattform, die durch hohe Benutzerfreundlich- und                     Übersichtlichkeit glänzt. Das Ziel von <strong>S7Ncms</strong> ist es jedem Benutzer - auch ohne vorhandene Programmierkenntnisse - den Einstieg in die Erstellung einer eigenen Homepage zu ermöglichen.</p>\n<p>Durch <strong>S7Ncms</strong> wird es Ihnen möglich sein, auf einfachste Art und Weise, von überall auf der Welt,                     Ihre Internetpräsenz zu steuern und zu verwalten. Aktuelle Neuigkeiten auf der Website                     zu veröffentlichen oder die letzten Ereignisse zu verewigen ist jetzt genauso so kinderleicht,                     wie E-Mails schreiben.</p>\n<p>Die Installation des Systems erfolgt in drei Schritten und kann ohne große Vorkenntnisse vorgenommen                     werden.</p>\n<p>Weiterhin ist es möglich, <strong>S7Ncms</strong> modular zu erweitern, um auch fortgeschrittenen Benutzern                     alle benötigten Features zur Verfügung zu stellen.</p>\n<p>Entscheiden Sie sich noch heute für <strong>S7Ncms</strong> und erhalten Sie ein einzigartiges OpenSource-Produkt, welches die Möglichkeiten von PHP 5 und MySQL nutzt und Ihnen damit eine schnelle,                     einfache und zukunftssichere Verwaltung Ihrer Webseite garantiert.</p>', 'home', NULL, 'extended', '2008-08-10 20:16:53', NULL, 'published', 0, 0, 1, 12, '');
-INSERT INTO `pages` VALUES (2, NULL, 1, '2008-08-08 08:08:08', 'Products', NULL, '<p>Prudukt 1</p>\n<p>Produkt 2</p>\n<p>Produkt 3</p>', 'products', NULL, 'default', '2008-04-12 01:45:42', NULL, 'published', 1, 1, 2, 3, '');
-INSERT INTO `pages` VALUES (3, NULL, 1, '2008-08-08 08:08:08', 'About me', NULL, '<p>Hi, thats me!</p>', 'about-me', NULL, 'default', '2008-04-12 01:45:07', NULL, 'published', 1, 1, 4, 9, '');
-INSERT INTO `pages` VALUES (4, NULL, 1, '2008-08-08 08:08:08', 'Contact Me', NULL, '<p>Hallo, kontaktier mich bitte mal! :)</p>', 'contact-me', NULL, 'default', '2008-04-12 01:32:07', NULL, 'published', 3, 2, 5, 6, '');
-INSERT INTO `pages` VALUES (5, NULL, 1, '2008-08-08 08:08:08', 'Impressum', NULL, '<p><strong>Verantwortlich</strong>: niemand</p>', 'impressum', NULL, 'default', '2008-10-02 21:50:41', NULL, 'published', 3, 2, 7, 8, '');
+INSERT INTO `pages` VALUES (1, NULL, 1, '2008-08-08 08:08:08', 'Home', NULL, '<h1>Willkommen!<br /></h1>\n<p>Mit <strong>S7Ncms</strong> wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei <strong>S7Ncms</strong> handelt es sich um ein speziell für die Anforderungen professioneller Webseiten                     entwickeltes Content Management System.</p>\n<p><strong>S7Ncms</strong> bietet dem Benutzer eine einfach zu verstehende Verwaltungsplattform, die durch hohe Benutzerfreundlich- und                     Übersichtlichkeit glänzt. Das Ziel von <strong>S7Ncms</strong> ist es jedem Benutzer - auch ohne vorhandene Programmierkenntnisse - den Einstieg in die Erstellung einer eigenen Homepage zu ermöglichen.</p>\n<p>Durch <strong>S7Ncms</strong> wird es Ihnen möglich sein, auf einfachste Art und Weise, von überall auf der Welt,                     Ihre Internetpräsenz zu steuern und zu verwalten. Aktuelle Neuigkeiten auf der Website                     zu veröffentlichen oder die letzten Ereignisse zu verewigen ist jetzt genauso so kinderleicht,                     wie E-Mails schreiben.</p>\n<p>Die Installation des Systems erfolgt in drei Schritten und kann ohne große Vorkenntnisse vorgenommen                     werden.</p>\n<p>Weiterhin ist es möglich, <strong>S7Ncms</strong> modular zu erweitern, um auch fortgeschrittenen Benutzern                     alle benötigten Features zur Verfügung zu stellen.</p>\n<p>Entscheiden Sie sich noch heute für <strong>S7Ncms</strong> und erhalten Sie ein einzigartiges OpenSource-Produkt, welches die Möglichkeiten von PHP 5 und MySQL nutzt und Ihnen damit eine schnelle,                     einfache und zukunftssichere Verwaltung Ihrer Webseite garantiert.</p>', 'home', NULL, 'extended', '2008-08-10 20:16:53', NULL, 'published', 0, 0, 1, 12, NULL);
+INSERT INTO `pages` VALUES (2, NULL, 1, '2008-08-08 08:08:08', 'Products', NULL, '<p>Prudukt 1</p>\n<p>Produkt 2</p>\n<p>Produkt 3</p>', 'products', NULL, 'default', '2008-04-12 01:45:42', NULL, 'published', 1, 1, 2, 3, NULL);
+INSERT INTO `pages` VALUES (3, NULL, 1, '2008-08-08 08:08:08', 'About me', NULL, '<p>Hi, thats me!</p>', 'about-me', NULL, 'default', '2008-04-12 01:45:07', NULL, 'published', 1, 1, 4, 9, NULL);
+INSERT INTO `pages` VALUES (4, NULL, 1, '2008-08-08 08:08:08', 'Contact Me', NULL, '<p>Hallo, kontaktier mich bitte mal! :)</p>', 'contact-me', NULL, 'default', '2008-04-12 01:32:07', NULL, 'published', 3, 2, 5, 6, NULL);
+INSERT INTO `pages` VALUES (5, NULL, 1, '2008-08-08 08:08:08', 'Impressum', NULL, '<p><strong>Verantwortlich</strong>: niemand</p>', 'impressum', NULL, 'default', '2008-10-02 21:50:41', NULL, 'published', 3, 2, 7, 8, NULL);
 INSERT INTO `pages` VALUES (6, NULL, 1, '2008-08-08 08:08:08', 'Blog', NULL, NULL, 'blog', NULL, 'default', '2008-10-01 17:40:02', NULL, 'published', 1, 1, 10, 11, 'blog');
 
 -- --------------------------------------------------------
