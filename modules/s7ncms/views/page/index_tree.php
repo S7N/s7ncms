@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	$(document).ready(function(){
+$(document).ready(function(){
 
 	$("ul.sortable").tree({
 		sortOn: "li",
@@ -11,16 +11,18 @@
 	$('#save_sort').click(function(){
 		$.post('<?php echo url::site('admin/page/save_tree') ?>', '&tree='+$("ul.sortable").tree('serialize'), function(data, status) {
 			window.location.reload();
-			//console.log(data);
-			//console.log(status);
 		});
-		
-		
 	});
 
-	});
+});
 </script>
-
+<p>
+Die Hierarchie der Seiten können Sie verändern, indem sie einzelnen Seiten mit
+einen Klick auf [Move] verschieben. Die erste Seite <strong>muss</strong> alle
+anderen Seiten als Unterseite enthalten. Sie ist gleichzeitig die Startseite.
+Das Menü auf Ihrer Webseite wird durch die Reihenfolge und Hierarchie der
+Seiten beeinflusst.
+</p>
 <ul class="sortable">
 <?php
 $level = 0;

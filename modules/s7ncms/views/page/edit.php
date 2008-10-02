@@ -30,7 +30,7 @@ tinyMCE.init({
 		<?php echo form::dropdown('form_module', $select, $page->module) ?>
 		</p>
 		<p><?php echo form::label('form_view', 'Template').form::input('form_view', $page->view) ?></p>
-		<p><?php echo form::label('form_content', 'Keywords: <small>(Comma separated)</small>').form::input('form_keywords', $page->keywords) ?></p>
+		<p><?php echo form::label('form_keywords', 'Keywords: <small>(Comma separated)</small>').form::input('form_keywords', $page->keywords) ?></p>
 	</div>
 </div>
 
