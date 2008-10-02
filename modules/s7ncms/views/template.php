@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-		
 		<?php echo $head ?>
 	</head>
 	<body>
@@ -13,12 +12,15 @@
 					<h1>My Website</h1>
 				</div>
 				<div class="clear"></div>
-				
 				<?php echo Menu::instance(); ?>
 			</div>
 		</div>
 		<div id="content">
-			<?php echo $content; ?>
+			<div id="article">
+				<div class="entry">
+					<?php echo $content; ?>
+				</div>
+			</div>
 			<div id="sidebar">
 				<?php echo Sidebar::instance() ?>
 			</div>

@@ -1,7 +1,9 @@
+/* @override http://dev.s7n/S7Ncms/media/css/layout.css */
+
 body {
 	font: 14px Tahoma, Verdana, sans-serif;
 	color: #333;
-	background: #eee url(../images/bg.png) top center repeat-x;
+	background: #eee url(../images/bg.png) repeat-x center top;
 	margin-top: 7px;
 }
 
@@ -70,7 +72,8 @@ a:hover {
 
 #header {
 	margin: 0 auto;
-	background: #2d393b url(../images/nav-bg.png) center bottom no-repeat;
+	padding: 0;
+	background-color: #2d393b;/* url(../images/nav-bg.png) center bottom no-repeat;*/
 	width: 100%;
 	height: 140px;
 	border-top: 1px solid #525b5c;
@@ -117,10 +120,10 @@ a:hover {
 /* @group nav menu */
 
 ul.menu {
-	margin: 0 9px 0 9px;
 	font-size: 12px;
 	list-style-type: none;
 	height: 30px;
+	background: #2d393b url(../images/nav-bg.png) repeat-x center bottom;
 }
 
 ul.menu li {
@@ -166,7 +169,6 @@ ul.menu li.active a:hover {
 
 .navigation {
 	display: block;
-	margin-left: 10px;
 	width: 500px;
 }
 
@@ -175,13 +177,15 @@ ul.menu li.active a:hover {
 /* @group box */
 
 #article {
+	background: url(../images/entry-bg.png) right top no-repeat;
 	float: left;
-	width: 65%;
+	width: 520px;
+	margin-top: 10px;
 }
 
 #sidebar {
 	float: left;
-	width: 33%;
+	width: 280px;
 }
 
 /* @end */
@@ -189,9 +193,7 @@ ul.menu li.active a:hover {
 /* @group entry */
 
 .entry {
-	background: url(../images/entry-bg.png) right top no-repeat;
-	margin: 10px 10px 10px 5px;
-	padding: 10px 10px 20px 10px;
+	padding-bottom: 20px;
 }
 
 .entry p {

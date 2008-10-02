@@ -1,4 +1,3 @@
-<div id="article">
 <?php foreach ($posts as $post): ?>
 	<div class="entry">
 		<div class="entrytitle">
@@ -11,7 +10,6 @@
 	</div>
 <?php endforeach; ?>
 
-	<div class="navigation">
-		<?php if (isset($pagination)) echo $pagination ?>
-	</div>
+<div class="navigation">
+	<?php if (isset($pagination)) echo $pagination ?>
 </div>

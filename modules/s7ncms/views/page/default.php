@@ -1,8 +1,6 @@
-<div id="article">
-	<div class="entry">
-		<div class="entrytitle">
-			<h2><?php echo $page->title ?></h2>
-		</div>
-		<?php echo $page->content ?>
+<div class="entry">
+	<div class="entrytitle">
+		<h2><?php echo $page->title ?></h2>
 	</div>
+	<?php echo $page->content ?>
 </div>
