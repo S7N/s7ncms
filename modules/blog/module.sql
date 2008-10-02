@@ -1,4 +1,4 @@
-CREATE TABLE `{table_prefix}blog_posts` (
+CREATE TABLE IF NOT EXISTS `{table_prefix}blog_posts` (
 	`id` bigint(20) unsigned NOT NULL auto_increment,
 	`user_id` bigint(20) NOT NULL default '0',
 	`date` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -17,7 +17,7 @@ CREATE TABLE `{table_prefix}blog_posts` (
 	KEY `uri` (`uri`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `{table_prefix}blog_comments` (
+CREATE TABLE IF NOT EXISTS `{table_prefix}blog_comments` (
 	`id` bigint(20) unsigned NOT NULL auto_increment,
 	`blog_post_id` int(11) NOT NULL default '0',
 	`author` varchar(200) NOT NULL,
