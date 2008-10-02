@@ -52,42 +52,15 @@ CREATE TABLE `config` (
 -- Daten für Tabelle `config`
 -- 
 
-INSERT INTO `config` VALUES (1, 's7n', 'default_uri', 'home');
 INSERT INTO `config` VALUES (2, 's7n', 'page_views', 'default, extended');
 INSERT INTO `config` VALUES (3, 'blog', 'comment_status', 'open');
-INSERT INTO `config` VALUES (4, 's7n', 'site_title', 'My Cool Website');
+INSERT INTO `config` VALUES (4, 's7n', 'site_title', 'My Website');
 INSERT INTO `config` VALUES (5, 'blog', 'items_per_page', '5');
 INSERT INTO `config` VALUES (6, 's7n','default_sidebar_title','About');
 INSERT INTO `config` VALUES (7, 's7n','default_sidebar_content','Mit S7Ncms wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei S7Ncms handelt es sich um ein speziell für die Anforderungen professioneller Webseiten entwickeltes Content Management System.');
 
-
 -- --------------------------------------------------------
 
--- 
--- Tabellenstruktur für Tabelle `menu`
--- 
-
-CREATE TABLE `menu` (
-  `id` int(11) NOT NULL auto_increment,
-  `l` int(11) default NULL,
-  `r` int(11) default NULL,
-  `title` varchar(200) default NULL,
-  `uri` varchar(200) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- 
--- Daten für Tabelle `menu`
--- 
-
-INSERT INTO `menu` VALUES (1, 1, 12, 'ROOT', NULL);
-INSERT INTO `menu` VALUES (2, 2, 3, 'Home', 'home');
-INSERT INTO `menu` VALUES (3, 6, 7, 'Products', 'products');
-INSERT INTO `menu` VALUES (4, 4, 5, 'Blog', 'blog');
-INSERT INTO `menu` VALUES (5, 8, 9, 'About Me', 'about-me');
-INSERT INTO `menu` VALUES (6, 10, 11, 'Contact Me', 'contact-me');
-
--- --------------------------------------------------------
 
 -- 
 -- Tabellenstruktur für Tabelle `modules`
@@ -126,6 +99,11 @@ CREATE TABLE `pages` (
   `modified` datetime default NULL,
   `password` varchar(200) default NULL,
   `status` varchar(200) default 'published',
+  `parent_id` int(11) default NULL,
+  `level` int(11) NOT NULL,
+  `lft` int(11) default NULL,
+  `rgt` int(11) default NULL,
+  `module` varchar(250) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -133,11 +111,12 @@ CREATE TABLE `pages` (
 -- Daten für Tabelle `pages`
 -- 
 
-INSERT INTO `pages` VALUES (23, NULL, 1, '2008-04-11 23:13:30', 'Impressum', NULL, '<p><strong>Verantwortlich</strong>: niemand</p>', 'impressum', NULL, 'default', '2008-07-23 14:45:54', NULL, NULL);
-INSERT INTO `pages` VALUES (24, NULL, 1, '2008-04-11 23:50:20', 'Home', NULL, '<p>Meine <strong>Heimat</strong>!</p>', 'home', NULL, 'default', '2008-04-12 01:44:08', NULL, NULL);
-INSERT INTO `pages` VALUES (27, NULL, 1, '2008-04-12 01:32:07', 'Contact Me', NULL, '<p>Hallo, kontaktier mich bitte mal! :)</p>', 'contact-me', NULL, 'default', '2008-04-12 01:32:07', NULL, NULL);
-INSERT INTO `pages` VALUES (30, NULL, 1, '2008-04-12 01:45:07', 'About me', NULL, '<p>Hi, thats me!</p>', 'about-me', NULL, 'default', '2008-04-12 01:45:07', NULL, 'published');
-INSERT INTO `pages` VALUES (31, NULL, 1, '2008-04-12 01:45:42', 'Products', NULL, '<p>Prudukt 1</p>\n<p>Produkt 2</p>\n<p>Produkt 3</p>', 'products', NULL, 'default', '2008-04-12 01:45:42', NULL, 'published');
+INSERT INTO `pages` VALUES (1, NULL, 1, '2008-08-08 08:08:08', 'Home', NULL, '<h1>Willkommen!<br /></h1>\n<p>Mit <strong>S7Ncms</strong> wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei <strong>S7Ncms</strong> handelt es sich um ein speziell für die Anforderungen professioneller Webseiten                     entwickeltes Content Management System.</p>\n<p><strong>S7Ncms</strong> bietet dem Benutzer eine einfach zu verstehende Verwaltungsplattform, die durch hohe Benutzerfreundlich- und                     Übersichtlichkeit glänzt. Das Ziel von <strong>S7Ncms</strong> ist es jedem Benutzer - auch ohne vorhandene Programmierkenntnisse - den Einstieg in die Erstellung einer eigenen Homepage zu ermöglichen.</p>\n<p>Durch <strong>S7Ncms</strong> wird es Ihnen möglich sein, auf einfachste Art und Weise, von überall auf der Welt,                     Ihre Internetpräsenz zu steuern und zu verwalten. Aktuelle Neuigkeiten auf der Website                     zu veröffentlichen oder die letzten Ereignisse zu verewigen ist jetzt genauso so kinderleicht,                     wie E-Mails schreiben.</p>\n<p>Die Installation des Systems erfolgt in drei Schritten und kann ohne große Vorkenntnisse vorgenommen                     werden.</p>\n<p>Weiterhin ist es möglich, <strong>S7Ncms</strong> modular zu erweitern, um auch fortgeschrittenen Benutzern                     alle benötigten Features zur Verfügung zu stellen.</p>\n<p>Entscheiden Sie sich noch heute für <strong>S7Ncms</strong> und erhalten Sie ein einzigartiges OpenSource-Produkt, welches die Möglichkeiten von PHP 5 und MySQL nutzt und Ihnen damit eine schnelle,                     einfache und zukunftssichere Verwaltung Ihrer Webseite garantiert.</p>', 'home', NULL, 'extended', '2008-08-10 20:16:53', NULL, 'published', 0, 0, 1, 12, '');
+INSERT INTO `pages` VALUES (2, NULL, 1, '2008-08-08 08:08:08', 'Products', NULL, '<p>Prudukt 1</p>\n<p>Produkt 2</p>\n<p>Produkt 3</p>', 'products', NULL, 'default', '2008-04-12 01:45:42', NULL, 'published', 1, 1, 2, 3, '');
+INSERT INTO `pages` VALUES (3, NULL, 1, '2008-08-08 08:08:08', 'About me', NULL, '<p>Hi, thats me!</p>', 'about-me', NULL, 'default', '2008-04-12 01:45:07', NULL, 'published', 1, 1, 4, 9, '');
+INSERT INTO `pages` VALUES (4, NULL, 1, '2008-08-08 08:08:08', 'Contact Me', NULL, '<p>Hallo, kontaktier mich bitte mal! :)</p>', 'contact-me', NULL, 'default', '2008-04-12 01:32:07', NULL, 'published', 3, 2, 5, 6, '');
+INSERT INTO `pages` VALUES (5, NULL, 1, '2008-08-08 08:08:08', 'Impressum', NULL, '<p><strong>Verantwortlich</strong>: niemand</p>', 'impressum', NULL, 'default', '2008-10-02 21:50:41', NULL, 'published', 3, 2, 7, 8, '');
+INSERT INTO `pages` VALUES (6, NULL, 1, '2008-08-08 08:08:08', 'Blog', NULL, NULL, 'blog', NULL, 'default', '2008-10-01 17:40:02', NULL, 'published', 1, 1, 10, 11, 'blog');
 
 -- --------------------------------------------------------
 
