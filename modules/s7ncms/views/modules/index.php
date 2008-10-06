@@ -13,7 +13,7 @@
 	<tbody align="left" valign="middle">
 	<?php foreach($modules as $module): ?>
 		<tr>
-			<td><?php echo $module['xml']->name ?></td>
+			<td><?php echo html::anchor('admin/'.$module['db']->name, $module['xml']->name) ?></td>
 			<td><?php echo $module['xml']->version ?></td>
 			<td><?php echo $module['xml']->description ?></td>
 			<td>
@@ -36,7 +36,7 @@
 </table>
 <?php endif ?>
 
-<?php if($not_installed_modules): ?>
+<?php if( ! empty($not_installed_modules)): ?>
 <h1>Not Installed Modules:</h1>
 <table cellspacing="0" cellpadding="0" class="table">
 	<thead align="left" valign="middle">
@@ -55,13 +55,7 @@
 			<td><?php echo $module->version ?></td>
 			<td><?php echo $module->description ?></td>
 			<td><?php echo html::anchor('admin/modules/install/'.$module->uri, 'install'); ?></td>
-			<td class="delete"><?php echo html::anchor('admin/modules/uninstall/'.$module->uri, html::image(
-				'media/admin/images/delete.png',
-				array(
-					'alt' => 'Uninstall Module',
-					'title' => 'Uninstall Module'
-					)
-				)); ?></td>
+			<td class="delete">&nbsp;</td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>

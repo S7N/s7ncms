@@ -18,15 +18,16 @@ class Modules_Controller extends Administration_Controller {
 		parent::__construct();
 		
 		$this->head->title->append('Modules');
+		$this->template->title = 'Modules';
 	}
 	public function index()
 	{
-        $this->template->title = 'Modules';
-		$this->template->content = new View('modules/index');
-		
 		$modules = new Modules_Model;
-		$this->template->content->modules = $modules->get();
-		$this->template->content->not_installed_modules = $modules->not_installed();
+		
+		$this->template->content = View::factory('modules/index')->set(array(
+			'modules' => $modules->get(),
+			'not_installed_modules' => $modules->not_installed()
+		))->render();
     }
     
     public function status()
@@ -47,23 +48,22 @@ class Modules_Controller extends Administration_Controller {
     		if(count($query) > 0)
     		{
     			$this->session->set_flash('error_message', 'This Module is already installed.');
-    			url::redirect('admin/modules/install');
+    			url::redirect('admin/modules');
     		}
-    		
     		
     		if ( ! is_file(MODPATH.$module.'/module.xml'))
     		{
     			$this->session->set_flash('error_message', 'Could not install module. The file module.xml was not found.');
-    			url::redirect('admin/modules/install');
+    			url::redirect('admin/modules');
     		}
     			
     		$xml = simplexml_load_file(MODPATH.$module.'/module.xml');
-    		$uri = trim((string)$xml->uri);
+    		$uri = trim((string) $xml->uri);
     		
     		if(empty($uri))
     		{
     			$this->session->set_flash('error_message', 'Could not install module. The file module.xml was not found.');
-    			url::redirect('admin/modules/install');
+    			url::redirect('admin/modules');
     		}
     		
     		$this->db->insert('modules', array('name' => $uri, 'status' => 'on'));
@@ -102,15 +102,9 @@ class Modules_Controller extends Administration_Controller {
 	    	}
 	    	
 	    	$this->session->set_flash('info_message', 'Module installed successfully.');
-	    	url::redirect('admin/modules/install');
-    	}
+	    }
     	
-    	$this->head->title->append('Install');
-    	$this->template->title = 'Modules | Install';
-    	
-    	$modules = new Modules_Model;
-    	$this->template->content = new View('modules/install');
-    	$this->template->content->modules = $modules->not_installed();
+    	url::redirect('admin/modules');
     }
     
     public function uninstall($module)

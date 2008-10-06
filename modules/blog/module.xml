@@ -4,8 +4,8 @@
 	<uri>blog</uri>
 	<description>Simple weblog module</description>
 	<tables>
-		<name>blogposts</name>
-		<name>comments</name>
+		<name>blog_posts</name>
+		<name>blog_comments</name>
 	</tables>
 	<author>Eduard Baun</author>
 	<email>edy@edy-b.de</email>
