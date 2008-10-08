@@ -18,8 +18,8 @@ class Blog_Controller extends Administration_Controller {
 		parent::__construct();
 
 		$this->template->tasks = array(
-		array('admin/blog/newpost', 'New Post'),
-		array('admin/blog/settings', 'Edit Settings')
+			array('admin/blog/newpost', 'New Post'),
+			array('admin/blog/settings', 'Edit Settings')
 		);
 
 		$this->head->title->append('Blog');
@@ -28,45 +28,47 @@ class Blog_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$this->template->content = new View('blog/admin/index');
-		
 		$this->template->searchbar = TRUE;
-		
+
+		$posts = array();
+
 		$q = trim($this->input->get('q'));
-		
+
 		if ( ! empty($q))
 		{
 			$this->template->searchvalue = $q;
-			
-			$this->template->content->posts = ORM::factory('blog_post')->orderby('id', 'desc')->orlike(
-				array(
-					'title' => '%'.$q.'%',
-					'excerpt' => '%'.$q.'%',
-					'content' => '%'.$q.'%',
-					'tags' => '%'.$q.'%'
-				)
-			)->find_all();
-			
 			$this->template->title .= 'Filter: '.$q;
 			$this->head->title->append('Filter: '.$q);
+				
+			$posts = ORM::factory('blog_post')->orderby('id', 'desc')->orlike(array(
+				'title' => '%'.$q.'%',
+				'excerpt' => '%'.$q.'%',
+				'content' => '%'.$q.'%',
+				'tags' => '%'.$q.'%'
+			))->find_all();
 		}
 		else
 		{
 			$this->template->title .= 'All Posts';
 			$this->head->title->append('All Posts');
-			$this->template->content->posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all();
+				
+			$posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all();
 		}
+
+		$this->template->content = View::factory('blog/admin/index')->set(array(
+			'posts' => $posts
+		))->render();
 	}
 
 	public function newpost()
 	{
-		if($_SERVER["REQUEST_METHOD"] == 'POST')
+		if($_POST)
 		{
 			$post = new Blog_post_Model;
 			$post->user_id = $_SESSION['auth_user']->id;
 
 			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
-			
+				
 			$uri = url::title($this->input->post('form_title'));
 
 			// Check if uri already exists and add a suffix
@@ -88,28 +90,28 @@ class Blog_Controller extends Administration_Controller {
 				while ($title_not_found)
 				{
 					$new_uri = $uri.'-'.++$suffix;
-						
+
 					if ( ! in_array($new_uri, $titles))
 					{
 						$title_not_found = FALSE;
 						break;
 					}
 				}
-				
+
 				$uri = $new_uri;
 			}
-			
+				
 			$post->uri = $uri;
-			
+				
 			$post->content = $this->input->post('form_content');
 
 			$post->date = date("Y-m-d H:i:s");
 			$page->modified = date("Y-m-d H:i:s");
-				
+
 			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
 
 			$post->save();
-			
+				
 			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
 
@@ -118,11 +120,11 @@ class Blog_Controller extends Administration_Controller {
 		}
 		else
 		{
+			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('New Post');
+				
 			$this->template->title .= 'New Post';
 			$this->template->tabs = array('Content', 'Advanced');
-			
-			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->template->content = new View('blog/admin/newpost');
 		}
 	}
@@ -135,9 +137,9 @@ class Blog_Controller extends Administration_Controller {
 
 			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
 			$post->uri = url::title($this->input->post('form_title'));
-				
+
 			$post->content = $this->input->post('form_content');
-				
+
 			$post->modified = date("Y-m-d H:i:s");
 			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
 
@@ -145,7 +147,7 @@ class Blog_Controller extends Administration_Controller {
 
 			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
-			
+				
 			$this->session->set_flash('info_message', 'Post edited successfully');
 
 			url::redirect('admin/blog');
@@ -155,7 +157,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->template->content = new View('blog/admin/edit');
 			$this->template->content->post = ORM::factory('blog_post', (int) $this->uri->segment(4));
 			$this->template->tabs = array('Content', 'Advanced');
-			
+				
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: '. $this->template->content->post->title);
 			$this->template->title .= 'Edit: '. $this->template->content->post->title;
@@ -168,7 +170,7 @@ class Blog_Controller extends Administration_Controller {
 		if (in_array($action, array('open', 'close', 'edit', 'delete')))
 		{
 			$function_name = 'comments_'.$action;
-				
+
 			if(ctype_digit($id))
 				$this->$function_name($id);
 			else
@@ -177,9 +179,9 @@ class Blog_Controller extends Administration_Controller {
 		else
 		{
 			if(ctype_digit($action))
-			$this->comments_view($action);
+				$this->comments_view($action);
 			else
-			Event::run('system.404');
+				Event::run('system.404');
 		}
 	}
 
@@ -223,7 +225,7 @@ class Blog_Controller extends Administration_Controller {
 
 	private function comments_edit($id)
 	{
-		if($_SERVER["REQUEST_METHOD"] == 'POST')
+		if($_POST)
 		{
 			$comment = ORM::factory('blog_comment', (int) $id);
 			$comment->author = $this->input->post('form_author');
@@ -240,7 +242,7 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$this->template->content = new View('blog/admin/editcomment');
 			$this->template->content->comment = ORM::factory('blog_comment', (int) $id);
-				
+
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: Comment #'. $this->template->content->comment->id);
 			$this->template->title .= 'Edit: Comment #'. $this->template->content->comment->id;
@@ -250,14 +252,14 @@ class Blog_Controller extends Administration_Controller {
 	private function comments_delete($id)
 	{
 		$comment = ORM::factory('blog_comment', (int) $id);
-		if ($comment->id > 0)
+		if ($comment->loaded)
 		{
 			$comment->delete();
-				
+
 			$post = ORM::factory('blog_post', (int) $comment->blog_post_id);
 			$post->comment_count -= 1;
 			$post->save();
-				
+
 			$this->session->set_flash('info_message', 'Comment deleted successfully');
 			url::redirect('admin/blog/comments/'.$comment->blog_post_id);
 		}
@@ -276,10 +278,10 @@ class Blog_Controller extends Administration_Controller {
 		{
 			// remove comments first
 			Database::instance()->where('blog_post_id', (int) $post->id)->delete('blog_comments');
-			
+				
 			// then delete the post
 			$post->delete();
-				
+
 			$this->session->set_flash('info_message', 'Post deleted sucsessfully');
 		}
 		else
@@ -292,32 +294,32 @@ class Blog_Controller extends Administration_Controller {
 
 	public function settings()
 	{
-		if($_SERVER["REQUEST_METHOD"] == 'POST')
+		if($_POST)
 		{
 			$comment_status = 'closed';
-				
+
 			if ($this->input->post('comment_status') == 'open')
-			$comment_status = 'open';
+				$comment_status = 'open';
 
 			$this->db->update('config', array('value' => $comment_status), array(
 				'context' => 'blog',
 				'key' => 'comment_status'
 			));
-				
+
 			$this->db->update('config', array('value' => (int) $this->input->post('items_per_page')), array(
 				'context' => 'blog',
 				'key' => 'items_per_page'
 			));
 
 			$this->session->set_flash('info_message', 'Settings changed successfully');
-					
+				
 			url::redirect('admin/blog');
 		}
 		else
 		{
 			$this->head->title->append('Settings');
 			$this->template->title .= 'Settings';
-				
+
 			$this->template->content = new View('blog/admin/settings');
 			$this->template->content->items_per_page = Kohana::config('blog.items_per_page');
 			$this->template->content->comment_status = (bool) (Kohana::config('blog.comment_status') == 'open' ? TRUE : FALSE);
