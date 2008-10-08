@@ -4,7 +4,7 @@
  *
  * Default route to use when no URI segments are available.
  */
-$config['_default'] = 'defaultpage';
+$config['_default'] = 'none';
 
 /**
  * Default route to use for administration
