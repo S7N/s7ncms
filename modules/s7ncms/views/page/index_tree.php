@@ -50,7 +50,7 @@ foreach ($pages as $node):
 	}
 	$level = $node->level;
 endforeach;
-echo str_repeat("</ul></li>\n",$level-1);
+echo str_repeat("</ul></li>\n",$level);
 ?>
 </ul>
 
