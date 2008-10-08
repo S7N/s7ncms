@@ -22,8 +22,9 @@ class Page_Controller extends Website_Controller {
 
 		$view = is_null($page->view) ? 'default' : $page->view;
 
-		$this->template->content = new View('page/'.$view);
-		$this->template->content->page = $page;
+		$this->template->content = View::factory('page/'.$view)->set(array(
+			'page' => $page
+		))->render();
 		
 		$this->head->title->append($page->title);
 		
