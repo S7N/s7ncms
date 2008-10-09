@@ -10,8 +10,7 @@
 		array(
 			'alt' => 'Delete Page',
 			'title' => 'Delete Page'
-			)
-		));
+		)), array('class' => 'confirm'))
 	?>
     </div>
 </div>

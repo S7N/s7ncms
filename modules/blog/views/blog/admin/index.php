@@ -25,13 +25,14 @@
 					<?php echo html::anchor('admin/blog/comments/open/'.$post->id, 'closed') ?>
 				<?php endif ?>
 			</td>
-			<td class="delete"><?php echo html::anchor('admin/blog/delete/'.$post->id, html::image(
+			<td class="delete">
+			<?php echo html::anchor('admin/blog/delete/'.$post->id, html::image(
 				'media/admin/images/delete.png',
 				array(
 					'alt' => 'Delete Page',
 					'title' => 'Delete Page'
-					)
-				)) ?>
+				)), array('class' => 'confirm'))
+			?>
 			</td>
 		</tr>
 	<?php endforeach ?>
