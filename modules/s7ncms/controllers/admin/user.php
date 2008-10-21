@@ -16,14 +16,13 @@ class User_Controller extends Administration_Controller {
 	
 	public function index()
 	{
-		$this->user = new User_Model();
-        
-		$this->template->content = new View('user/list');
-		$this->template->content->users = $this->user->get_all();
+		$this->template->content = View::factory('user/list')->set(array(
+			'users' => ORM::factory('user')->get_all()
+		))->render();
 	}
     
     public function edit() {
-    	if($_SERVER["REQUEST_METHOD"] == 'POST')
+    	if($_POST)
 		{
     		$user = new User_Model((int)$this->input->post('id'));
     		

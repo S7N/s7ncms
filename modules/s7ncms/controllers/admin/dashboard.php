@@ -18,7 +18,7 @@ class Dashboard_Controller extends Administration_Controller {
         $this->head->title->append('Dashboard');
         
 		$this->template->title = 'Dashboard';
-        $this->template->content = new View('dashboard/index');
+        $this->template->content = View::factory('dashboard/index')->render();
     }
 
 }

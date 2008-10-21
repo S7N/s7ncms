@@ -128,9 +128,10 @@ class Blog_Controller extends Website_Controller {
 					}
 				}
 
-				$form = View::factory('blog/form_comment');
-				$form->fields = $fields;
-				$form->errors = $errors;
+				$form = View::factory('blog/form_comment')->set(array(
+					'fields' => $fields,
+					'errors' => $errors
+				))->render();
 			}
 				
 			$this->template->content = View::factory('blog/view')->set(array(

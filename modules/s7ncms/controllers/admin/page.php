@@ -33,12 +33,13 @@ class Page_Controller extends Administration_Controller {
 		$this->head->javascript->append_file('media/admin/js/ui.sortable.js');
 		$this->head->javascript->append_file('media/admin/js/ui.tree.js');
 		
-		$this->template->content = new View('page/index_tree');
+		$this->template->content = View::factory('page/index_tree')->set(array(
+			'pages' => ORM::factory('page')->orderby('lft', 'ASC')->find_all()
+		))->render();
 		
 		$this->head->title->append('All Pages');
 			
 		$this->template->title = 'Pages | All Pages';
-		$this->template->content->pages = ORM::factory('page')->orderby('lft', 'ASC')->find_all();
 	}
 
 	public function edit()
@@ -68,15 +69,19 @@ class Page_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->template->content = new View('page/edit');
-			$this->template->content->page = ORM::factory('page', (int) $this->uri->segment(4));
-			
+			$page = ORM::factory('page', (int) $this->uri->segment(4));
 			$modules = new Modules_Model;
-			$this->template->content->modules = $modules->get();
-			$this->template->title = 'Pages | Edit: '. $this->template->content->page->title;
+			
+			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
+			$this->head->title->append('Edit: '. $page->title);
+			
+			$this->template->title = 'Pages | Edit: '. $page->title;
 			$this->template->tabs = array('Content', 'Advanced');
-			$this->head->title->append('Edit: '. $this->template->content->page->title);
+			
+			$this->template->content = View::factory('page/edit')->set(array(
+				'page' => $page,
+				'modules' => $modules->get()
+			))->render();
 		}
 	}
 
@@ -177,11 +182,11 @@ class Page_Controller extends Administration_Controller {
 		$this->head->title->append('Settings');
 		
 		$this->template->title = 'Pages | Settings';
-		$this->template->content = new View('page/settings');
-		$this->template->content->views = Kohana::config('s7n.page_views');
-
-		$this->template->content->default_sidebar_title = Kohana::config('s7n.default_sidebar_title');
-        $this->template->content->default_sidebar_content = Kohana::config('s7n.default_sidebar_content');
+		$this->template->content = View::factory('page/settings')->set(array(
+			'views' => Kohana::config('s7n.page_views'),
+			'default_sidebar_title' => Kohana::config('s7n.default_sidebar_title'),
+			'default_sidebar_content' => Kohana::config('s7n.default_sidebar_content')
+		))->render();
 	}
 	
 	public function save_tree()

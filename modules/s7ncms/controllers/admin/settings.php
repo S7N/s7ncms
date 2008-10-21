@@ -18,9 +18,10 @@ class Settings_Controller extends Administration_Controller {
 		$this->head->title->append('Settings');
 		
 		$this->template->title = 'Settings';
-	    $this->template->content = new View('settings/settings');
-	    $this->template->content->site_title = Kohana::config('s7n.site_title');
-        $this->template->content->default_uri = Kohana::config('s7n.default_uri');
+	    $this->template->content = View::factory('settings/settings')->set(array(
+    		'site_title' => Kohana::config('s7n.site_title'),
+        	'default_uri' => Kohana::config('s7n.default_uri')
+	    ))->render();
 	}
     
     public function save()

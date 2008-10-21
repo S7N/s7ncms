@@ -15,12 +15,10 @@ class Static_Widget extends Widget {
 
 	public function render()
 	{
-		return View::factory('widgets/static')->set(array
-			(
-				'title' => $this->config['title'],
-				'content' => $this->config['content']
-			)
-		)->render();
+		return View::factory('widgets/static')->set(array(
+			'title' => $this->config['title'],
+			'content' => $this->config['content']
+		))->render();
 	}
 
 }

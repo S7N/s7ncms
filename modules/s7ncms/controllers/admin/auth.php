@@ -70,10 +70,10 @@ class Auth_Controller extends Controller {
 		}
 
 		// Display the form
-		$login = new View('login');
-		$login->fields = $fields;
-		$login->errors = $errors;
-		echo $login;
+		echo View::factory('login')->set(array(
+			'fields' => $fields,
+			'errors' => $errors
+		))->render();
 	}
 
 	public function logout()

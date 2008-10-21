@@ -125,7 +125,7 @@ class Blog_Controller extends Administration_Controller {
 				
 			$this->template->title .= 'New Post';
 			$this->template->tabs = array('Content', 'Advanced');
-			$this->template->content = new View('blog/admin/newpost');
+			$this->template->content = View::factory('blog/admin/newpost')->render();
 		}
 	}
 
@@ -154,13 +154,17 @@ class Blog_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->template->content = new View('blog/admin/edit');
-			$this->template->content->post = ORM::factory('blog_post', (int) $this->uri->segment(4));
+			$post = ORM::factory('blog_post', (int) $this->uri->segment(4));
+			
 			$this->template->tabs = array('Content', 'Advanced');
 				
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append('Edit: '. $this->template->content->post->title);
-			$this->template->title .= 'Edit: '. $this->template->content->post->title;
+			$this->head->title->append('Edit: '. $post->title);
+			$this->template->title .= 'Edit: '. $post->title;
+			
+			$this->template->content = View::factory('blog/admin/edit')->set(array(
+				'post' => $post
+			))->render();
 		}
 	}
 
@@ -240,12 +244,15 @@ class Blog_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->template->content = new View('blog/admin/editcomment');
-			$this->template->content->comment = ORM::factory('blog_comment', (int) $id);
-
+			$comment = ORM::factory('blog_comment', (int) $id);
+			
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append('Edit: Comment #'. $this->template->content->comment->id);
-			$this->template->title .= 'Edit: Comment #'. $this->template->content->comment->id;
+			$this->head->title->append('Edit: Comment #'. $comment->id);
+			$this->template->title .= 'Edit: Comment #'. $comment->id;
+			
+			$this->template->content = View::factory('blog/admin/editcomment')->set(array(
+				'comment' => $comment
+			))->render();
 		}
 	}
 
