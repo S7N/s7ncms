@@ -20,17 +20,6 @@ class hook_routes {
 
 	public function new_route()
 	{
-		$tree = Database::instance()
-		->select('id, uri, level, module')
-		->orderby('lft', 'ASC')
-		->get('pages');
-
-		if(empty(Router::$current_uri))
-		{
-			Router::$current_uri = 'page/index/'.$tree->current()->id;
-			return TRUE;
-		}
-
 		$uri = explode('/', Router::$current_uri);
 
 		if($uri[0] === 'admin')
@@ -38,10 +27,23 @@ class hook_routes {
 			return TRUE;
 		}
 
+		$tree = Database::instance()
+			->select('id, uri, level, module')
+			->orderby('lft', 'ASC')
+			->get('pages');
+
+		// load first page if uri is empty
+		// TODO what if the first page is a module or a redirect?
+		if(empty(Router::$current_uri))
+		{
+			Router::$current_uri = 'page/index/'.$tree->current()->id;
+			return TRUE;
+		}
+
 		foreach ($tree as $row)
 		{
 			if ($row->level == 0) continue;
-				
+
 			$pages[$row->level][] = array(
 				'id' => $row->id,
 				'uri' => $row->uri,
@@ -51,19 +53,17 @@ class hook_routes {
 
 		// the page does not exist if we have more uri segments than levels
 		// TODO implement modules and other controllers here
-		if (count($uri) > count($pages))
+		/*if (count($uri) > count($pages))
 		{
 			//Event::run('system.404');
-			
-			
-		}
-
+		}*/
 
 		$id = NULL;
 		$routed_uri = array();
 		$routed_arguments = array();
 		$load_module = FALSE;
-		
+		$found = FALSE;
+
 		$uri_size = count($uri);
 		$pages_size = count($pages);
 		for ($level = 1; $level <= $uri_size; $level++)
@@ -73,47 +73,41 @@ class hook_routes {
 				$routed_arguments[] = $uri[$level-1];
 				continue;
 			}
+
 			if ($load_module !== FALSE)
 			{
 				$routed_arguments[] = $uri[$level-1];
 			}
-			$found = FALSE;
+
 			foreach($pages[$level] as $page)
 			{
-				
-				
 				if($page['uri'] == $uri[$level-1])
 				{
-					$id = $page['id'];
-					
 					$found = TRUE;
-					
-					
+
+					$id = $page['id'];
+
 					$routed_uri[] = $page['uri'];
-					
-					
+
 					// check, if we have to load a controller
 					if ( ! empty($page['module']))
 					{
 						$load_module = $page['module'];
 					}
-					
+
 					continue 2;
 				}
 			}
-			
+
 		}
-		
+
 		Router::$current_id = $id;
-		
+
 		if ($load_module !== FALSE)
 		{
-			define('EDY', implode('/', $routed_uri));
-			
 			Router::$routed_uri = implode('/', $routed_uri);
-			
+
 			Kohana::config_set('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.implode('/', $routed_arguments));
-			//echo Kohana::debug('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.implode('/', $routed_arguments));
 		}
 		else
 		{
@@ -121,7 +115,7 @@ class hook_routes {
 			{
 				Event::run('system.404');
 			}
-			
+
 			Router::$current_uri = 'page/index/'.$id;
 		}
 	}
