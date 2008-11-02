@@ -17,7 +17,7 @@ class Blog_Controller extends Website_Controller {
 	{
 		parent::__construct();
 		// TODO: this is buggy in 2.2.1. needs to be fixed
-		//$this->head->link->append(Router::$routed_uri.'/feed');
+		$this->head->link->append(Router::$routed_uri.'/feed');
 
 		Sidebar::instance()->add
 		(
@@ -64,7 +64,7 @@ class Blog_Controller extends Website_Controller {
 				Event::run('system.404');
 
 			$this->head->title->prepend($post->title);
-				
+
 			$this->head->javascript->append_file('media/js/jquery.js');
 			$this->head->javascript->append_file('modules/blog/media/js/comments.js');
 
@@ -133,7 +133,7 @@ class Blog_Controller extends Website_Controller {
 					'errors' => $errors
 				))->render();
 			}
-				
+
 			$this->template->content = View::factory('blog/view')->set(array(
 				'post' => $post,
 				'comments' => $post->blog_comments,
@@ -145,7 +145,7 @@ class Blog_Controller extends Website_Controller {
 	public function tag($tag)
 	{
 		$this->template->content = View::factory('blog/index')->set(array(
-			'posts' => ORM::factory('blog_post')->like('tags', '%'.$tag.'%')->orderby('id', 'desc')->find_all()
+			'posts' => ORM::factory('blog_post')->like('tags', $tag)->orderby('id', 'desc')->find_all()
 		))->render();
 	}
 

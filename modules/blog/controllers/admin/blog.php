@@ -39,7 +39,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->template->searchvalue = $q;
 			$this->template->title .= 'Filter: '.$q;
 			$this->head->title->append('Filter: '.$q);
-				
+
 			$posts = ORM::factory('blog_post')->orderby('id', 'desc')->orlike(array(
 				'title' => '%'.$q.'%',
 				'excerpt' => '%'.$q.'%',
@@ -51,7 +51,7 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$this->template->title .= 'All Posts';
 			$this->head->title->append('All Posts');
-				
+
 			$posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all();
 		}
 
@@ -68,41 +68,29 @@ class Blog_Controller extends Administration_Controller {
 			$post->user_id = $_SESSION['auth_user']->id;
 
 			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
-				
+
 			$uri = url::title($this->input->post('form_title'));
 
 			// Check if uri already exists and add a suffix
-			$result = $this->db->select('uri')->like('uri', $uri.'%')->get('blog_posts');
+			$result = $this->db->select('uri')->like('uri', $uri.'%', FALSE)->get('blog_posts');
 			if (count($result) > 0)
 			{
-				$new_uri = $uri;
-				$suffix = 2;
-				$titles = array();
-				$title_not_found = TRUE;
-
-				// Create array with uris
+				$max = 0;
 				foreach ($result as $row)
 				{
-					$titles[] = $row->uri;
+					$suffix = substr($row->uri, strlen($uri)+1);
+					if(ctype_digit($suffix) AND $suffix > $max)
+						$max = $suffix;
 				}
 
-				// Find new valid uri
-				while ($title_not_found)
-				{
-					$new_uri = $uri.'-'.++$suffix;
-
-					if ( ! in_array($new_uri, $titles))
-					{
-						$title_not_found = FALSE;
-						break;
-					}
-				}
-
-				$uri = $new_uri;
+				if ($max === 0)
+					$uri .= '-2';
+				else
+					$uri .= '-'.($max+1);
 			}
-				
+
 			$post->uri = $uri;
-				
+
 			$post->content = $this->input->post('form_content');
 
 			$post->date = date("Y-m-d H:i:s");
@@ -111,7 +99,7 @@ class Blog_Controller extends Administration_Controller {
 			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
 
 			$post->save();
-				
+
 			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
 
@@ -122,7 +110,7 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('New Post');
-				
+
 			$this->template->title .= 'New Post';
 			$this->template->tabs = array('Content', 'Advanced');
 			$this->template->content = View::factory('blog/admin/newpost')->render();
@@ -147,7 +135,7 @@ class Blog_Controller extends Administration_Controller {
 
 			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
-				
+
 			$this->session->set_flash('info_message', 'Post edited successfully');
 
 			url::redirect('admin/blog');
@@ -155,13 +143,13 @@ class Blog_Controller extends Administration_Controller {
 		else
 		{
 			$post = ORM::factory('blog_post', (int) $this->uri->segment(4));
-			
+
 			$this->template->tabs = array('Content', 'Advanced');
-				
+
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: '. $post->title);
 			$this->template->title .= 'Edit: '. $post->title;
-			
+
 			$this->template->content = View::factory('blog/admin/edit')->set(array(
 				'post' => $post
 			))->render();
@@ -245,11 +233,11 @@ class Blog_Controller extends Administration_Controller {
 		else
 		{
 			$comment = ORM::factory('blog_comment', (int) $id);
-			
+
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: Comment #'. $comment->id);
 			$this->template->title .= 'Edit: Comment #'. $comment->id;
-			
+
 			$this->template->content = View::factory('blog/admin/editcomment')->set(array(
 				'comment' => $comment
 			))->render();
@@ -285,7 +273,7 @@ class Blog_Controller extends Administration_Controller {
 		{
 			// remove comments first
 			Database::instance()->where('blog_post_id', (int) $post->id)->delete('blog_comments');
-				
+
 			// then delete the post
 			$post->delete();
 
@@ -319,7 +307,7 @@ class Blog_Controller extends Administration_Controller {
 			));
 
 			$this->session->set_flash('info_message', 'Settings changed successfully');
-				
+
 			url::redirect('admin/blog');
 		}
 		else
