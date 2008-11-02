@@ -14,8 +14,7 @@
 class Website_Controller extends Template_Controller {
 	
 	public $cache_enabled = TRUE;
-	public $profiler = FALSE;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
