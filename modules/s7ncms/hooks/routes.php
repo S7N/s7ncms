@@ -22,9 +22,14 @@ class hook_routes {
 	{
 		$uri = explode('/', Router::$current_uri);
 
-		if($uri[0] === 'admin')
+		if ($uri[0] === 'admin')
 		{
-			return TRUE;
+			return;
+		}
+
+		if ( ! Kohana::find_file('controllers', $uri[0]))
+		{
+			return;
 		}
 
 		$tree = Database::instance()
