@@ -37,6 +37,9 @@ class Menu_Core {
 
 	public function submenu($page)
 	{
+		if ($page->level == 0)
+			return NULL;
+
 		$path = $page->path();
 		$path->next();
 
@@ -46,7 +49,7 @@ class Menu_Core {
 
 		$size = count($this->submenu);
 		if ($size == 0)
-			return null;
+			return NULL;
 
 		// remove 'page/' from current uri
 		$current_url = url::current();
@@ -81,7 +84,7 @@ class Menu_Core {
 		{
 			$has_children = (bool) ( ($menu['right'] - $menu['left'] - 1) > 0 );
 			$class = $menu['is_active'] === TRUE ? 'active' : '';
-				
+
 			if ( $has_children === TRUE)
 			{
 
@@ -90,7 +93,7 @@ class Menu_Core {
 					array_pop($uri);
 					array_push($uri, $menu['uri']);
 					$value = html::anchor(implode('/', $uri), $menu['title'], array('class' => $class));
-						
+
 					$html .= str_repeat("</ul></li>\n",($current_level - $menu['level']));
 					$html .= '<li class="'.$class.'">'.$value."\n";
 					$html .= '<ul>'."\n";
@@ -125,7 +128,7 @@ class Menu_Core {
 			}
 
 			$current_level = $menu['level'];
-				
+
 		}
 
 		$html .= str_repeat("</ul></li>\n",$current_level-2);
@@ -172,10 +175,10 @@ class Menu_Core {
 		foreach ($this->menu as $item)
 		{
 			$has_children = (bool) ( ($item['right'] - $item['left'] - 1) > 0 );
-				
+
 			$id = 'item'.$item['id'];
 			$class = $item['is_active'] === TRUE ? 'active' : '';
-				
+
 			if ($include_anchors === TRUE)
 			{
 				$value = html::anchor($item['uri'], $item['title'], array('class' => $class));

@@ -18,17 +18,23 @@ tinyMCE.init({
 	</div>
 	<div id="tab_advanced">
 		<p>
+		<?php echo form::label('form_type', 'Redirect page or load Module') ?>
+		<?php echo form::radio('form_type', 'none', empty($page->target))?> No<br />
+		<?php echo form::radio('form_type', 'module', $page->type === 'module')?> Load Module:
+
 		<?php
-			$select = array('none' => 'No Module');
+			$select = array('' => 'No Module');
 			foreach ($modules as $module)
 			{
 				$select[$module['db']->name] = $module['xml']->name;
 			}
-			
-			echo form::label('form_module', 'Module');
+
+			echo form::dropdown('form_module_target', $select, $page->target);
 		?>
-		<?php echo form::dropdown('form_module', $select, $page->module) ?>
+		<br />
+		<?php echo form::radio('form_type', 'redirect', $page->type === 'redirect')?> Redirect to: <?php echo form::dropdown('form_redirect_target', $page->paths(), $page->target) ?>
 		</p>
+
 		<p><?php echo form::label('form_view', 'Template').form::input('form_view', $page->view) ?></p>
 		<p><?php echo form::label('form_keywords', 'Keywords: <small>(Comma separated)</small>').form::input('form_keywords', $page->keywords) ?></p>
 	</div>

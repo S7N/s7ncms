@@ -103,7 +103,8 @@ CREATE TABLE `pages` (
   `level` int(11) NOT NULL,
   `lft` int(11) default NULL,
   `rgt` int(11) default NULL,
-  `module` varchar(250) default NULL,
+  `type` varchar(250) default NULL,
+  `target` varchar(250) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

@@ -12,7 +12,7 @@
  * @version $Id$
  */
 class Page_Model extends ORM_MPTT {
-	
+
 	protected $children = 'pages';
 
 	protected $belongs_to = array('user');
@@ -29,10 +29,42 @@ class Page_Model extends ORM_MPTT {
 
 		return parent::unique_key($id);
 	}
-	
+
 	public function get_url()
     {
         return $this->uri;
+    }
+
+    public function paths()
+    {
+		$pages = $this
+			->orderby($this->left_column, 'ASC')
+			->find_all();
+
+		$paths = array('' => 'Do not Redirect');
+		foreach ($pages as $page)
+		{
+			$titles = array();
+			$uris = array();
+
+			$path = $page->path();
+			foreach ($path as $page)
+			{
+				if ($page->level == 0)
+				{
+					continue;
+				}
+				$titles[] = $page->title;
+				$uris[] = $page->uri;
+			}
+
+			if ( ! empty($titles))
+			{
+				$paths[implode('/', $uris)] = implode(' &gt; ', $titles);
+			}
+		}
+
+		return $paths;
     }
 
 }

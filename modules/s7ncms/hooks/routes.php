@@ -23,26 +23,26 @@ class hook_routes {
 		$uri = explode('/', Router::$current_uri);
 
 		if ($uri[0] === 'admin')
-		{
 			return;
-		}
-
-		if ( ! Kohana::find_file('controllers', $uri[0]))
-		{
-			return;
-		}
 
 		$tree = Database::instance()
-			->select('id, uri, level, module')
+			->select('id, uri, level, type, target')
 			->orderby('lft', 'ASC')
 			->get('pages');
 
 		// load first page if uri is empty
-		// TODO what if the first page is a module or a redirect?
 		if(empty(Router::$current_uri))
 		{
-			Router::$current_uri = 'page/index/'.$tree->current()->id;
-			return TRUE;
+			$page = $tree->current();
+
+			// redirect
+			if ( ! empty($page->target) AND $page->type == 'redirect')
+				url::redirect($page->target);
+
+			Router::$current_id = $page->id;
+			Router::$current_uri = 'page/index/'.$page->id;
+
+			return;
 		}
 
 		foreach ($tree as $row)
@@ -52,16 +52,10 @@ class hook_routes {
 			$pages[$row->level][] = array(
 				'id' => $row->id,
 				'uri' => $row->uri,
-				'module' => $row->module
+				'type' => $row->type,
+				'target' => $row->target
 			);
 		}
-
-		// the page does not exist if we have more uri segments than levels
-		// TODO implement modules and other controllers here
-		/*if (count($uri) > count($pages))
-		{
-			//Event::run('system.404');
-		}*/
 
 		$id = NULL;
 		$routed_uri = array();
@@ -80,9 +74,7 @@ class hook_routes {
 			}
 
 			if ($load_module !== FALSE)
-			{
 				$routed_arguments[] = $uri[$level-1];
-			}
 
 			foreach($pages[$level] as $page)
 			{
@@ -95,15 +87,14 @@ class hook_routes {
 					$routed_uri[] = $page['uri'];
 
 					// check, if we have to load a controller
-					if ( ! empty($page['module']))
+					if ( ! empty($page['target']))
 					{
-						$load_module = $page['module'];
+						$load_module = $page['target'];
 					}
 
 					continue 2;
 				}
 			}
-
 		}
 
 		Router::$current_id = $id;
@@ -116,10 +107,15 @@ class hook_routes {
 		}
 		else
 		{
-			if ( ! $found OR ! empty($routed_arguments))
+			// do not load a page if controller with the same name exists
+			if (Kohana::find_file('controllers', $uri[0]))
 			{
-				Event::run('system.404');
+				Router::$routed_uri = $uri[0];
+				return;
 			}
+
+			if ( ! $found OR ! empty($routed_arguments))
+				Event::run('system.404');
 
 			Router::$current_uri = 'page/index/'.$id;
 		}

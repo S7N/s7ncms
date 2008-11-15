@@ -25,10 +25,10 @@ class Page_Controller extends Website_Controller {
 		$this->template->content = View::factory('page/'.$view)->set(array(
 			'page' => $page
 		))->render();
-		
+
 		$this->head->title->append($page->title);
-		
-		if ($page->level > 0 AND ($page->has_children() OR $page->level !== 1))
+
+		/*if ($page->level > 0 AND ($page->has_children() OR $page->level !== 1))
 		{
 			Sidebar::instance()->add
 			(
@@ -39,8 +39,8 @@ class Page_Controller extends Website_Controller {
 					'content' => Menu::instance()->submenu($page)
 				)
 			);
-		}
-		
+		}*/
+
 		Sidebar::instance()->add
 		(
 			'Static',
