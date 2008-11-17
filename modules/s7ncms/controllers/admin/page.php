@@ -112,7 +112,7 @@ class Page_Controller extends Administration_Controller {
 
 	public function newpage()
 	{
-		if($_SERVER["REQUEST_METHOD"] == 'POST')
+		if($_POST)
 		{
 			$page = new Page_Model;
 			$page->user_id = $_SESSION['auth_user']->id;

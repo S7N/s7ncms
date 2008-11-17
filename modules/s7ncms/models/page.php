@@ -50,7 +50,7 @@ class Page_Model extends ORM_MPTT {
 			$path = $page->path();
 			foreach ($path as $page)
 			{
-				if ($page->level == 0)
+				if ($page->level == 0 OR $page->uri == $this->uri)
 				{
 					continue;
 				}
