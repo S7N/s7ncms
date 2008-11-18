@@ -25,7 +25,7 @@ class Menu_Core {
 
 	public static function instance($config = array())
 	{
-		(self::$obj === NULL) and self::$obj = new Menu($config);
+		(self::$obj === NULL) AND self::$obj = new Menu($config);
 
 		return self::$obj;
 	}
@@ -51,15 +51,10 @@ class Menu_Core {
 		if ($size == 0)
 			return NULL;
 
-		// remove 'page/' from current uri
-		$current_url = url::current();
-		if (strpos($current_url, 'page/index/') === 0)
-			$current_url = substr($current_url, 11);
-
 		// search for active menu item
 		for($i = $size-1; $i >= 0; $i--)
 		{
-			if ($current_url == $this->submenu[$i]['id'])
+			if ($this->submenu[$i]['id'] == Router::$current_id)
 			{
 				$this->submenu[$i]['is_active'] = TRUE;
 
