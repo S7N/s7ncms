@@ -20,7 +20,7 @@ class Submenu_Widget extends Widget {
 			return '';
 
 		return View::factory('widgets/submenu')->set(array(
-			'content' => $menu
+			'menu' => $menu
 		))->render();
 	}
 
