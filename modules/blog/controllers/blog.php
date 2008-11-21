@@ -99,7 +99,7 @@ class Blog_Controller extends Website_Controller {
 					if ($_POST->validate())
 					{
 						// prevents CSRF
-						if ($this->session->get('form_key') === $_POST['form_key'])
+						if ($this->session->get_once('form_key') === $_POST['form_key'])
 						{
 							// our 'honeypot' part one
 							if($this->input->post('location') === 'none' OR $this->session->get('location') === 'none')
