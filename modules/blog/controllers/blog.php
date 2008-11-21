@@ -98,21 +98,25 @@ class Blog_Controller extends Website_Controller {
 
 					if ($_POST->validate())
 					{
-						$comment = new Blog_Comment_Model;
-						$comment->author  = $_POST['author'];
-						$comment->email   = $_POST['email'];
-						$comment->content = $_POST['content'];
-						$comment->url     = $_POST['url'];
-						$comment->ip      = $this->input->ip_address();
-						$comment->agent   = html::specialchars(Kohana::$user_agent);
-						$comment->date    = date("Y-m-d H:i:s", time());
-
-						// our 'honeypot' part one
-						if($this->input->post('location') === 'none' OR $this->session->get('location') === 'none')
+						// prevents CSRF
+						if ($this->session->get('form_key') === $_POST['form_key'])
 						{
-							$post->add_comment($comment);
+							// our 'honeypot' part one
+							if($this->input->post('location') === 'none' OR $this->session->get('location') === 'none')
+							{
+								$comment = ORM::factory('blog_comment');
+								$comment->author  = $_POST['author'];
+								$comment->email   = $_POST['email'];
+								$comment->content = $_POST['content'];
+								$comment->url     = $_POST['url'];
+								$comment->ip      = $this->input->ip_address();
+								$comment->agent   = html::specialchars(Kohana::$user_agent);
+								$comment->date    = date("Y-m-d H:i:s", time());
 
-							$this->session->delete('location');
+								$post->add_comment($comment);
+
+								$this->session->delete('location');
+							}
 						}
 
 						url::redirect($post->get_url());
@@ -130,7 +134,8 @@ class Blog_Controller extends Website_Controller {
 
 				$form = View::factory('blog/form_comment')->set(array(
 					'fields' => $fields,
-					'errors' => $errors
+					'errors' => $errors,
+					'form_key' => $_SESSION['form_key'] = text::random('alnum', 16)
 				))->render();
 			}
 

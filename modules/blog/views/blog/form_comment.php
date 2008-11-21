@@ -2,7 +2,7 @@
 	Dein Kommentar
 </h3>
 
-<?php echo form::open(NULL, array('id' => 'commentform')) ?>
+<?php echo form::open(NULL, array('id' => 'commentform'), array('form_key' => $form_key)) ?>
 	<p>
 		<?php echo empty($errors['author']) ? form::input('author', $fields['author']) : form::input('author', $fields['author'], 'class="error"') ?>
 		<?php echo form::label('author', 'Name') ?>
