@@ -99,13 +99,7 @@ class hook_routes {
 
 		Router::$current_id = $id;
 
-		if ($load_module !== FALSE)
-		{
-			Router::$routed_uri = implode('/', $routed_uri);
-
-			Kohana::config_set('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.implode('/', $routed_arguments));
-		}
-		else
+		if ($found)
 		{
 			// do not load a page if controller with the same name exists
 			if (Kohana::find_file('controllers', $uri[0]))
@@ -114,8 +108,13 @@ class hook_routes {
 				return;
 			}
 
-			if ( ! $found OR ! empty($routed_arguments))
-				Event::run('system.404');
+			if ($load_module)
+			{
+				Router::$routed_uri = implode('/', $routed_uri);
+
+				Kohana::config_set('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.implode('/', $routed_arguments));
+				return;
+			}
 
 			Router::$current_uri = 'page/index/'.$id;
 		}
