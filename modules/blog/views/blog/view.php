@@ -16,9 +16,9 @@
 		<?php $counter = 1; foreach ($comments as $comment): ?>
 		<li class="alt">
 			<div class="commentcount"><?php echo $counter++ ?></div>
-			<cite><?php echo $comment->author ?></cite><br />
+			<cite><?php echo html::specialchars($comment->author) ?></cite><br />
 			<small class="commentmetadata"><?php echo strftime('%e. %B %Y, %H:%M', strtotime($comment->date)) ?></small>
-			<?php echo nl2br($comment->content) ?>
+			<?php echo nl2br(html::specialchars($comment->content)) ?>
 		</li>
 		<?php endforeach ?>
 	</ol>

@@ -16,7 +16,7 @@ class Blog_Controller extends Website_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		// TODO: this is buggy in 2.2.1. needs to be fixed
+
 		$this->head->link->append(Router::$routed_uri.'/feed');
 
 		Sidebar::instance()->add
@@ -24,7 +24,7 @@ class Blog_Controller extends Website_Controller {
 			'Tagcloud',
 			array
 			(
-					'tags' => ORM::factory('blog_post')->all_tags()
+				'tags' => ORM::factory('blog_post')->all_tags()
 			)
 		);
 	}
@@ -47,6 +47,7 @@ class Blog_Controller extends Website_Controller {
 				'uri_segment'    => 'page',
 				'items_per_page' => (int) Kohana::config('blog.items_per_page'),
 				'total_items'    => ORM::factory('blog_post')->count_posts(),
+				'auto_hide'      => TRUE,
 				'style'          => 'digg'
 			));
 
@@ -84,25 +85,25 @@ class Blog_Controller extends Website_Controller {
 
 				if ($_POST)
 				{
-					$_POST = new Validation($_POST);
-
-					$_POST
-					->pre_filter('trim')
-
-					->post_filter('html::specialchars', 'author', 'url', 'content')
-					->post_filter('format::url', 'url')
-
-					->add_rules('author', 'required', 'length[2,40]')
-					->add_rules('email', 'valid::email')
-					->add_rules('content', 'required');
-
-					if ($_POST->validate())
+					// Prevents CSRF
+					if ($this->session->get_once('form_key') === $_POST['form_key'])
 					{
-						// prevents CSRF
-						if ($this->session->get_once('form_key') === $_POST['form_key'])
+						$_POST = new Validation($_POST);
+
+						$_POST
+						->pre_filter('trim')
+
+						->post_filter('security::xss_clean', 'url', 'author', 'content')
+						->post_filter('format::url', 'url')
+
+						->add_rules('author', 'required', 'length[2,40]')
+						->add_rules('email', 'valid::email')
+						->add_rules('content', 'required');
+
+						if ($_POST->validate())
 						{
 							// our 'honeypot' part one
-							if($this->input->post('location') === 'none' OR $this->session->get('location') === 'none')
+							if($this->input->post('location') === 'none' OR $this->session->get_once('location') === 'none')
 							{
 								$comment = ORM::factory('blog_comment');
 								$comment->author  = $_POST['author'];
@@ -110,12 +111,10 @@ class Blog_Controller extends Website_Controller {
 								$comment->content = $_POST['content'];
 								$comment->url     = $_POST['url'];
 								$comment->ip      = $this->input->ip_address();
-								$comment->agent   = html::specialchars(Kohana::$user_agent);
+								$comment->agent   = Kohana::$user_agent;
 								$comment->date    = date("Y-m-d H:i:s", time());
 
 								$post->add_comment($comment);
-
-								$this->session->delete('location');
 							}
 						}
 
