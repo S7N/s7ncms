@@ -17,24 +17,22 @@ class Modules_Model extends Model {
 	{
 		$query = $this->db->get('modules');
 
-		if(count($query) > 0)
+		if(count($query) == 0)
+			return array();
+
+		$modules = array();
+		foreach($query->result() as $result)
 		{
-			$modules = array();
-			foreach($query->result() as $result)
-			{
-				if( ! is_file(MODPATH.$result->name.'/module.xml'))
-					continue;
-					
-				$modules[] = array(
-					'xml' => simplexml_load_file(MODPATH.$result->name.'/module.xml'),
-					'db' => $result
-				);
-			}
-				
-			return $modules;
+			if( ! is_file(MODPATH.$result->name.'/module.xml'))
+				continue;
+
+			$modules[] = array(
+				'xml' => simplexml_load_file(MODPATH.$result->name.'/module.xml'),
+				'db' => $result
+			);
 		}
 
-		return array();
+		return $modules;
 	}
 
 	public function status($module, $status)
@@ -55,7 +53,7 @@ class Modules_Model extends Model {
 			}
 		}
 		unset($query);
-		 
+
 		// read all modules
 		$modules = array();
 		if ($dh = opendir(MODPATH))
@@ -69,7 +67,7 @@ class Modules_Model extends Model {
 				}
 			}
 		}
-		 
+
 		return $modules;
 	}
 

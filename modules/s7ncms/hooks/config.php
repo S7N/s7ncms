@@ -22,8 +22,7 @@ class hook_config {
 	{
 		$query = Database::instance()
 			->select('context, key, value')
-			->from('config')
-			->get();
+			->get('config');
 
 		$result = $query->result();
 

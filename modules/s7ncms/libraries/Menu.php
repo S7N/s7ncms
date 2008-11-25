@@ -16,18 +16,20 @@ class Menu_Core {
 	protected $menu = array();
 	protected $submenu = array();
 
-	static $obj = NULL;
+	static $instance = NULL;
 
 	public function __construct()
 	{
 		$this->menu = $this->as_array();
+		self::$instance = $this;
 	}
 
 	public static function instance($config = array())
 	{
-		(self::$obj === NULL) AND self::$obj = new Menu($config);
+		if (self::$instance === NULL)
+			new Menu($config);
 
-		return self::$obj;
+		return self::$instance;
 	}
 
 	public function __toString()

@@ -23,15 +23,13 @@ class hook_modules {
 
 		if(count($query) > 0)
 		{
-			$new_modules = array();
-			
 			$result = $query->result();
-			foreach ($result as $item)
-			{
-				$new_modules[] = MODPATH.$item->name;
-			}
 
-			Kohana::config_set('core.modules', array_merge($new_modules,$modules));
+			$new_modules = array();
+			foreach ($result as $item)
+				$new_modules[] = MODPATH.$item->name;
+
+			Kohana::config_set('core.modules', array_merge($new_modules, $modules));
 		}
 	}
 

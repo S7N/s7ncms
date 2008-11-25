@@ -12,29 +12,24 @@
  * @version $Id$
  */
 class Sidebar_Core {
-	
+
 	private static $instance;
-	
+
 	protected $widgets = array();
-	
+
 	public function __construct()
 	{
-		if (self::$instance === NULL)
-		{
-			self::$instance = $this;
-		}
+		self::$instance = $this;
 	}
-	
+
 	public static function instance()
 	{
 		if (self::$instance == NULL)
-		{
 			new Sidebar;
-		}
 
 		return self::$instance;
 	}
-	
+
 	public function add($widget, $config = NULL)
 	{
 		$this->widgets[] = array
@@ -43,12 +38,12 @@ class Sidebar_Core {
 			'config' => $config
 		);
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();
 	}
-	
+
 	public function render()
 	{
 		$output = '';
@@ -63,8 +58,8 @@ class Sidebar_Core {
 				$output .= $widget['name']->render();
 			}
 		}
-		
+
 		return $output;
 	}
-	
+
 }

@@ -23,9 +23,7 @@ class Page_Model extends ORM_MPTT {
 	public function unique_key($id = NULL)
 	{
 		if( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
-		{
 			return 'uri';
-		}
 
 		return parent::unique_key($id);
 	}
@@ -59,9 +57,7 @@ class Page_Model extends ORM_MPTT {
 			}
 
 			if ( ! empty($titles))
-			{
 				$paths[implode('/', $uris)] = implode(' &gt; ', $titles);
-			}
 		}
 
 		return $paths;
