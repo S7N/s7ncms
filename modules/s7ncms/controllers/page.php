@@ -28,19 +28,6 @@ class Page_Controller extends Website_Controller {
 
 		$this->head->title->append($page->title);
 
-		/*if ($page->level > 0 AND ($page->has_children() OR $page->level !== 1))
-		{
-			Sidebar::instance()->add
-			(
-				'Static',
-				array
-				(
-					'title'   => 'Submenu',
-					'content' => Menu::instance()->submenu($page)
-				)
-			);
-		}*/
-
 		Sidebar::instance()->add
 		(
 			'Static',
