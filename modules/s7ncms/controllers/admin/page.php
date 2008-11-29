@@ -218,10 +218,17 @@ class Page_Controller extends Administration_Controller {
 	{
 		$tree = json_decode($this->input->post('tree', NULL), TRUE);
 
-		$this->counter = 0;
 		$this->tree = array();
+		$this->counter = 0;
+		$this->level_zero = 0;
 
 		$this->calculate_mptt($tree);
+
+		if ($this->level_zero > 1)
+		{
+			$this->session->set_flash('error_message', 'Page order could not be saved.');
+			exit;
+		}
 
 		foreach($this->tree as $node)
 		{
@@ -237,16 +244,19 @@ class Page_Controller extends Administration_Controller {
 
 	private function calculate_mptt($tree, $parent = 0, $level = 0)
 	{
-		foreach ($tree as $key => $value)
+		foreach ($tree as $key => $children)
 		{
 			$id = substr($key, 5);
-			$children = $value;
+
 			$left = ++$this->counter;
+
 			if ( ! empty($children))
-			{
 				$this->calculate_mptt($children, $id, $level+1);
-			}
+
 			$right = ++$this->counter;
+
+			if ($level === 0)
+				$this->level_zero++;
 
 			$this->tree[] = array(
 				'id' => $id,
