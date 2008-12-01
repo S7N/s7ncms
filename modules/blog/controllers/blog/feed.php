@@ -29,7 +29,7 @@ class Feed_Controller extends Controller {
 	public function index()
 	{
 		header('Content-Type: text/xml; charset=UTF-8', TRUE);
-		
+
 		if ($cache = $this->cache->get('s7n_blog_feed'))
 		{
 			echo $cache;
@@ -69,7 +69,7 @@ class Feed_Controller extends Controller {
 	public function comments()
 	{
 		header('Content-Type: text/xml; charset=UTF-8', TRUE);
-		
+
 		if ($cache = $this->cache->get('s7n_blog_feed_comments'))
 		{
 			echo $cache;
@@ -77,28 +77,28 @@ class Feed_Controller extends Controller {
 		else
 		{
 			$comments = ORM::factory('blog_comment')->orderby('id', 'desc')->find_all(20);
-	
+
 			$info = array
 			(
 				'title' => Kohana::config('s7n.site_title').' (Latest Comments)',
 				'link' => Router::$routed_uri,
 				'generator' => 'S7Ncms - http://www.s7n.de/'
 			);
-	
+
 			$items = array();
 			foreach ($comments as $comment)
 			{
 				$items[] = array
 				(
-					'author'      => $comment->author,
+					'author'      => html::specialchars($comment->author),
 					'pubDate'     => date('r', strtotime($comment->date)),
 					'title'       => 'New comment for "'.$comment->blog_post->title.'"',
-					'description' => $comment->content,
+					'description' => html::specialchars($comment->content),
 					'link'        => $comment->blog_post->get_url(),
 					'guid'        => $comment->blog_post->get_url(),
 				);
 			}
-	
+
 			$feed = feed::create($info, $items);
 			$this->cache->set('s7n_blog_feed_comments', $feed);
 			echo $feed;
