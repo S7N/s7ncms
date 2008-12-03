@@ -52,104 +52,110 @@ class Blog_Controller extends Website_Controller {
 			));
 
 			$this->template->content = View::factory('blog/index')->set(array(
-				'posts' => ORM::factory('blog_post')->orderby('id', 'desc')->find_all((int) Kohana::config('blog.items_per_page'), $pagination->sql_offset),
+				'posts' => ORM::factory('blog_post')
+					->orderby('id', 'desc')
+					->find_all((int) Kohana::config('blog.items_per_page'), $pagination->sql_offset),
 				'pagination' => $pagination
 			))->render();
+
+			return;
 		}
-		else
+
+		$post = ORM::factory('blog_post', (string) $uri);
+
+		// Show 404 if we don't find posts
+		if ( ! $post->loaded)
+			Event::run('system.404');
+
+		$this->head->title->prepend($post->title);
+
+		$this->head->javascript->append_file('media/js/jquery.js');
+		$this->head->javascript->append_file('modules/blog/media/js/comments.js');
+
+		$form = NULL;
+
+		if ($post->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
 		{
-			$post = ORM::factory('blog_post', (string) $uri);
+			$fields = array
+			(
+				'author'  => '',
+				'email'   => '',
+				'url'     => '',
+				'content' => '',
+			);
 
-			// Show 404 if we don't find posts
-			if ( ! $post->loaded)
-				Event::run('system.404');
+			$errors = $fields;
 
-			$this->head->title->prepend($post->title);
-
-			$this->head->javascript->append_file('media/js/jquery.js');
-			$this->head->javascript->append_file('modules/blog/media/js/comments.js');
-
-			$form = NULL;
-
-			if ($post->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
+			if ($_POST)
 			{
-				$fields = array
-				(
-					'author'  => '',
-					'email'   => '',
-					'url'     => '',
-					'content' => '',
-				);
-
-				$errors = $fields;
-
-				if ($_POST)
+				// Prevents CSRF
+				if ($this->session->get_once('form_key') === $_POST['form_key'])
 				{
-					// Prevents CSRF
-					if ($this->session->get_once('form_key') === $_POST['form_key'])
+					$_POST = new Validation($_POST);
+
+					$_POST
+					->pre_filter('trim')
+
+					->post_filter('security::xss_clean', 'url', 'author', 'content')
+					->post_filter('format::url', 'url')
+
+					->add_rules('author', 'required', 'length[2,40]')
+					->add_rules('email', 'valid::email')
+					->add_rules('content', 'required');
+
+					if ($_POST->validate())
 					{
-						$_POST = new Validation($_POST);
-
-						$_POST
-						->pre_filter('trim')
-
-						->post_filter('security::xss_clean', 'url', 'author', 'content')
-						->post_filter('format::url', 'url')
-
-						->add_rules('author', 'required', 'length[2,40]')
-						->add_rules('email', 'valid::email')
-						->add_rules('content', 'required');
-
-						if ($_POST->validate())
+						// our 'honeypot' part one
+						if($this->input->post('location') === 'none'
+							OR $this->session->get_once('location') === 'none')
 						{
-							// our 'honeypot' part one
-							if($this->input->post('location') === 'none' OR $this->session->get_once('location') === 'none')
-							{
-								$comment = ORM::factory('blog_comment');
-								$comment->author  = $_POST['author'];
-								$comment->email   = $_POST['email'];
-								$comment->content = $_POST['content'];
-								$comment->url     = $_POST['url'];
-								$comment->ip      = $this->input->ip_address();
-								$comment->agent   = Kohana::$user_agent;
-								$comment->date    = date("Y-m-d H:i:s", time());
+							$comment = ORM::factory('blog_comment');
+							$comment->author  = $_POST['author'];
+							$comment->email   = $_POST['email'];
+							$comment->content = $_POST['content'];
+							$comment->url     = $_POST['url'];
+							$comment->ip      = $this->input->ip_address();
+							$comment->agent   = Kohana::$user_agent;
+							$comment->date    = date("Y-m-d H:i:s", time());
 
-								$post->add_comment($comment);
-							}
+							$post->add_comment($comment);
 						}
-
-						url::redirect($post->get_url());
 					}
-					else
-					{
-						// our 'honeypot' part two
-						if ($this->input->post('location') === 'none')
-							$this->session->set('location', 'none');
 
-						$fields = arr::overwrite($_POST->as_array());
-						$errors = arr::overwrite($_POST->errors('blog_form_error_messages'));
-					}
+					url::redirect($post->get_url());
 				}
+				else
+				{
+					// our 'honeypot' part two
+					if ($this->input->post('location') === 'none')
+						$this->session->set('location', 'none');
 
-				$form = View::factory('blog/form_comment')->set(array(
-					'fields' => $fields,
-					'errors' => $errors,
-					'form_key' => $_SESSION['form_key'] = text::random('alnum', 16)
-				))->render();
+					$fields = arr::overwrite($_POST->as_array());
+					$errors = arr::overwrite($_POST->errors('blog_form_error_messages'));
+				}
 			}
 
-			$this->template->content = View::factory('blog/view')->set(array(
-				'post' => $post,
-				'comments' => $post->blog_comments,
-				'form' => $form
+			$form = View::factory('blog/form_comment')->set(array(
+				'fields' => $fields,
+				'errors' => $errors,
+				'form_key' => $_SESSION['form_key'] = text::random('alnum', 16)
 			))->render();
 		}
+
+		$this->template->content = View::factory('blog/view')->set(array(
+			'post' => $post,
+			'comments' => $post->blog_comments,
+			'form' => $form
+		))->render();
 	}
 
 	public function tag($tag)
 	{
 		$this->template->content = View::factory('blog/index')->set(array(
-			'posts' => ORM::factory('blog_post')->like('tags', $tag)->orderby('id', 'desc')->find_all()
+			'posts' => ORM::factory('blog_post')
+				->like('tags', $tag)
+				->orderby('id', 'desc')
+				->find_all()
 		))->render();
 	}
 
