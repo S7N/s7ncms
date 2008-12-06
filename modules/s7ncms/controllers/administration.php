@@ -13,13 +13,14 @@
  */
 class Administration_Controller extends Template_Controller {
 
-	public $template = 'admin';
 	public $session;
 	public $db;
 	public $head;
 
 	public function __construct()
 	{
+		Kohana::config_set('s7n.theme', 'admin');
+
 		parent::__construct();
 
 		$this->session = Session::instance();
