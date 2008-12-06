@@ -9,7 +9,7 @@
 		<div id="header">
 			<div class="widthfix">
 				<div class="logo">
-					<h1>My Website</h1>
+					<h1>My Website - default theme</h1>
 				</div>
 				<div class="clear"></div>
 				<?php echo Menu::instance(); ?>
