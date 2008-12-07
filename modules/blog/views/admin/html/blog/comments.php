@@ -10,8 +10,8 @@
 	<tbody align="left" valign="middle">
 	<?php if($comments) foreach($comments as $comment): ?>
 		<tr>
-			<td><?php echo $comment->author ?></td>
-			<td><?php echo text::limit_chars($comment->content, 70) ?></td>
+			<td><?php echo html::specialchars($comment->author) ?></td>
+			<td><?php echo html::specialchars(text::limit_chars($comment->content, 70)) ?></td>
 			<td><?php echo strftime('%e. %B %Y, %H:%M', strtotime($comment->date)) ?></td>
 			<td class="delete">(<?php echo html::anchor('admin/blog/comments/edit/'.$comment->id, 'edit') ?>)
 			<?php echo html::anchor('admin/blog/comments/delete/'.$comment->id, html::image(

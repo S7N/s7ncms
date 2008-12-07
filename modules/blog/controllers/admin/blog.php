@@ -55,7 +55,7 @@ class Blog_Controller extends Administration_Controller {
 			$posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all();
 		}
 
-		$this->template->content = View::factory('blog/admin/index')->set(array(
+		$this->template->content = View::factory('blog/index')->set(array(
 			'posts' => $posts
 		))->render();
 	}
@@ -113,7 +113,7 @@ class Blog_Controller extends Administration_Controller {
 
 			$this->template->title .= 'New Post';
 			$this->template->tabs = array('Content', 'Advanced');
-			$this->template->content = View::factory('blog/admin/newpost')->render();
+			$this->template->content = View::factory('blog/newpost')->render();
 		}
 	}
 
@@ -150,7 +150,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->head->title->append('Edit: '. $post->title);
 			$this->template->title .= 'Edit: '. $post->title;
 
-			$this->template->content = View::factory('blog/admin/edit')->set(array(
+			$this->template->content = View::factory('blog/edit')->set(array(
 				'post' => $post
 			))->render();
 		}
@@ -180,7 +180,7 @@ class Blog_Controller extends Administration_Controller {
 	private function comments_view($id)
 	{
 		$post = ORM::factory('blog_post', (int) $id);
-		$this->template->content = new View('blog/admin/comments');
+		$this->template->content = new View('blog/comments');
 		$this->template->content->comments = $post->blog_comments;
 
 		$this->head->title->append('Comments for: '. $post->title);
@@ -238,7 +238,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->head->title->append('Edit: Comment #'. $comment->id);
 			$this->template->title .= 'Edit: Comment #'. $comment->id;
 
-			$this->template->content = View::factory('blog/admin/editcomment')->set(array(
+			$this->template->content = View::factory('blog/editcomment')->set(array(
 				'comment' => $comment
 			))->render();
 		}
@@ -315,7 +315,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->head->title->append('Settings');
 			$this->template->title .= 'Settings';
 
-			$this->template->content = new View('blog/admin/settings');
+			$this->template->content = new View('blog/settings');
 			$this->template->content->items_per_page = Kohana::config('blog.items_per_page');
 			$this->template->content->comment_status = (bool) (Kohana::config('blog.comment_status') == 'open' ? TRUE : FALSE);
 		}
