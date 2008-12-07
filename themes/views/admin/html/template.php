@@ -19,6 +19,7 @@
 		<ul>
 			<li><?php echo html::anchor('admin/dashboard', 'Dashboard'); ?></li>
 			<li><?php echo html::anchor('admin/page', 'Pages'); ?></li>
+			<?php echo menus::modules() ?>
 			<li><?php echo html::anchor('admin/modules', 'Modules'); ?></li>
 			<li><?php echo html::anchor('admin/user', 'Users'); ?></li>
 			<li><?php echo html::anchor('admin/settings', 'Settings'); ?></li>
@@ -26,9 +27,9 @@
 	</div>
 
 	<div id="left">
-	
+
 		<?php echo Sidebar::instance() ?>
-	
+
 		<?php if(isset($tasks) AND !empty($tasks)): ?>
 			<p><strong>Tasks</strong><br />
 			<?php foreach($tasks as $task): ?>
@@ -36,9 +37,9 @@
 			<?php endforeach; ?>
 			</p>
 		<?php endif; ?>
-		
+
 		<?php echo $this->recent_entries() ?>
-		
+
 	</div>
 
 	<div id="main">
@@ -49,7 +50,7 @@
 			    <input name="q" value="<?php echo $searchvalue ?>" type="search" placeholder="Filter by" autosave="s7n.search" />
 			<?php echo form::close() ?>
 			<?php endif ?>
-			
+
 			<?php if(isset($tabs)): ?>
 			<ul id="contentmenu">
 				<?php foreach ($tabs as $tab): ?>
