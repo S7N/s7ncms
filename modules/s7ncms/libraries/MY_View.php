@@ -17,6 +17,9 @@ class View extends View_Core {
 	{
 		$theme = Kohana::config('s7n.theme');
 
+		if (Kohana::config('s7n.use_admin_theme'))
+			$theme = 'admin';
+
 		if (Kohana::find_file('views/'.$theme.'/html', $name))
 			parent::set_filename($theme.'/html/'.$name, $type);
 		elseif (Kohana::find_file('views/default/html', $name))

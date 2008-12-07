@@ -52,12 +52,13 @@ CREATE TABLE `config` (
 -- Daten für Tabelle `config`
 -- 
 
-INSERT INTO `config` VALUES (2, 's7n', 'page_views', 'default, extended');
-INSERT INTO `config` VALUES (3, 'blog', 'comment_status', 'open');
-INSERT INTO `config` VALUES (4, 's7n', 'site_title', 'My Website');
-INSERT INTO `config` VALUES (5, 'blog', 'items_per_page', '5');
-INSERT INTO `config` VALUES (6, 's7n','default_sidebar_title','About');
-INSERT INTO `config` VALUES (7, 's7n','default_sidebar_content','Mit S7Ncms wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei S7Ncms handelt es sich um ein speziell für die Anforderungen professioneller Webseiten entwickeltes Content Management System.');
+INSERT INTO `config` VALUES (1, 's7n', 'page_views', 'default, extended');
+INSERT INTO `config` VALUES (2, 'blog', 'comment_status', 'open');
+INSERT INTO `config` VALUES (3, 's7n', 'site_title', 'My Website');
+INSERT INTO `config` VALUES (4, 'blog', 'items_per_page', '5');
+INSERT INTO `config` VALUES (5, 's7n','default_sidebar_title','About');
+INSERT INTO `config` VALUES (6, 's7n','default_sidebar_content','Mit S7Ncms wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei S7Ncms handelt es sich um ein speziell für die Anforderungen professioneller Webseiten entwickeltes Content Management System.');
+INSERT INTO `config` VALUES (7, 's7n','theme','default');
 
 -- --------------------------------------------------------
 

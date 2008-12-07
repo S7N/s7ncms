@@ -19,7 +19,7 @@ class Administration_Controller extends Template_Controller {
 
 	public function __construct()
 	{
-		Kohana::config_set('s7n.theme', 'admin');
+		Kohana::config_set('s7n.use_admin_theme', TRUE);
 
 		parent::__construct();
 

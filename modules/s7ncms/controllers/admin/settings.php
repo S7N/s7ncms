@@ -12,26 +12,41 @@
  * @version $Id$
  */
 class Settings_Controller extends Administration_Controller {
-	
+
 	public function index()
 	{
+		$themes = array();
+		if ($dh = opendir(THEMEPATH.'views'))
+		{
+			while(($theme = readdir($dh)) !== FALSE)
+			{
+				$path = THEMEPATH.'views/'.$theme.'/theme.xml';
+				if (is_file($path))
+				{
+					$xml = simplexml_load_file($path);
+					$themes[$theme] = (string) $xml->name;
+				}
+			}
+		}
+
 		$this->head->title->append('Settings');
-		
+
 		$this->template->title = 'Settings';
 	    $this->template->content = View::factory('settings/settings')->set(array(
     		'site_title' => Kohana::config('s7n.site_title'),
-        	'default_uri' => Kohana::config('s7n.default_uri')
+	    	'theme' => Kohana::config('s7n.theme'),
+	    	'themes' => $themes
 	    ))->render();
 	}
-    
+
     public function save()
 	{
-        if($_SERVER["REQUEST_METHOD"] === 'POST')
+        if($_POST)
 		{
 			// Site Title
 			$this->db
 			->update(
-				'config', 
+				'config',
 				array(
 					'value' => $this->input->post('site_title')
 				),
@@ -40,7 +55,20 @@ class Settings_Controller extends Administration_Controller {
 					'key' => 'site_title'
 				)
 			);
-			
+
+			// Site Title
+			$this->db
+			->update(
+				'config',
+				array(
+					'value' => $this->input->post('theme')
+				),
+				array(
+					'context' => 's7n',
+					'key' => 'theme'
+				)
+			);
+
 			$this->session->set_flash('info_message', 'Settings edited successfully');
         }
 

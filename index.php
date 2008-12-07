@@ -1,11 +1,4 @@
 <?php
-/**
- * This file acts as the "front controller" to your application. You can
- * configure your application, modules, and system directories here.
- * PHP error_reporting level may also be changed.
- *
- * @see http://kohanaphp.com
- */
 
 /**
  * Define the website environment status. When this flag is set to TRUE, some
@@ -15,31 +8,6 @@
  * @see http://doc.kohanaphp.com/installation/deployment
  */
 define('IN_PRODUCTION', FALSE);
-
-/**
- * Website application directory. This directory should contain your application
- * configuration, controllers, models, views, and other resources.
- *
- * This path can be absolute or relative to this file.
- */
-$kohana_application = 'application';
-
-/**
- * Kohana modules directory. This directory should contain all the modules used
- * by your application. Modules are enabled and disabled by the application
- * configuration file.
- *
- * This path can be absolute or relative to this file.
- */
-$kohana_modules = 'modules';
-
-/**
- * Kohana system directory. This directory should contain the core/ directory,
- * and the resources you included in your download of Kohana.
- *
- * This path can be absolute or relative to this file.
- */
-$kohana_system = 'system';
 
 /**
  * Upload directory.
@@ -89,43 +57,11 @@ define('KOHANA',  basename(__FILE__));
 is_link(KOHANA) and chdir(dirname(realpath(__FILE__)));
 
 // Define application and system paths
-define('APPPATH', str_replace('\\', '/', realpath($kohana_application)).'/');
-define('MODPATH', str_replace('\\', '/', realpath($kohana_modules)).'/');
-define('SYSPATH', str_replace('\\', '/', realpath($kohana_system)).'/');
-
-define('UPLOADPATH', str_replace('\\', '/', realpath($s7n_upload)).'/');
-
-// Clean up
-unset($kohana_application, $kohana_modules, $kohana_system, $s7n_upload);
-
-if ( ! IN_PRODUCTION)
-{
-	// Check APPPATH
-	if ( ! (is_dir(APPPATH) AND is_file(APPPATH.'config/config'.EXT)))
-	{
-		die
-		(
-			'<div style="width:80%;margin:50px auto;text-align:center;">'.
-				'<h3>Application Directory Not Found</h3>'.
-				'<p>The <code>$kohana_application</code> directory does not exist.</p>'.
-				'<p>Set <code>$kohana_application</code> in <tt>'.KOHANA.'</tt> to a valid directory and refresh the page.</p>'.
-			'</div>'
-		);
-	}
-
-	// Check SYSPATH
-	if ( ! (is_dir(SYSPATH) AND is_file(SYSPATH.'core/Bootstrap'.EXT)))
-	{
-		die
-		(
-			'<div style="width:80%;margin:50px auto;text-align:center;">'.
-				'<h3>System Directory Not Found</h3>'.
-				'<p>The <code>$kohana_system</code> directory does not exist.</p>'.
-				'<p>Set <code>$kohana_system</code> in <tt>'.KOHANA.'</tt> to a valid directory and refresh the page.</p>'.
-			'</div>'
-		);
-	}
-}
+define('APPPATH', str_replace('\\', '/', realpath('application')).'/');
+define('MODPATH', str_replace('\\', '/', realpath('modules')).'/');
+define('SYSPATH', str_replace('\\', '/', realpath('system')).'/');
+define('THEMEPATH', str_replace('\\', '/', realpath('themes')).'/');
+define('UPLOADPATH', str_replace('\\', '/', realpath('upload')).'/');
 
 // Initialize.
 require SYSPATH.'core/Bootstrap'.EXT;
