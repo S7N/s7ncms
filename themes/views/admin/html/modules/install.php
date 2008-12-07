@@ -17,7 +17,7 @@
 			<td><?php echo $module->description ?></td>
 			<td><?php echo html::anchor('admin/modules/install/'.$module->uri, 'install'); ?></td>
 			<td class="delete"><?php echo html::anchor('admin/modules/uninstall/'.$module->uri, html::image(
-				'media/admin/images/delete.png',
+				'themes/views/admin/images/delete.png',
 				array(
 					'alt' => 'Uninstall Module',
 					'title' => 'Uninstall Module'

@@ -12,26 +12,26 @@
  * @version $Id$
  */
 class Website_Controller extends Template_Controller {
-	
+
 	public $cache_enabled = TRUE;
 
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		if (IN_PRODUCTION === TRUE)
 		{
 			Event::add('system.display', array($this, 'save_cache'));
 		}
-		
+
 		$this->session = Session::instance();
 		$this->head = Head::instance();
-		$this->head->css->append_file('media/css/layout');
+		$this->head->css->append_file('themes/views/default/css/layout');
 		$this->head->title->set(Kohana::config('s7n.site_title'));
-		
+
 		$this->template->head = $this->head;
 	}
-	
+
 	public function save_cache()
 	{
 		if ($this->cache_enabled === TRUE)

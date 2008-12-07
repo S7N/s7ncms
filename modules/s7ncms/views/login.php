@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<?php echo html::stylesheet('media/admin/css/login.css', 'screen'); ?>
+	<?php echo html::stylesheet('themes/views/admin/css/login.css', 'screen'); ?>
 	<title>S7Ncms login</title>
 	<script type="text/javascript">
         function focusElement() {
@@ -15,7 +15,7 @@
 </head>
 <body>
 <div id="login">
-    <div id="logo"><?php echo html::image('media/images/s7n_logo.png') ?></div>
+    <div id="logo"><?php echo html::image('themes/views/default/images/s7n_logo.png') ?></div>
     <div id="formular">
         <div id="message">
         <?php foreach ($errors as $error): ?>

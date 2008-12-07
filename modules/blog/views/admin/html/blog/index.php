@@ -27,7 +27,7 @@
 			</td>
 			<td class="delete">
 			<?php echo html::anchor('admin/blog/delete/'.$post->id, html::image(
-				'media/admin/images/delete.png',
+				'themes/views/admin/images/delete.png',
 				array(
 					'alt' => 'Delete Page',
 					'title' => 'Delete Page'

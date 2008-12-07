@@ -24,7 +24,7 @@
 			<?php endif; ?>
 			</td>
 			<td class="delete"><?php echo html::anchor('admin/modules/uninstall/'.$module['db']->name, html::image(
-				'media/admin/images/delete.png',
+				'themes/views/admin/images/delete.png',
 				array(
 					'alt' => 'Uninstall Module',
 					'title' => 'Uninstall Module'
