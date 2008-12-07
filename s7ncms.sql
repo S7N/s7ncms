@@ -1,130 +1,60 @@
-CREATE TABLE `blog_posts` (
-	`id` bigint(20) unsigned NOT NULL auto_increment,
-	`user_id` bigint(20) NOT NULL default '0',
-	`date` datetime NOT NULL default '0000-00-00 00:00:00',
-	`content` longtext NOT NULL,
-	`title` varchar(200) NOT NULL,
-	`excerpt` text,
-	`status` varchar(20) NOT NULL default 'published',
-	`comment_status` varchar(20) NOT NULL default 'open',
-	`ping_status` varchar(20) NOT NULL default 'open',
-	`password` varchar(20) default '',
-	`uri` varchar(200) NOT NULL default '',
-	`modified` datetime NOT NULL default '0000-00-00 00:00:00',
-	`comment_count` bigint(20) NOT NULL default '0',
-	`tags` text,
-	PRIMARY KEY  (`id`),
-	KEY `uri` (`uri`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+# CocoaMySQL dump
+# Version 0.7b5
+# http://cocoamysql.sourceforge.net
+#
+# Host: localhost (MySQL 5.0.45)
+# Database: test
+# Generation Time: 2007-11-25 21:56:15 +0100
+# ************************************************************
 
-CREATE TABLE `blog_comments` (
-	`id` bigint(20) unsigned NOT NULL auto_increment,
-	`blog_post_id` int(11) NOT NULL default '0',
-	`author` varchar(200) NOT NULL,
-	`email` varchar(100) default NULL,
-	`url` varchar(200) default NULL,
-	`ip` varchar(100) NOT NULL default '0.0.0.0',
-	`date` datetime NOT NULL default '0000-00-00 00:00:00',
-	`content` text,
-	`approved` varchar(20) NOT NULL default '1',
-	`agent` varchar(255) default NULL,
-	`type` varchar(20) NOT NULL default 'comment',
-	`user_id` bigint(20) NOT NULL default '0',
-	PRIMARY KEY  (`id`),
-	KEY `blog_posts_id` (`blog_post_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+# Dump of table content
+# ------------------------------------------------------------
 
--- --------------------------------------------------------
-
--- 
--- Tabellenstruktur für Tabelle `config`
--- 
-
-CREATE TABLE `config` (
+CREATE TABLE `content` (
   `id` int(11) NOT NULL auto_increment,
-  `context` varchar(200) NOT NULL,
-  `key` varchar(200) NOT NULL,
-  `value` varchar(200) default NULL,
+  `version` int(11) default NULL,
+  `title` varchar(200) default NULL,
+  `uri` varchar(200) default NULL,
+  `intro` text,
+  `body` text,
+  `publish_on` datetime default NULL,
+  `created_on` datetime default NULL,
+  `created_by` int(11) default NULL,
+  `modified_on` datetime default NULL,
+  `modified_by` int(11) default NULL,
+  `tags` text,
+  `status` enum('published','draft','secured') default 'published',
+  `comment_status` enum('open','closed') default 'open',
+  `password` varchar(200) default NULL,
+  `view` varchar(200) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 
--- Daten für Tabelle `config`
--- 
-
-INSERT INTO `config` VALUES (1, 's7n', 'page_views', 'default, extended');
-INSERT INTO `config` VALUES (2, 'blog', 'comment_status', 'open');
-INSERT INTO `config` VALUES (3, 's7n', 'site_title', 'My Website');
-INSERT INTO `config` VALUES (4, 'blog', 'items_per_page', '5');
-INSERT INTO `config` VALUES (5, 's7n','default_sidebar_title','About');
-INSERT INTO `config` VALUES (6, 's7n','default_sidebar_content','Mit S7Ncms wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei S7Ncms handelt es sich um ein speziell für die Anforderungen professioneller Webseiten entwickeltes Content Management System.');
-INSERT INTO `config` VALUES (7, 's7n','theme','default');
-
--- --------------------------------------------------------
+INSERT INTO `content` (`id`,`version`,`title`,`uri`,`intro`,`body`,`publish_on`,`created_on`,`created_by`,`modified_on`,`modified_by`,`tags`,`status`,`comment_status`,`password`,`view`) VALUES ('1','1','Home','home','<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\n<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>','<p>&nbsp;</p>','2007-11-25 13:36:10','2007-11-25 13:36:10','1','2007-11-25 13:36:10','1',NULL,'published','closed',NULL,NULL);
+INSERT INTO `content` (`id`,`version`,`title`,`uri`,`intro`,`body`,`publish_on`,`created_on`,`created_by`,`modified_on`,`modified_by`,`tags`,`status`,`comment_status`,`password`,`view`) VALUES ('2','1','Products','products','<h2>Product A</h2>\n<p>Beschreibung zum Produkt A</p>\n<h2>Produkt B</h2>\n<p>Beschreibung zum Produkt B</p>','<p>&nbsp;</p>','2007-11-25 13:36:39','2007-11-25 13:36:39','1','2007-11-25 13:36:39','1',NULL,'published','closed',NULL,NULL);
+INSERT INTO `content` (`id`,`version`,`title`,`uri`,`intro`,`body`,`publish_on`,`created_on`,`created_by`,`modified_on`,`modified_by`,`tags`,`status`,`comment_status`,`password`,`view`) VALUES ('3','1','About Me','about-me','<p>Hello, my Name is Max Mustermann. I live in Sydney.</p>','<p>&nbsp;</p>','2007-11-25 13:37:13','2007-11-25 13:37:13','1','2007-11-25 13:37:13','1',NULL,'published','closed',NULL,NULL);
+INSERT INTO `content` (`id`,`version`,`title`,`uri`,`intro`,`body`,`publish_on`,`created_on`,`created_by`,`modified_on`,`modified_by`,`tags`,`status`,`comment_status`,`password`,`view`) VALUES ('4','1','Contact Me','contact-me','<p>E-Mail: max.mustermann@example.com<br />ICQ: 123456789</p>\n<p>Max Mustermann<br />Muster Avenue 12<br />12345 City</p>','<p>&nbsp;</p>','2007-11-25 13:37:46','2007-11-25 13:37:46','1','2007-11-25 13:37:46','1',NULL,'published','closed',NULL,NULL);
 
 
--- 
--- Tabellenstruktur für Tabelle `modules`
--- 
-
-CREATE TABLE `modules` (
-  `id` int(10) NOT NULL auto_increment,
-  `name` varchar(200) default NULL,
-  `status` varchar(200) default 'on',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- 
--- Daten für Tabelle `modules`
--- 
-
-INSERT INTO `modules` VALUES (1, 'blog', 'on');
-
--- --------------------------------------------------------
-
--- 
--- Tabellenstruktur für Tabelle `pages`
--- 
+# Dump of table pages
+# ------------------------------------------------------------
 
 CREATE TABLE `pages` (
   `id` int(11) NOT NULL auto_increment,
-  `keywords` varchar(200) default NULL,
-  `user_id` int(11) NOT NULL default '0',
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
-  `title` varchar(200) NOT NULL,
-  `excerpt` text default NULL,
-  `content` longtext default NULL,
-  `uri` varchar(200) NOT NULL,
-  `tags` text default NULL,
-  `view` varchar(200) default NULL,
-  `modified` datetime default NULL,
-  `password` varchar(200) default NULL,
-  `status` varchar(200) default 'published',
-  `parent_id` int(11) default NULL,
-  `level` int(11) NOT NULL,
-  `lft` int(11) default NULL,
-  `rgt` int(11) default NULL,
-  `type` varchar(250) default NULL,
-  `target` varchar(250) default NULL,
+  `content_id` int(11) default NULL,
+  `sidebar_content` text,
+  `meta_keywords` varchar(200) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 
--- Daten für Tabelle `pages`
--- 
+INSERT INTO `pages` (`id`,`content_id`,`sidebar_content`,`meta_keywords`) VALUES ('1','1','<p>&nbsp;</p>','');
+INSERT INTO `pages` (`id`,`content_id`,`sidebar_content`,`meta_keywords`) VALUES ('2','2','<p>&nbsp;</p>','');
+INSERT INTO `pages` (`id`,`content_id`,`sidebar_content`,`meta_keywords`) VALUES ('3','3','<p>&nbsp;</p>','');
+INSERT INTO `pages` (`id`,`content_id`,`sidebar_content`,`meta_keywords`) VALUES ('4','4','<p>&nbsp;</p>','');
 
-INSERT INTO `pages` VALUES (1, NULL, 1, '2008-08-08 08:08:08', 'Home', NULL, '<h1>Willkommen!<br /></h1>\n<p>Mit <strong>S7Ncms</strong> wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei <strong>S7Ncms</strong> handelt es sich um ein speziell für die Anforderungen professioneller Webseiten                     entwickeltes Content Management System.</p>\n<p><strong>S7Ncms</strong> bietet dem Benutzer eine einfach zu verstehende Verwaltungsplattform, die durch hohe Benutzerfreundlich- und                     Übersichtlichkeit glänzt. Das Ziel von <strong>S7Ncms</strong> ist es jedem Benutzer - auch ohne vorhandene Programmierkenntnisse - den Einstieg in die Erstellung einer eigenen Homepage zu ermöglichen.</p>\n<p>Durch <strong>S7Ncms</strong> wird es Ihnen möglich sein, auf einfachste Art und Weise, von überall auf der Welt,                     Ihre Internetpräsenz zu steuern und zu verwalten. Aktuelle Neuigkeiten auf der Website                     zu veröffentlichen oder die letzten Ereignisse zu verewigen ist jetzt genauso so kinderleicht,                     wie E-Mails schreiben.</p>\n<p>Die Installation des Systems erfolgt in drei Schritten und kann ohne große Vorkenntnisse vorgenommen                     werden.</p>\n<p>Weiterhin ist es möglich, <strong>S7Ncms</strong> modular zu erweitern, um auch fortgeschrittenen Benutzern                     alle benötigten Features zur Verfügung zu stellen.</p>\n<p>Entscheiden Sie sich noch heute für <strong>S7Ncms</strong> und erhalten Sie ein einzigartiges OpenSource-Produkt, welches die Möglichkeiten von PHP 5 und MySQL nutzt und Ihnen damit eine schnelle,                     einfache und zukunftssichere Verwaltung Ihrer Webseite garantiert.</p>', 'home', NULL, 'extended', '2008-08-10 20:16:53', NULL, 'published', 0, 0, 1, 12, NULL, NULL);
-INSERT INTO `pages` VALUES (2, NULL, 1, '2008-08-08 08:08:08', 'Products', NULL, '<p>Prudukt 1</p>\n<p>Produkt 2</p>\n<p>Produkt 3</p>', 'products', NULL, 'default', '2008-04-12 01:45:42', NULL, 'published', 1, 1, 2, 3, NULL, NULL);
-INSERT INTO `pages` VALUES (3, NULL, 1, '2008-08-08 08:08:08', 'About me', NULL, '<p>Hi, thats me!</p>', 'about-me', NULL, 'default', '2008-04-12 01:45:07', NULL, 'published', 1, 1, 4, 9, NULL, NULL);
-INSERT INTO `pages` VALUES (4, NULL, 1, '2008-08-08 08:08:08', 'Contact Me', NULL, '<p>Hallo, kontaktier mich bitte mal! :)</p>', 'contact-me', NULL, 'default', '2008-04-12 01:32:07', NULL, 'published', 3, 2, 5, 6, NULL, NULL);
-INSERT INTO `pages` VALUES (5, NULL, 1, '2008-08-08 08:08:08', 'Impressum', NULL, '<p><strong>Verantwortlich</strong>: niemand</p>', 'impressum', NULL, 'default', '2008-10-02 21:50:41', NULL, 'published', 3, 2, 7, 8, NULL, NULL);
-INSERT INTO `pages` VALUES (6, NULL, 1, '2008-08-08 08:08:08', 'Blog', NULL, NULL, 'blog', NULL, 'default', '2008-10-01 17:40:02', NULL, 'published', 1, 1, 10, 11, 'module', 'blog');
 
--- --------------------------------------------------------
-
--- 
--- Tabellenstruktur für Tabelle `roles`
--- 
+# Dump of table roles
+# ------------------------------------------------------------
 
 CREATE TABLE `roles` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -132,32 +62,28 @@ CREATE TABLE `roles` (
   `description` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- 
--- Daten für Tabelle `roles`
--- 
+INSERT INTO `roles` (`id`,`name`,`description`) VALUES ('1','login','Login privileges, granted after account confirmation');
+INSERT INTO `roles` (`id`,`name`,`description`) VALUES ('2','admin','Administrative user, has access to everything.');
 
-INSERT INTO `roles` VALUES (1, 'login', 'Login privileges, granted after account confirmation');
-INSERT INTO `roles` VALUES (2, 'admin', 'Administrative user, has access to everything.');
 
--- --------------------------------------------------------
+# Dump of table settings
+# ------------------------------------------------------------
 
--- 
--- Tabellenstruktur für Tabelle `roles_users`
--- 
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL auto_increment,
+  `context` varchar(200) NOT NULL,
+  `key` varchar(200) NOT NULL,
+  `value` varchar(200) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `roles_users` (
-  `user_id` int(10) unsigned NOT NULL,
-  `role_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`user_id`,`role_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO `settings` (`id`,`context`,`key`,`value`) VALUES ('1','s7n','default_uri','home');
 
--- --------------------------------------------------------
 
--- 
--- Tabellenstruktur für Tabelle `users`
--- 
+# Dump of table users
+# ------------------------------------------------------------
 
 CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -169,8 +95,25 @@ CREATE TABLE `users` (
   `first_name` varchar(200) default NULL,
   `last_name` varchar(200) default NULL,
   `registered_on` datetime default NULL,
-  `last_login` int(20) unsigned default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `uniq_username` (`username`),
   UNIQUE KEY `uniq_email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+INSERT INTO `users` (`id`,`email`,`username`,`password`,`logins`,`homepage`,`first_name`,`last_name`,`registered_on`) VALUES ('1','admin@example.net','admin','a3c5fc4e7d736181725363eae2e5e24dc36cd947251788743d','8','http://www.example.com','Admin','Istrator','2007-11-20 18:18:18');
+
+
+# Dump of table users_roles
+# ------------------------------------------------------------
+
+CREATE TABLE `users_roles` (
+  `user_id` int(10) unsigned NOT NULL,
+  `role_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`user_id`,`role_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `users_roles` (`user_id`,`role_id`) VALUES ('1','1');
+INSERT INTO `users_roles` (`user_id`,`role_id`) VALUES ('1','2');
+INSERT INTO `users_roles` (`user_id`,`role_id`) VALUES ('2','1');
+
+

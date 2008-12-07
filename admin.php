@@ -39,7 +39,7 @@ ini_set('display_errors', TRUE);
  *  views will by placed in this directory. This directory must contain the
  *  <config/config.php> file.
  */
-$kohana_application = 'application';
+$kohana_application = 'administration';
 
 /*
  * About: System Directory
