@@ -16,7 +16,7 @@
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_application = 'application';
+$kohana_application = 'administration';
 
 /**
  * Kohana package files. This directory should contain the core/ directory, and

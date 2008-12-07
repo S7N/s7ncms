@@ -14,7 +14,7 @@ $config['site_protocol'] = 'http';
  *
  * This can be removed by using URL rewriting.
  */
-$config['index_page'] = '';
+$config['index_page'] = 'admin';
 
 /**
  * Fake file extension that will be added to all generated URLs. Example: .html
@@ -68,7 +68,7 @@ $config['include_paths'] = array
  */
 $config['autoload'] = array
 (
-	'libraries' => '',
+	'libraries' => 'profiler, session',
 	'models'    => '',
 );
 

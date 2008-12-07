@@ -1,4 +1,4 @@
-Copyright (c) 2007-2008, Eduard Baun <eduard at baun.de>
+Copyright (c) 2007, Eduard Baun <edy@edy-b.de>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

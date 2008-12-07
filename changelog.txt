@@ -1,7 +1,6 @@
 S7Ncms Changelog
 
 0.7 (still in development)
-	- Users can now login by username or email address
 
 0.6 (2007-12-08)
 	- fixed media controller to force files loading from browser cache

@@ -12,7 +12,6 @@ class Controller extends Controller_Core {
         
         $this->template = new View($this->template);
         $this->template->title = '';
-        $this->template->message = '';
         
         Event::add('system.post_controller', array($this, '_display'));        
 	}
