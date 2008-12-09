@@ -1,7 +1,7 @@
 <?php
 /**
  * Digg pagination style
- * 
+ *
  * @preview  « Previous  1 2 … 5 6 7 8 9 10 11 12 13 14 … 25 26  Next »
  */
 ?>
