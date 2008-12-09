@@ -120,18 +120,18 @@ class Blog_Controller extends Website_Controller {
 
 							$post->add_comment($comment);
 						}
+
+						url::redirect($post->get_url());
 					}
+					else
+					{
+						// our 'honeypot' part two
+						if ($this->input->post('location') === 'none')
+							$this->session->set('location', 'none');
 
-					url::redirect($post->get_url());
-				}
-				else
-				{
-					// our 'honeypot' part two
-					if ($this->input->post('location') === 'none')
-						$this->session->set('location', 'none');
-
-					$fields = arr::overwrite($_POST->as_array());
-					$errors = arr::overwrite($_POST->errors('blog_form_error_messages'));
+						$fields = arr::overwrite($_POST->as_array());
+						$errors = arr::overwrite($_POST->errors('blog_form_error_messages'));
+					}
 				}
 			}
 

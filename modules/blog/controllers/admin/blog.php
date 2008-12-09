@@ -249,14 +249,14 @@ class Blog_Controller extends Administration_Controller {
 		$comment = ORM::factory('blog_comment', (int) $id);
 		if ($comment->loaded)
 		{
-			$comment->delete();
-
 			$post = ORM::factory('blog_post', (int) $comment->blog_post_id);
 			$post->comment_count -= 1;
 			$post->save();
 
+			$comment->delete();
+
 			$this->session->set_flash('info_message', 'Comment deleted successfully');
-			url::redirect('admin/blog/comments/'.$comment->blog_post_id);
+			url::redirect('admin/blog/comments/'.$post->id);
 		}
 		else
 		{

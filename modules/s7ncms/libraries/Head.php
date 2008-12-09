@@ -239,7 +239,7 @@ class Head_Link extends Head_Partial {
 		$html = '';
 		foreach ($this as $link)
 		{
-			$html .= html::link($link[0], $link[1], $link[2]);
+			$html .= html::link($link[0], $link[1], $link[2], NULL, NULL, TRUE);
 		}
 
 		return $html;
