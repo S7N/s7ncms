@@ -11,9 +11,9 @@
  * @copyright Eduard Baun, 2007-2008
  * @version $Id$
  */
-class Modules_Model extends Model {
+class Module_Model extends ORM {
 
-	public function get()
+	/*public function get()
 	{
 		$query = $this->db->get('modules');
 
@@ -69,6 +69,14 @@ class Modules_Model extends Model {
 		}
 
 		return $modules;
+	}*/
+
+	public function unique_key($id = NULL)
+	{
+		if( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
+			return 'name';
+
+		return parent::unique_key($id);
 	}
 
 }

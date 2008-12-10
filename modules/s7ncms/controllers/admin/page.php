@@ -27,11 +27,11 @@ class Page_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$this->head->javascript->append_file('themes/views/admin/js/ui.core.js');
-		$this->head->javascript->append_file('themes/views/admin/js/ui.draggable.js');
-		$this->head->javascript->append_file('themes/views/admin/js/ui.droppable.js');
-		$this->head->javascript->append_file('themes/views/admin/js/ui.sortable.js');
-		$this->head->javascript->append_file('themes/views/admin/js/ui.tree.js');
+		$this->head->javascript->append_file('themes/admin/js/ui.core.js');
+		$this->head->javascript->append_file('themes/admin/js/ui.draggable.js');
+		$this->head->javascript->append_file('themes/admin/js/ui.droppable.js');
+		$this->head->javascript->append_file('themes/admin/js/ui.sortable.js');
+		$this->head->javascript->append_file('themes/admin/js/ui.tree.js');
 
 		$this->template->content = View::factory('page/index_tree')->set(array(
 			'pages' => ORM::factory('page')->orderby('lft', 'ASC')->find_all()
@@ -95,8 +95,6 @@ class Page_Controller extends Administration_Controller {
 		{
 			$page = ORM::factory('page', (int) $this->uri->segment(4));
 
-			$modules = new Modules_Model;
-
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: '. $page->title);
 
@@ -105,7 +103,7 @@ class Page_Controller extends Administration_Controller {
 
 			$this->template->content = View::factory('page/edit')->set(array(
 				'page' => $page,
-				'modules' => $modules->get()
+				'modules' => module::installed()
 			))->render();
 		}
 	}

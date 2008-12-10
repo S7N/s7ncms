@@ -20,12 +20,17 @@ class View extends View_Core {
 		if (Kohana::config('s7n.use_admin_theme'))
 			$theme = 'admin';
 
-		if (Kohana::find_file('views/'.$theme.'/html', $name))
-			parent::set_filename($theme.'/html/'.$name, $type);
-		elseif (Kohana::find_file('views/default/html', $name))
-			parent::set_filename('default/html/'.$name, $type);
+		if ($path = Kohana::find_file('themes/'.$theme.'/views', $name) OR
+			$path = Kohana::find_file($theme.'/views', $name) OR
+			$path = Kohana::find_file('default/views', $name))
+		{
+			$this->kohana_filename = $path;
+			$this->kohana_filetype = EXT;
+		}
 		else
+		{
 			parent::set_filename($name, $type);
+		}
 
 		return $this;
 	}
