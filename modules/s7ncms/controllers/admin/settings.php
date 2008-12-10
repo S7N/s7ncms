@@ -16,11 +16,11 @@ class Settings_Controller extends Administration_Controller {
 	public function index()
 	{
 		$themes = array();
-		if ($dh = opendir(THEMEPATH.'views'))
+		if ($dh = opendir(THEMEPATH))
 		{
 			while(($theme = readdir($dh)) !== FALSE)
 			{
-				$path = THEMEPATH.'views/'.$theme.'/theme.xml';
+				$path = THEMEPATH.$theme.'/theme.xml';
 				if (is_file($path))
 				{
 					$xml = simplexml_load_file($path);
