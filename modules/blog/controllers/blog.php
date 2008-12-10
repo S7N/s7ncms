@@ -106,8 +106,8 @@ class Blog_Controller extends Website_Controller {
 					if ($_POST->validate())
 					{
 						// our 'honeypot' part one
-						if($this->input->post('location') === 'none'
-							OR $this->session->get_once('location') === 'none')
+						if ($this->input->post('location') === 'none' OR
+							$this->session->get_once('location') === 'none')
 						{
 							$comment = ORM::factory('blog_comment');
 							$comment->author  = $_POST['author'];
@@ -119,6 +119,7 @@ class Blog_Controller extends Website_Controller {
 							$comment->date    = date("Y-m-d H:i:s", time());
 
 							$post->add_comment($comment);
+
 							Cache::instance()->delete('s7n_blog_feed');
 							Cache::instance()->delete('s7n_blog_feed_comments');
 						}
