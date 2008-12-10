@@ -27,11 +27,11 @@ class Page_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$this->head->javascript->append_file('themes/admin/js/ui.core.js');
-		$this->head->javascript->append_file('themes/admin/js/ui.draggable.js');
-		$this->head->javascript->append_file('themes/admin/js/ui.droppable.js');
-		$this->head->javascript->append_file('themes/admin/js/ui.sortable.js');
-		$this->head->javascript->append_file('themes/admin/js/ui.tree.js');
+		$this->head->javascript->append_file('vendor/ui.core.js');
+		$this->head->javascript->append_file('vendor/ui.draggable.js');
+		$this->head->javascript->append_file('vendor/ui.droppable.js');
+		$this->head->javascript->append_file('vendor/ui.sortable.js');
+		$this->head->javascript->append_file('vendor/ui.tree.js');
 
 		$this->template->content = View::factory('page/index_tree')->set(array(
 			'pages' => ORM::factory('page')->orderby('lft', 'ASC')->find_all()
