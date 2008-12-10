@@ -26,7 +26,7 @@ tinyMCE.init({
 			$select = array('' => 'No Module');
 			foreach ($modules as $module)
 			{
-				$select[$module['db']->name] = $module['xml']->name;
+				$select[$module->name] = $module->name;
 			}
 
 			echo form::dropdown('form_module_target', $select, $page->target);

@@ -9,7 +9,7 @@
     <div style="position:absolute;right:30px;">(<strong>Last updated:</strong> <?php echo $page->modified; ?>)</div>
     <div class="deleter" style="position:absolute;right:10px;">
     <?php echo html::anchor('admin/page/delete/'.$page->id, html::image(
-		'themes/views/admin/images/delete.png',
+		'themes/admin/images/delete.png',
 		array(
 			'alt' => 'Delete Page',
 			'title' => 'Delete Page'

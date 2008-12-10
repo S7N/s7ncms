@@ -24,7 +24,7 @@ Das <strong>Menü</strong> auf Ihrer Webseite wird durch die Reihenfolge und Hie
 Seiten beeinflusst.
 </p>
 <p>
-Erscheint neben dem Seitennamen das Symbol <?php echo html::image('themes/views/admin/images/warning.png') ?>,
+Erscheint neben dem Seitennamen das Symbol <?php echo html::image('themes/admin/images/warning.png') ?>,
 existiert ein <abbr title="Ein Controller ist eine selbständige, dynamische Seite">Controller</abbr>
 mit dem selben Namen und wird anstelle der eigentlichen Seite geladen. Sie können trotzdem Unterseiten
 erstellen, um ein Untermenü für diesen Controller zu erzeugen.
