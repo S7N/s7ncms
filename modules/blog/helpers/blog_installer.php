@@ -63,17 +63,8 @@ class blog_installer {
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 			");
 
-			$db->insert('config', array(
-				'context' => 'blog',
-				'key' => 'items_per_page',
-				'value' => 5
-			));
-
-			$db->insert('config', array(
-				'context' => 'blog',
-				'key' => 'comment_status',
-				'value' => 'open'
-			));
+			config::set('blog.items_per_page', 5);
+			config::set('blog.comment_status', 'open');
 
 			module::version('blog', 1);
 		}

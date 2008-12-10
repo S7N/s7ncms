@@ -45,7 +45,7 @@ class Blog_Controller extends Website_Controller {
 		{
 			$pagination = new Pagination(array(
 				'uri_segment'    => 'page',
-				'items_per_page' => (int) Kohana::config('blog.items_per_page'),
+				'items_per_page' => (int) config::get('blog.items_per_page'),
 				'total_items'    => ORM::factory('blog_post')->count_posts(),
 				'auto_hide'      => TRUE,
 				'style'          => 'digg'
@@ -54,7 +54,7 @@ class Blog_Controller extends Website_Controller {
 			$this->template->content = View::factory('blog/index')->set(array(
 				'posts' => ORM::factory('blog_post')
 					->orderby('id', 'desc')
-					->find_all((int) Kohana::config('blog.items_per_page'), $pagination->sql_offset),
+					->find_all((int) config::get('blog.items_per_page'), $pagination->sql_offset),
 				'pagination' => $pagination
 			))->render();
 
@@ -74,7 +74,7 @@ class Blog_Controller extends Website_Controller {
 
 		$form = NULL;
 
-		if ($post->comment_status === 'open' AND Kohana::config('blog.comment_status') === 'open')
+		if ($post->comment_status === 'open' AND config::get('blog.comment_status') === 'open')
 		{
 			$fields = array
 			(

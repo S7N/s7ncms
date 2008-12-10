@@ -33,8 +33,8 @@ class Page_Controller extends Website_Controller {
 			'Static',
 			array
 			(
-				'title'   => Kohana::config('s7n.default_sidebar_title'),
-				'content' => Kohana::config('s7n.default_sidebar_content')
+				'title'   => config::get('s7n.default_sidebar_title'),
+				'content' => config::get('s7n.default_sidebar_content')
 			)
 		);
 	}

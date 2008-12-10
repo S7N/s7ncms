@@ -33,8 +33,8 @@ class Settings_Controller extends Administration_Controller {
 
 		$this->template->title = 'Settings';
 	    $this->template->content = View::factory('settings/settings')->set(array(
-    		'site_title' => Kohana::config('s7n.site_title'),
-	    	'theme' => Kohana::config('s7n.theme'),
+    		'site_title' => config::get('s7n.site_title'),
+	    	'theme' => config::get('s7n.theme'),
 	    	'themes' => $themes
 	    ))->render();
 	}
@@ -44,30 +44,10 @@ class Settings_Controller extends Administration_Controller {
         if($_POST)
 		{
 			// Site Title
-			$this->db
-			->update(
-				'config',
-				array(
-					'value' => $this->input->post('site_title')
-				),
-				array(
-					'context' => 's7n',
-					'key' => 'site_title'
-				)
-			);
+			config::set('s7n.site_title', $this->input->post('site_title'));
 
 			// Site Title
-			$this->db
-			->update(
-				'config',
-				array(
-					'value' => $this->input->post('theme')
-				),
-				array(
-					'context' => 's7n',
-					'key' => 'theme'
-				)
-			);
+			config::set('s7n.theme', $this->input->post('theme'));
 
 			$this->session->set_flash('info_message', 'Settings edited successfully');
         }

@@ -38,7 +38,7 @@ class Feed_Controller extends Controller {
 
 		$info = array
 		(
-			'title' => Kohana::config('s7n.site_title'),
+			'title' => config::get('s7n.site_title'),
 			'description' => '',
 			'link' => Router::$routed_uri,
 			'generator' => 'S7Ncms - http://www.s7n.de/'
@@ -77,7 +77,7 @@ class Feed_Controller extends Controller {
 
 		$info = array
 		(
-			'title' => Kohana::config('s7n.site_title').' (Latest Comments)',
+			'title' => config::get('s7n.site_title').' (Latest Comments)',
 			'link' => Router::$routed_uri,
 			'generator' => 'S7Ncms - http://www.s7n.de/'
 		);

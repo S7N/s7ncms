@@ -50,7 +50,7 @@ class Page_Controller extends Administration_Controller {
 
 			$page->title = html::specialchars($this->input->post('form_title'), FALSE);
 
-			if(strstr(Kohana::config('s7n.page_views'), $this->input->post('form_view')) !== FALSE)
+			if(strstr(config::get('s7n.page_views'), $this->input->post('form_view')) !== FALSE)
 			{
 				$page->view = trim($this->input->post('form_view'));
 			}
@@ -158,44 +158,14 @@ class Page_Controller extends Administration_Controller {
 	{
 		if($_POST)
 		{
-			// Default Sidebar Title
-            Database::instance()
-			->update(
-				'config',
-				array(
-					'value' => $this->input->post('views')
-				),
-				array(
-					'context' => 's7n',
-					'key' => 'views'
-				)
-			);
+			// Available Vews
+            config::set('s7n.views', $this->input->post('views'));
 
 			// Default Sidebar Title
-            Database::instance()
-			->update(
-				'config',
-				array(
-					'value' => $this->input->post('default_sidebar_title')
-				),
-				array(
-					'context' => 's7n',
-					'key' => 'default_sidebar_title'
-				)
-			);
+            config::set('s7n.default_sidebar_title', $this->input->post('default_sidebar_title'));
 
 			// Default Sidebar Content
-            Database::instance()
-			->update(
-				'config',
-				array(
-					'value' => $this->input->post('default_sidebar_content')
-				),
-				array(
-					'context' => 's7n',
-					'key' => 'default_sidebar_content'
-				)
-			);
+            config::set('s7n.default_sidebar_content', $this->input->post('default_sidebar_content'));
 
 			$this->session->set_flash('info_message', 'Page Settings edited successfully');
 
@@ -206,9 +176,9 @@ class Page_Controller extends Administration_Controller {
 
 		$this->template->title = 'Pages | Settings';
 		$this->template->content = View::factory('page/settings')->set(array(
-			'views' => Kohana::config('s7n.page_views'),
-			'default_sidebar_title' => Kohana::config('s7n.default_sidebar_title'),
-			'default_sidebar_content' => Kohana::config('s7n.default_sidebar_content')
+			'views' => config::get('s7n.page_views'),
+			'default_sidebar_title' => config::get('s7n.default_sidebar_title'),
+			'default_sidebar_content' => config::get('s7n.default_sidebar_content')
 		))->render();
 	}
 

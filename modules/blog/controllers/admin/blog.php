@@ -296,15 +296,9 @@ class Blog_Controller extends Administration_Controller {
 			if ($this->input->post('comment_status') == 'open')
 				$comment_status = 'open';
 
-			$this->db->update('config', array('value' => $comment_status), array(
-				'context' => 'blog',
-				'key' => 'comment_status'
-			));
+			config::set('blog.comment_status', $comment_status);
 
-			$this->db->update('config', array('value' => (int) $this->input->post('items_per_page')), array(
-				'context' => 'blog',
-				'key' => 'items_per_page'
-			));
+			config::set('blog.items_per_page', (int) $this->input->post('items_per_page'));
 
 			$this->session->set_flash('info_message', 'Settings changed successfully');
 
@@ -316,8 +310,8 @@ class Blog_Controller extends Administration_Controller {
 			$this->template->title .= 'Settings';
 
 			$this->template->content = new View('blog/settings');
-			$this->template->content->items_per_page = Kohana::config('blog.items_per_page');
-			$this->template->content->comment_status = (bool) (Kohana::config('blog.comment_status') == 'open' ? TRUE : FALSE);
+			$this->template->content->items_per_page = config::get('blog.items_per_page');
+			$this->template->content->comment_status = (bool) (config::get('blog.comment_status') == 'open' ? TRUE : FALSE);
 		}
 	}
 

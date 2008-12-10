@@ -26,8 +26,8 @@ class Website_Controller extends Template_Controller {
 
 		$this->session = Session::instance();
 		$this->head = Head::instance();
-		$this->head->css->append_file('themes/'.Kohana::config('s7n.theme').'/css/layout');
-		$this->head->title->set(Kohana::config('s7n.site_title'));
+		$this->head->css->append_file('themes/'.config::get('s7n.theme').'/css/layout');
+		$this->head->title->set(config::get('s7n.site_title'));
 
 		$this->template->head = $this->head;
 	}
