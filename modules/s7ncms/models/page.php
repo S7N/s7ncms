@@ -17,6 +17,8 @@ class Page_Model extends ORM_MPTT {
 
 	protected $belongs_to = array('user');
 
+	protected $sorting = array('lft' => 'ASC');
+
 	/**
 	 * Allows Pages to be loaded by id or uri title.
 	 */
@@ -35,9 +37,7 @@ class Page_Model extends ORM_MPTT {
 
     public function paths()
     {
-		$pages = $this
-			->orderby($this->left_column, 'ASC')
-			->find_all();
+		$pages = $this->find_all();
 
 		$paths = array('' => 'Do not Redirect');
 		foreach ($pages as $page)
@@ -57,7 +57,7 @@ class Page_Model extends ORM_MPTT {
 			}
 
 			if ( ! empty($titles))
-				$paths[implode('/', $uris)] = implode(' &gt; ', $titles);
+				$paths[implode('/', $uris)] = implode(' &rarr; ', $titles);
 		}
 
 		return $paths;

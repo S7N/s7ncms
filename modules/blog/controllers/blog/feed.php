@@ -34,7 +34,7 @@ class Feed_Controller extends Controller {
 			return;
 		}
 
-		$posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all(10);
+		$posts = ORM::factory('blog_post')->find_all(10);
 
 		$info = array
 		(

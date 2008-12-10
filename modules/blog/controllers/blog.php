@@ -53,7 +53,6 @@ class Blog_Controller extends Website_Controller {
 
 			$this->template->content = View::factory('blog/index')->set(array(
 				'posts' => ORM::factory('blog_post')
-					->orderby('id', 'desc')
 					->find_all($pagination->items_per_page, $pagination->sql_offset),
 				'pagination' => $pagination
 			))->render();
@@ -157,7 +156,6 @@ class Blog_Controller extends Website_Controller {
 		$this->template->content = View::factory('blog/index')->set(array(
 			'posts' => ORM::factory('blog_post')
 				->like('tags', $tag)
-				->orderby('id', 'desc')
 				->find_all()
 		))->render();
 	}

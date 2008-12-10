@@ -34,7 +34,7 @@ class Page_Controller extends Administration_Controller {
 		$this->head->javascript->append_file('vendor/ui.tree.js');
 
 		$this->template->content = View::factory('page/index_tree')->set(array(
-			'pages' => ORM::factory('page')->orderby('lft', 'ASC')->find_all()
+			'pages' => ORM::factory('page')->find_all()
 		))->render();
 
 		$this->head->title->append('All Pages');

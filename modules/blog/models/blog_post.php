@@ -16,6 +16,8 @@ class Blog_post_Model extends ORM {
 	protected $has_many = array('blog_comments');
 	protected $belongs_to = array('user');
 
+	protected $sorting = array('id' => 'DESC');
+
 	/**
 	 * Allows Blogposts to be loaded by id or uri title.
 	 */

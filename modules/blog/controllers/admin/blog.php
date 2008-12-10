@@ -40,7 +40,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->template->title .= 'Filter: '.$q;
 			$this->head->title->append('Filter: '.$q);
 
-			$posts = ORM::factory('blog_post')->orderby('id', 'desc')->orlike(array(
+			$posts = ORM::factory('blog_post')->orlike(array(
 				'title' => '%'.$q.'%',
 				'excerpt' => '%'.$q.'%',
 				'content' => '%'.$q.'%',
@@ -52,7 +52,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->template->title .= 'All Posts';
 			$this->head->title->append('All Posts');
 
-			$posts = ORM::factory('blog_post')->orderby('id', 'desc')->find_all();
+			$posts = ORM::factory('blog_post')->find_all();
 		}
 
 		$this->template->content = View::factory('blog/index')->set(array(

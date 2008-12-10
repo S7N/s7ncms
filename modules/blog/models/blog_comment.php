@@ -15,4 +15,6 @@ class Blog_comment_Model extends ORM {
 
 	protected $belongs_to = array('blog_post', 'user');
 
+	protected $sorting = array('id' => 'ASC');
+
 }
