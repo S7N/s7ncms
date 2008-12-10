@@ -69,7 +69,7 @@ class Blog_Controller extends Website_Controller {
 
 		$this->head->title->prepend($post->title);
 
-		$this->head->javascript->append_file('themes/default/js/jquery.js');
+		$this->head->javascript->append_file('vendor/jquery.js');
 		$this->head->javascript->append_file('modules/blog/themes/default/js/comments.js');
 
 		$form = NULL;
