@@ -226,6 +226,8 @@ class Blog_Controller extends Administration_Controller {
 			$comment->content = $this->input->post('form_content');
 			$comment->save();
 
+			Cache::instance()->delete('s7n_blog_feed');
+
 			$this->session->set_flash('info_message', 'Comment edited successfully');
 
 			url::redirect('admin/blog/comments/'.$comment->blog_post_id);
@@ -255,6 +257,8 @@ class Blog_Controller extends Administration_Controller {
 
 			$comment->delete();
 
+			Cache::instance()->delete('s7n_blog_feed_comments');
+
 			$this->session->set_flash('info_message', 'Comment deleted successfully');
 			url::redirect('admin/blog/comments/'.$post->id);
 		}
@@ -276,6 +280,9 @@ class Blog_Controller extends Administration_Controller {
 
 			// then delete the post
 			$post->delete();
+
+			Cache::instance()->delete('s7n_blog_feed');
+			Cache::instance()->delete('s7n_blog_feed_comments');
 
 			$this->session->set_flash('info_message', 'Post deleted sucsessfully');
 		}
