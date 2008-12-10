@@ -53,8 +53,8 @@ class Feed_Controller extends Controller {
 				'pubDate'     => date('r', strtotime($post->date)),
 				'title'       => $post->title,
 				'description' => $post->content,
-				'link'        => $post->get_url(),
-				'guid'        => $post->get_url(),
+				'link'        => $post->url(),
+				'guid'        => $post->url(),
 			);
 		}
 
@@ -91,8 +91,8 @@ class Feed_Controller extends Controller {
 				'pubDate'     => date('r', strtotime($comment->date)),
 				'title'       => 'New comment for "'.$comment->blog_post->title.'"',
 				'description' => html::specialchars($comment->content),
-				'link'        => $comment->blog_post->get_url(),
-				'guid'        => $comment->blog_post->get_url(),
+				'link'        => $comment->blog_post->url(),
+				'guid'        => $comment->blog_post->url(),
 			);
 		}
 

@@ -54,7 +54,7 @@ class Blog_Controller extends Website_Controller {
 			$this->template->content = View::factory('blog/index')->set(array(
 				'posts' => ORM::factory('blog_post')
 					->orderby('id', 'desc')
-					->find_all((int) config::get('blog.items_per_page'), $pagination->sql_offset),
+					->find_all($pagination->items_per_page, $pagination->sql_offset),
 				'pagination' => $pagination
 			))->render();
 
@@ -121,7 +121,7 @@ class Blog_Controller extends Website_Controller {
 							$post->add_comment($comment);
 						}
 
-						url::redirect($post->get_url());
+						url::redirect($post->url());
 					}
 					else
 					{

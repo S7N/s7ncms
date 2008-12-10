@@ -12,10 +12,10 @@
  * @version $Id$
  */
 class Blog_post_Model extends ORM {
-	
+
 	protected $has_many = array('blog_comments');
 	protected $belongs_to = array('user');
-	
+
 	/**
 	 * Allows Blogposts to be loaded by id or uri title.
 	 */
@@ -25,10 +25,10 @@ class Blog_post_Model extends ORM {
 		{
 			return 'uri';
 		}
-		
+
 		return parent::unique_key($id);
 	}
-	
+
 	/**
 	 * increment the comment counter on each new comment
 	 */
@@ -44,38 +44,38 @@ class Blog_post_Model extends ORM {
 
 		$object->blog_post_id = $this->id;
 		$object->save();
-		
+
 		$this->comment_count += 1;
 		$this->save();
-		
+
 	}
-	
+
 	public function count_posts()
 	{
 		return count(Database::instance()->select('id')->get('blog_posts'));
 	}
-	
-	public function get_url()
+
+	public function url()
     {
         return Router::$routed_uri.'/'.$this->uri;
     }
-	
+
 	public function all_tags()
 	{
 		$tags = array();
 		$query = Database::instance()->select('tags')->get('blog_posts');
-		
+
 		foreach ($query as $result)
-		{   
+		{
             $exploded = explode(',', $result->tags);
-            
+
             foreach($exploded as $tag) {
                 $tag = trim($tag);
-                
+
                 if(empty($tag)) {continue;}
-                
+
                 if(array_key_exists($tag,$tags))
-                {   
+                {
 	                $tags[$tag]++;
 	            }
 	            else
@@ -84,8 +84,8 @@ class Blog_post_Model extends ORM {
 	            }
             }
         }
-        
+
         return $tags;
 	}
-	
+
 }
