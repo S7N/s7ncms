@@ -13,258 +13,192 @@
  */
 class Menu_Core {
 
-	protected $menu = array();
-	protected $submenu = array();
-
 	static $instance = NULL;
+	static $uri = array();
 
-	public function __construct()
+	public $items = array();
+	public $data = NULL;
+	public $type = NULL;
+
+	public function __construct($type = NULL)
 	{
-		$this->menu = $this->as_array();
+		$this->type = $type;
+
+		$this->data = ORM::factory('page')
+			->select('id', 'title', 'uri', 'parent_id', 'level')
+			->find_all();
+
+		foreach ($this->data as $item)
+		{
+			$menu = new Menu_Item;
+			$menu->id = (int) $item->id;
+			$menu->title = $item->title;
+			$menu->uri = $item->uri;
+			$menu->parent = (int) $item->parent_id;
+			$menu->level = (int) $item->level;
+
+			$this->add($menu);
+
+			if ($menu->id === Router::$current_id)
+				$this->set_active($menu->id);
+		}
+
+		$this->generate_uris();
+
 		self::$instance = $this;
 	}
 
-	public static function instance($config = array())
+	public static function instance($type = NULL)
 	{
 		if (self::$instance === NULL)
-			new Menu($config);
+			new Menu($type);
 
+		self::$instance->type = $type;
 		return self::$instance;
+	}
+
+	public function set_active($id)
+	{
+		if ($id === 0)
+			return;
+
+		$item = $this->get($id);
+		$item->active = TRUE;
+
+		$this->set_active($item->parent);
+	}
+
+	public function generate_uris()
+	{
+		foreach ($this->items as $item)
+		{
+			if ($item->parent === 0)
+			{
+				$item->uri = '';
+
+				continue;
+			}
+
+			$item->uri = $this->get($item->parent)->uri.'/'.$item->uri;
+		}
+	}
+
+	public function add(Menu_Item $item)
+	{
+		$this->items[$item->id] = $item;
+
+		if ($item->parent > 0)
+			$this->items[$item->parent]->append($item->id);
+	}
+
+	public function get($id)
+	{
+		return $this->items[$id];
 	}
 
 	public function __toString()
 	{
-		return $this->render();
+		return (string) $this->render();
 	}
 
-	public function submenu($page)
+	public function render()
 	{
-		if ($page->level == 0)
-			return NULL;
+		foreach ($this->items as $item)
+			$item->rendered = FALSE;
 
-		$path = $page->path();
-		$path->next();
+		if ($this->type == 'submenu')
+			return $this->submenu();
 
-		$this->submenu = $this->as_array($path->current()->descendants);
-
-		$uri = array($path->current()->uri);
-
-		$size = count($this->submenu);
-		if ($size == 0)
-			return NULL;
-
-		// search for active menu item
-		for($i = $size-1; $i >= 0; $i--)
+		$output = '<ul class="menu">';
+		foreach ($this->items as $item)
 		{
-			if ($this->submenu[$i]['id'] == Router::$current_id)
-			{
-				$this->submenu[$i]['is_active'] = TRUE;
+			if ($item->level !== 1)
+				continue;
 
-				$parent_id = $this->submenu[$i]['parent_id'];
-				for($j = 0; $j < $size; $j++)
-				{
-					if ($this->submenu[$j]['id'] == $parent_id)
-					{
-						$this->submenu[$j]['is_active'] = TRUE;
-						$parent_id = $this->submenu[$j]['parent_id'];
-						$j = -1;
-					}
-				}
-
-				break;
-			}
+			$output .= $item->render_without_children();
 		}
+		$output .= '</ul>';
 
-		$html = '<ul class="submenu">'."\n";
-		$current_level = 1;
-		foreach ($this->submenu as $menu)
-		{
-			$has_children = (bool) ( ($menu['right'] - $menu['left'] - 1) > 0 );
-			$class = $menu['is_active'] === TRUE ? 'active' : '';
-
-			if ( $has_children === TRUE)
-			{
-
-				if ($current_level > $menu['level'])
-				{
-					array_pop($uri);
-					array_push($uri, $menu['uri']);
-					$value = html::anchor(implode('/', $uri), $menu['title'], array('class' => $class));
-
-					$html .= str_repeat("</ul></li>\n",($current_level - $menu['level']));
-					$html .= '<li class="'.$class.'">'.$value."\n";
-					$html .= '<ul>'."\n";
-				}
-				else
-				{
-					array_push($uri, $menu['uri']);
-					$value = html::anchor(implode('/', $uri), $menu['title'], array('class' => $class));
-					$html .= '<li class="'.$class.'">'.$value."\n";
-					$html .= '<ul>'."\n";
-				}
-			}
-			elseif ($current_level > $menu['level'])
-			{
-				$count = $current_level - $menu['level'];
-
-				for($i=0; $i < $count; $i++)
-					array_pop($uri);
-
-				array_push($uri, $menu['uri']);
-				$value = html::anchor(implode('/', $uri), $menu['title'], array('class' => $class));
-				$html .= str_repeat("</ul></li>\n",($count));
-				$html .= '<li class="'.$class.'">'.$value.'</li>'."\n";
-				array_pop($uri);
-			}
-			else
-			{
-				array_push($uri, $menu['uri']);
-				$value = html::anchor(implode('/', $uri), $menu['title'], array('class' => $class));
-				$html .= '<li class="'.$class.'">'.$value.'</li>'."\n";
-				array_pop($uri);
-			}
-
-			$current_level = $menu['level'];
-
-		}
-
-		$html .= str_repeat("</ul></li>\n",$current_level-2);
-		$html .= '</ul>';
-
-		return $html;
+		return $output;
 	}
 
-	public function render($id = NULL, $include_anchors = TRUE, $nested = FALSE)
+	public function submenu()
 	{
-		// return null if we have no menu items
-		$size = count($this->menu);
-		if ($size == 0)
-			return null;
+		$output = $this->items[$this->first_level(Router::$current_id)]->render(TRUE);
 
-		// search for active menu item
-		for($i = $size-1; $i >= 0; $i--)
-		{
-			if (Router::$current_id == $this->menu[$i]['id'])
-			{
-				$this->menu[$i]['is_active'] = TRUE;
+		if (empty($output))
+			return '';
 
-				$parent_id = $this->menu[$i]['parent_id'];
-				for($j = 0; $j < $size; $j++)
-				{
-					if ($this->menu[$j]['id'] == $parent_id)
-					{
-						$this->menu[$j]['is_active'] = TRUE;
-						$parent_id = $this->menu[$j]['parent_id'];
-						$j = -1;
-					}
-				}
-
-				break;
-			}
-		}
-
-		//echo Kohana::debug($this->menu_as_array);
-
-		$id = ($id === NULL) ? '' : ' id="'.$id.'"';
-		$html = '<ul'.$id.' class="menu">'."\n";
-		$current_level = 1;
-
-		foreach ($this->menu as $item)
-		{
-			$has_children = (bool) ( ($item['right'] - $item['left'] - 1) > 0 );
-
-			$id = 'item'.$item['id'];
-			$class = $item['is_active'] === TRUE ? 'active' : '';
-
-			if ($include_anchors === TRUE)
-			{
-				$value = html::anchor($item['uri'], $item['title'], array('class' => $class));
-			}
-			else
-			{
-				$value = $item['title'].' <span class="delete_node">(del)</span>';
-			}
-
-			if($nested === TRUE)
-			{
-				if ( $has_children === TRUE)
-				{
-					if ($current_level > $item['level'])
-					{
-						$html .= str_repeat("</ul></li>\n",($current_level - $item['level']));
-						$html .= '<li id="'.$id.'" class="'.$class.'">'.$value."\n";
-						$html .= '<ul>'."\n";
-					}
-					else
-					{
-						$html .= '<li id="'.$id.'" class="'.$class.'">'.$value."\n";
-						$html .= '<ul>'."\n";
-					}
-				}
-				elseif ($current_level > $item['level'])
-				{
-					$html .= str_repeat("</ul></li>\n",($current_level - $item['level']));
-					$html .= '<li id="'.$id.'" class="'.$class.'">'.$value.'</li>'."\n";
-				}
-				else
-				{
-					$html .= '<li id="'.$id.'" class="'.$class.'">'.$value.'</li>'."\n";
-				}
-
-				$current_level = $item['level'];
-			}
-			else
-			{
-				if ($item['level'] > $current_level)
-				{
-					continue;
-				}
-
-				$html .= '<li id="'.$id.'" class="'.$class.'">'.$value.'</li>'."\n";
-			}
-		}
-
-		$html .= str_repeat("</ul></li>\n",$current_level-1);
-		$html .= '</ul>';
-
-		return $html;
+		return '<ul class="submenu">'.$output.'</ul>';
 	}
 
-	public function as_array($object = NULL)
+	public function first_level($id)
 	{
-		if ($object === NULL)
-		{
-			$result = Database::instance()
-				->select('id, parent_id, uri, title, level, lft, rgt')
-				->where('level > 0')
-				->orderby('lft', 'ASC')
-				->get('pages');
-		}
-		else
-		{
-			$result = $object;
-		}
+		$item = $this->get($id);
+		if ($item->level <= 1)
+			return $id;
 
-		$tree = array();
-
-		if(count($result) > 0)
-		{
-			foreach ($result as $entry)
-			{
-				$tree[] = array(
-					'id' => $entry->id,
-					'parent_id' => $entry->parent_id,
-					'title' => $entry->title,
-					'uri' => $entry->uri,
-					'level' => $entry->level,
-					'left' => $entry->lft,
-					'right' => $entry->rgt,
-					'is_active' => FALSE
-				);
-			}
-		}
-
-		return $tree;
+		return $this->first_level($item->parent);
 	}
 
+}
+
+class Menu_Item {
+
+	public $id = 0;
+	public $title;
+	public $uri;
+	public $parent = 0;
+	public $level = 0;
+	public $children = array();
+	public $rendered = FALSE;
+	public $active = FALSE;
+
+	public function append($id)
+	{
+		$this->children[] = $id;
+	}
+
+	public function __toString()
+	{
+		return (string) $this->render();
+	}
+
+	public function render($only_children = FALSE)
+	{
+		$this->rendered = TRUE;
+
+		if ($only_children === TRUE)
+		{
+			$output = '';
+			foreach ($this->children as $child)
+				$output .= Menu::instance()->get($child);
+
+			return $output;
+		}
+
+		$class = $this->active === TRUE ? 'active' : '';
+
+		if (empty($this->children))
+		{
+			$output = '<li class="'.$class.'">'.html::anchor($this->uri, html::specialchars($this->title), array('class' => $class)).'</li>';
+
+			return $output;
+		}
+
+		$output = '<li class="'.$class.'">'.html::anchor($this->uri, html::specialchars($this->title), array('class' => $class));
+		$output .= '<ul>';
+		foreach ($this->children as $child)
+			$output .= Menu::instance()->get($child)->render();
+
+		$output .= '</ul></li>';
+
+		return $output;
+	}
+
+	public function render_without_children()
+	{
+		$class = $this->active === TRUE ? 'active' : '';
+		return '<li class="'.$class.'">'.html::anchor($this->uri, html::specialchars($this->title), array('class' => $class));
+	}
 }

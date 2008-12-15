@@ -39,12 +39,13 @@ class hook_routes {
 			if ( ! empty($page->target) AND $page->type == 'redirect')
 				url::redirect($page->target);
 
-			Router::$current_id = $page->id;
+			Router::$current_id = (int) $page->id;
 			Router::$current_uri = 'page/index/'.$page->id;
 
 			return;
 		}
 
+		$pages = array();
 		foreach ($tree as $row)
 		{
 			if ($row->level == 0) continue;
@@ -97,7 +98,7 @@ class hook_routes {
 			}
 		}
 
-		Router::$current_id = $id;
+		Router::$current_id = (int) $id;
 
 		if ($found)
 		{

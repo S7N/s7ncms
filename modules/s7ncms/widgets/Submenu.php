@@ -15,8 +15,9 @@ class Submenu_Widget extends Widget {
 
 	public function render()
 	{
-		$menu = Menu::instance()->submenu(ORM::factory('page', Router::$current_id));
-		if (is_null($menu))
+		$menu = Menu::instance('submenu')->render();
+
+		if (empty($menu))
 			return '';
 
 		return View::factory('widgets/submenu')->set(array(

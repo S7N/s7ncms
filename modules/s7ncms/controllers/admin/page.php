@@ -141,9 +141,6 @@ class Page_Controller extends Administration_Controller {
 			$this->template->tabs = array('Content', 'Advanced');
 			$this->template->title = 'Pages | New Page';
 			$this->template->content = new View('page/newpage');
-
-			$modules = new Modules_Model;
-			$this->template->content->modules = $modules->get();
 		}
 	}
 
