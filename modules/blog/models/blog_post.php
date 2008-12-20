@@ -65,6 +65,7 @@ class Blog_post_Model extends ORM {
 	public function all_tags()
 	{
 		$tags = array();
+		$tags2 = array();
 		$query = Database::instance()->select('tags')->get('blog_posts');
 
 		foreach ($query as $result)
@@ -87,7 +88,12 @@ class Blog_post_Model extends ORM {
             }
         }
 
-        return $tags;
+        foreach ($tags as $title => $count)
+        {
+        	$tags2[] = array('title' => $title, 'count' => $count, 'link' => Router::$routed_uri.'/tag/'.$title);
+        }
+
+        return $tags2;
 	}
 
 }

@@ -19,13 +19,9 @@ class Blog_Controller extends Website_Controller {
 
 		$this->head->link->append(Router::$routed_uri.'/feed');
 
-		Sidebar::instance()->add
-		(
+		Sidebar::instance()->add(
 			'Tagcloud',
-			array
-			(
-				'tags' => ORM::factory('blog_post')->all_tags()
-			)
+			array('tags' => ORM::factory('blog_post')->all_tags())
 		);
 	}
 
