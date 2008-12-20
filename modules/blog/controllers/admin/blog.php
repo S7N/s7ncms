@@ -55,9 +55,7 @@ class Blog_Controller extends Administration_Controller {
 			$posts = ORM::factory('blog_post')->find_all();
 		}
 
-		$this->template->content = View::factory('blog/index')->set(array(
-			'posts' => $posts
-		))->render();
+		$this->template->content = View::factory('blog/index', array('posts' => $posts));
 	}
 
 	public function newpost()
@@ -113,7 +111,7 @@ class Blog_Controller extends Administration_Controller {
 
 			$this->template->title .= 'New Post';
 			$this->template->tabs = array('Content', 'Advanced');
-			$this->template->content = View::factory('blog/newpost')->render();
+			$this->template->content = View::factory('blog/newpost');
 		}
 	}
 
@@ -150,9 +148,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->head->title->append('Edit: '. $post->title);
 			$this->template->title .= 'Edit: '. $post->title;
 
-			$this->template->content = View::factory('blog/edit')->set(array(
-				'post' => $post
-			))->render();
+			$this->template->content = View::factory('blog/edit', array('post' => $post));
 		}
 	}
 
@@ -240,9 +236,9 @@ class Blog_Controller extends Administration_Controller {
 			$this->head->title->append('Edit: Comment #'. $comment->id);
 			$this->template->title .= 'Edit: Comment #'. $comment->id;
 
-			$this->template->content = View::factory('blog/editcomment')->set(array(
+			$this->template->content = View::factory('blog/editcomment', array(
 				'comment' => $comment
-			))->render();
+			));
 		}
 	}
 

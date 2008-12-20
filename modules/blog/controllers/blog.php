@@ -47,11 +47,11 @@ class Blog_Controller extends Website_Controller {
 				'style'          => 'digg'
 			));
 
-			$this->template->content = View::factory('blog/index')->set(array(
+			$this->template->content = View::factory('blog/index', array(
 				'posts' => ORM::factory('blog_post')
 					->find_all($pagination->items_per_page, $pagination->sql_offset),
 				'pagination' => $pagination
-			))->render();
+			));
 
 			return;
 		}
@@ -133,27 +133,25 @@ class Blog_Controller extends Website_Controller {
 				}
 			}
 
-			$form = View::factory('blog/form_comment')->set(array(
+			$form = View::factory('blog/form_comment', array(
 				'fields' => $fields,
 				'errors' => $errors,
 				'form_key' => $_SESSION['form_key'] = text::random('alnum', 16)
-			))->render();
+			));
 		}
 
-		$this->template->content = View::factory('blog/view')->set(array(
+		$this->template->content = View::factory('blog/view', array(
 			'post' => $post,
 			'comments' => $post->blog_comments,
 			'form' => $form
-		))->render();
+		));
 	}
 
 	public function tag($tag)
 	{
-		$this->template->content = View::factory('blog/index')->set(array(
-			'posts' => ORM::factory('blog_post')
-				->like('tags', $tag)
-				->find_all()
-		))->render();
+		$this->template->content = View::factory('blog/index', array(
+			'posts' => ORM::factory('blog_post')->like('tags', $tag)->find_all()
+		));
 	}
 
 }

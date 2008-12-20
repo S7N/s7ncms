@@ -13,51 +13,51 @@
  */
 class User_Controller extends Administration_Controller {
 	protected $user;
-	
+
 	public function index()
 	{
-		$this->template->content = View::factory('user/list')->set(array(
+		$this->template->content = View::factory('user/list', array(
 			'users' => ORM::factory('user')->get_all()
-		))->render();
+		));
 	}
-    
+
     public function edit() {
     	if($_POST)
 		{
     		$user = new User_Model((int)$this->input->post('id'));
-    		
+
 			$new_roles = array_diff($this->input->post('roles'), $user->roles);
             $old_roles = array_diff($user->roles, $this->input->post('roles'));
-            
+
             $myself = ((int)$this->input->post('id') == (int) $this->session->get('user_id'));
-            
+
             foreach($new_roles as $role)
                 $user->add_role($role);
-            
+
             foreach($old_roles as $role)
 			{
                 if($myself and ($role == 'admin' or $role == 'login'))
 				{
                     continue;
                 }
-                
+
                 $user->remove_role($role);
             }
-            
+
             $user->username = html::specialchars($this->input->post('username'));
             $user->email = html::specialchars($this->input->post('email'));
             $user->homepage = html::specialchars($this->input->post('homepage'));
             $user->first_name = html::specialchars($this->input->post('first_name'));
             $user->last_name = html::specialchars($this->input->post('last_name'));
-            
+
             $password = trim($this->input->post('password'));
             if(!empty($password))
 			{
-            	$user->password = $password;                
+            	$user->password = $password;
             }
-            
+
             $user->save();
-            
+
             $this->session->set_flash('flash_msg', 'User edited successfully');
 
             url::redirect('admin/user');
@@ -66,37 +66,37 @@ class User_Controller extends Administration_Controller {
 		{
         	$user = new User_Model();
             $roles = new Role_Model();
-            
+
 			$user_id = (int) $this->uri->segment(3);
-			
+
     		$content = new View('user/edit');
     		$content->user = $user->get($user_id);
             $content->usermodel = new User_Model($user_id);
             $content->roles = $roles->get_all();
-            
+
             $this->template->content = $content;
         }
     }
-    
+
     public function create()
 	{
     	if($_SERVER["REQUEST_METHOD"] == 'POST')
 		{
     		$user = new User_Model();
     		$auth = new Auth();
-    		
+
     		$user->username = html::specialchars($this->input->post('username'));
             $user->email = html::specialchars($this->input->post('email'));
             $user->homepage = html::specialchars($this->input->post('homepage'));
             $user->first_name = html::specialchars($this->input->post('first_name'));
             $user->last_name = html::specialchars($this->input->post('last_name'));
             $user->password = $this->input->post('password');
-            
+
     		if ($user->save() AND $user->add_role('login'))
 			{
 				$this->session->set_flash('flash_msg', 'User created successfully');
 			}
-            
+
 		    url::redirect('admin/user');
     	}
 		else
@@ -104,7 +104,7 @@ class User_Controller extends Administration_Controller {
         	$this->template->content = new View('user/create');
     	}
     }
-    
+
     public function action()
 	{
     	if($_SERVER["REQUEST_METHOD"] == 'POST')
@@ -119,7 +119,7 @@ class User_Controller extends Administration_Controller {
     			}
     		}
     	}
-    	
+
     	$this->session->set_flash('flash_msg', 'User created successfully');
 
     	url::redirect('admin/user');

@@ -27,28 +27,28 @@ class Auth_Controller extends Controller {
 			else
 				url::redirect();
 		}
-		
+
 		$fields = array
 		(
 			'username' => '',
 			'password' => ''
 		);
-		
+
 		$errors = $fields;
-		
+
 		if ($_POST)
 		{
 			$_POST = new Validation($_POST);
-			
+
 			$_POST
 				->add_rules('username', 'required')
 				->add_rules('password', 'required');
-			
+
 			if ($_POST->validate())
 			{
 				// Load the user
 				$user = ORM::factory('user', $_POST['username']);
-				
+
 				// Attempt a login
 				if (Auth::instance()->login($user, $_POST['password']))
 				{
@@ -70,10 +70,10 @@ class Auth_Controller extends Controller {
 		}
 
 		// Display the form
-		echo View::factory('login')->set(array(
+		echo View::factory('login', array(
 			'fields' => $fields,
 			'errors' => $errors
-		))->render();
+		));
 	}
 
 	public function logout()

@@ -33,9 +33,9 @@ class Page_Controller extends Administration_Controller {
 		$this->head->javascript->append_file('vendor/ui.sortable.js');
 		$this->head->javascript->append_file('vendor/ui.tree.js');
 
-		$this->template->content = View::factory('page/index_tree')->set(array(
+		$this->template->content = View::factory('page/index_tree', array(
 			'pages' => ORM::factory('page')->find_all()
-		))->render();
+		));
 
 		$this->head->title->append('All Pages');
 
@@ -101,10 +101,10 @@ class Page_Controller extends Administration_Controller {
 			$this->template->title = 'Pages | Edit: '. $page->title;
 			$this->template->tabs = array('Content', 'Advanced');
 
-			$this->template->content = View::factory('page/edit')->set(array(
+			$this->template->content = View::factory('page/edit', array(
 				'page' => $page,
 				'modules' => module::installed()
-			))->render();
+			));
 		}
 	}
 
@@ -172,11 +172,11 @@ class Page_Controller extends Administration_Controller {
 		$this->head->title->append('Settings');
 
 		$this->template->title = 'Pages | Settings';
-		$this->template->content = View::factory('page/settings')->set(array(
+		$this->template->content = View::factory('page/settings', array(
 			'views' => config::get('s7n.page_views'),
 			'default_sidebar_title' => config::get('s7n.default_sidebar_title'),
 			'default_sidebar_content' => config::get('s7n.default_sidebar_content')
-		))->render();
+		));
 	}
 
 	public function save_tree()

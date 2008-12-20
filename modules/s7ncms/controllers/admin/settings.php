@@ -32,11 +32,11 @@ class Settings_Controller extends Administration_Controller {
 		$this->head->title->append('Settings');
 
 		$this->template->title = 'Settings';
-	    $this->template->content = View::factory('settings/settings')->set(array(
+	    $this->template->content = View::factory('settings/settings', array(
     		'site_title' => config::get('s7n.site_title'),
 	    	'theme' => config::get('s7n.theme'),
 	    	'themes' => $themes
-	    ))->render();
+	    ));
 	}
 
     public function save()

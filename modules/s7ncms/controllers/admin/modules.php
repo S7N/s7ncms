@@ -22,9 +22,9 @@ class Modules_Controller extends Administration_Controller {
 	}
 	public function index()
 	{
-		$this->template->content = View::factory('modules/index')->set(array(
+		$this->template->content = View::factory('modules/index', array(
 			'modules' => module::available()
-		))->render();
+		));
     }
 
     public function status($module, $new_status)
