@@ -37,6 +37,7 @@ class Administration_Controller extends Template_Controller {
 
 		// Javascripts
 		$this->head->javascript->append_file('vendor/jquery.js');
+		$this->head->javascript->append_file('vendor/ui.core.js');
 		$this->head->javascript->append_file('vendor/ui.tabs.js');
 		$this->head->javascript->append_file('themes/admin/js/stuff.js');
 

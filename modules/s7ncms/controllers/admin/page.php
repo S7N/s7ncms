@@ -27,7 +27,6 @@ class Page_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$this->head->javascript->append_file('vendor/ui.core.js');
 		$this->head->javascript->append_file('vendor/ui.draggable.js');
 		$this->head->javascript->append_file('vendor/ui.droppable.js');
 		$this->head->javascript->append_file('vendor/ui.sortable.js');
