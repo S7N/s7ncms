@@ -314,7 +314,7 @@ class Blog_Controller extends Administration_Controller {
 
 			$this->template->content = new View('blog/settings');
 			$this->template->content->items_per_page = config::get('blog.items_per_page');
-			$this->template->content->comment_status = (bool) (config::get('blog.comment_status') == 'open' ? TRUE : FALSE);
+			$this->template->content->comment_status = config::get('blog.comment_status') == 'open' ? TRUE : FALSE;
 		}
 	}
 

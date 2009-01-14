@@ -25,7 +25,7 @@ class config_Core {
 				->where(array('context' => $keys[0], 'key' => $keys[1]))
 				->count_records('config');
 
-			if ($count == 1)
+			if ($count > 0)
 			{
 				$db->update(
 					'config',
@@ -46,6 +46,19 @@ class config_Core {
 	public static function get($key)
 	{
 		return Kohana::config($key);
+	}
+
+	public static function load()
+	{
+		$query = Database::instance()
+			->select('context, key, value')
+			->get('config');
+
+		$result = $query->result();
+
+		foreach ($result as $item)
+			if(Kohana::find_file('config', $item->context))
+				Kohana::config_set($item->context.'.'.$item->key, $item->value);
 	}
 
 }

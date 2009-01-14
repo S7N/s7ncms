@@ -12,4 +12,5 @@
  * @version $Id$
  */
 
-Event::add("system.ready", array("module", "load_modules"));
+Event::add("system.ready", 'module::load_modules');
+Event::add('system.ready', 'config::load');
