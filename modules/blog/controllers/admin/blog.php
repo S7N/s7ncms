@@ -64,7 +64,6 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$post = new Blog_post_Model;
 			$post->user_id = $_SESSION['auth_user']->id;
-
 			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
 
 			$uri = url::title($this->input->post('form_title'));
@@ -88,14 +87,8 @@ class Blog_Controller extends Administration_Controller {
 			}
 
 			$post->uri = $uri;
-
 			$post->content = $this->input->post('form_content');
-
-			$post->date = date("Y-m-d H:i:s");
-			$page->modified = date("Y-m-d H:i:s");
-
 			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
-
 			$post->save();
 
 			// delete feed cache
@@ -120,15 +113,11 @@ class Blog_Controller extends Administration_Controller {
 		if($_POST)
 		{
 			$post = ORM::factory('blog_post', (int) $this->input->post('form_id'));
-
 			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
+			// TODO uri-check einbauen
 			$post->uri = url::title($this->input->post('form_title'));
-
 			$post->content = $this->input->post('form_content');
-
-			$post->modified = date("Y-m-d H:i:s");
 			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
-
 			$post->save();
 
 			// delete feed cache

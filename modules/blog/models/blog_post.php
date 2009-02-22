@@ -18,6 +18,8 @@ class Blog_post_Model extends ORM {
 
 	protected $sorting = array('id' => 'DESC');
 
+	protected $load_with = array('user');
+
 	/**
 	 * Allows Blogposts to be loaded by id or uri title.
 	 */
@@ -50,6 +52,16 @@ class Blog_post_Model extends ORM {
 		$this->comment_count += 1;
 		$this->save();
 
+	}
+
+	public function save()
+	{
+		if ( ! $this->loaded)
+			$this->date = date("Y-m-d H:i:s");
+
+		$this->modified = date("Y-m-d H:i:s");
+
+		parent::save();
 	}
 
 	public function count_posts()
