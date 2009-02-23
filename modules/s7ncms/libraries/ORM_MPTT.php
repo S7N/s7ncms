@@ -107,10 +107,10 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 		$this->db->query("UPDATE ".$this->table_name." SET ".$this->left_column."=".$this->left_column."+2 WHERE ".$this->left_column." > ".$this->object[$this->right_column]);
 		$this->db->query("UPDATE ".$this->table_name." SET ".$this->right_column."=".$this->right_column."+2 WHERE ".$this->right_column." >= ".$this->object[$this->right_column]);
 
-		$this->__set($this->parent_key, $this->object[$this->id]);
-		$this->__set($this->level_column, $this->object[$this->level_column] + 1);
-		$this->__set($this->left_column, $this->object[$this->right_column]);
-		$this->__set($this->right_column, $this->object[$this->right_column] + 1);
+		$model->__set($this->parent_key, $this->id);
+		$model->__set($this->level_column, $this->object[$this->level_column] + 1);
+		$model->__set($this->left_column, $this->object[$this->right_column]);
+		$model->__set($this->right_column, $this->object[$this->right_column] + 1);
 		$model->save();
 
 		return $this;
@@ -164,7 +164,7 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 
 				// adjust the right value of the root node
 				$this->db->query('UPDATE '.$this->table_name.' SET '.$this->right_column.'='.($query->$right_column + 2).' WHERE id = '.$query->id);
-					
+
 				// add parent_id, left and right to the new node
 				$this->__set($this->parent_key, $query->id);
 				$this->__set($this->level_column, $query->$level_column + 1);
@@ -180,7 +180,7 @@ class ORM_MPTT_Core extends ORM_Tree_Core {
 				$this->__set($this->right_column, 2);
 			}
 		}
-			
+
 		return parent::save();
 	}
 
