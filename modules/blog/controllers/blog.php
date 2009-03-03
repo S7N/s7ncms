@@ -1,14 +1,14 @@
-<?php
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * S7Ncms - www.s7n.de
  *
- * Copyright (c) 2007-2008, Eduard Baun <eduard at baun.de>
+ * Copyright (c) 2007-2009, Eduard Baun <eduard at baun.de>
  * All rights reserved.
  *
  * See license.txt for full text and disclaimer
  *
  * @author Eduard Baun <eduard at baun.de>
- * @copyright Eduard Baun, 2007-2008
+ * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
 class Blog_Controller extends Website_Controller {
@@ -19,10 +19,14 @@ class Blog_Controller extends Website_Controller {
 
 		$this->head->link->append(Router::$routed_uri.'/feed');
 
-		Sidebar::instance()->add(
-			'Tagcloud',
-			array('tags' => ORM::factory('blog_post')->all_tags())
-		);
+		$tags = ORM::factory('blog_post')->all_tags();
+		if ( ! empty($tags))
+		{
+			Sidebar::instance()->add(
+				'Tagcloud',
+				array('tags' => ORM::factory('blog_post')->all_tags())
+			);
+		}
 	}
 
 	public function __call($method, $arguments)
@@ -64,7 +68,7 @@ class Blog_Controller extends Website_Controller {
 
 		$this->head->title->prepend($post->title);
 
-		$this->head->javascript->append_file('vendor/jquery.js');
+		$this->head->javascript->append_file('vendor/jquery/jquery.js');
 		$this->head->javascript->append_file('modules/blog/themes/default/js/comments.js');
 
 		$form = NULL;

@@ -11,14 +11,4 @@
  * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
-class Module_Model extends ORM {
-
-	public function unique_key($id = NULL)
-	{
-		if( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
-			return 'name';
-
-		return parent::unique_key($id);
-	}
-
-}
+class Page_Content_Model extends ORM {}

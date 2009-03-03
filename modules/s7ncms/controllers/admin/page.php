@@ -1,14 +1,14 @@
-<?php
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * S7Ncms - www.s7n.de
  *
- * Copyright (c) 2007-2008, Eduard Baun <eduard at baun.de>
+ * Copyright (c) 2007-2009, Eduard Baun <eduard at baun.de>
  * All rights reserved.
  *
  * See license.txt for full text and disclaimer
  *
  * @author Eduard Baun <eduard at baun.de>
- * @copyright Eduard Baun, 2007-2008
+ * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
 class Page_Controller extends Administration_Controller {
@@ -18,34 +18,97 @@ class Page_Controller extends Administration_Controller {
 		parent::__construct();
 
 		$this->template->tasks = array(
+			array('admin/page', 'Show All'),
 			array('admin/page/newpage', 'New Page'),
 			array('admin/page/settings', 'Edit Settings')
 		);
 
 		$this->head->title->append('Pages');
+		$this->template->title = 'Pages | ';
 	}
 
 	public function index()
 	{
-		$this->head->javascript->append_file('vendor/ui.draggable.js');
-		$this->head->javascript->append_file('vendor/ui.droppable.js');
-		$this->head->javascript->append_file('vendor/ui.sortable.js');
-		$this->head->javascript->append_file('vendor/ui.tree.js');
+		$this->head->javascript->append_file('vendor/jquery/ui/ui.draggable.js');
+		$this->head->javascript->append_file('vendor/jquery/ui/ui.droppable.js');
+		$this->head->javascript->append_file('vendor/jquery/ui/ui.sortable.js');
+		$this->head->javascript->append_file('vendor/jquery/ui/ui.tree.js');
 
 		$this->template->content = View::factory('page/index_tree', array(
 			'pages' => ORM::factory('page')->find_all()
 		));
 
 		$this->head->title->append('All Pages');
-
-		$this->template->title = 'Pages | All Pages';
+		$this->template->title .= 'All Pages';
 	}
 
-	public function edit()
+	public function edit($id)
 	{
 		if($_POST)
 		{
-			$page = ORM::factory('page', (int) $this->input->post('form_id'));
+			$post = $this->input->post('form');
+
+			$info = $post['info'];
+			$de = $post['de'];
+			$en = $post['en'];
+
+			$page = ORM::factory('page', (int) $id);
+
+			if ( ! $page->loaded)
+				Event::run('system.404');
+
+			$page->title = $info['title'];
+
+			$type = NULL;
+			$target = NULL;
+
+			if ($info['type'] == 'redirect')
+			{
+				$redirect = trim($info['redirect_target']);
+				if ( ! empty($redirect))
+				{
+					$type = 'redirect';
+					$target = $redirect;
+				}
+			}
+			elseif ($info['type'] == 'module')
+			{
+				$module = trim($info['module_target']);
+				if ( ! empty($module))
+				{
+					$type = 'module';
+					$target = $module;
+				}
+			}
+
+			$page->type = $type;
+			$page->target = $target;
+			$page->save();
+
+			$page_de           = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => 'de'))->find();
+			$page_de->page_id  = $page->id;
+			$page_de->language = 'de';
+			$page_de->title    = $de['title'];
+			$page_de->uri      = url::title($de['title']);
+			$page_de->content  = $de['content'];
+			//$page_de->date     = date("Y-m-d H:i:s");
+			$page_de->modified = date("Y-m-d H:i:s");
+			$page_de->save();
+
+			$page_en           = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => 'en'))->find();
+			$page_en->page_id  = $page->id;
+			$page_en->language = 'en';
+			$page_en->title    = $en['title'];
+			$page_en->uri      = url::title($en['title']);
+			$page_en->content  = $en['content'];
+			//$page_en->date     = date("Y-m-d H:i:s");
+			$page_en->modified = date("Y-m-d H:i:s");
+			$page_en->save();
+
+			$this->session->set_flash('info_message', 'Page edited successfully');
+			url::redirect('admin/page');
+
+			/*$page = ORM::factory('page', (int) $this->input->post('form_id'));
 
 			$page->title = html::specialchars($this->input->post('form_title'), FALSE);
 
@@ -88,20 +151,22 @@ class Page_Controller extends Administration_Controller {
 
 			$this->session->set_flash('info_message', 'Page edited successfully');
 
-			url::redirect('admin/page');
+			url::redirect('admin/page');*/
 		}
 		else
 		{
-			$page = ORM::factory('page', (int) $this->uri->segment(4));
+			$page = ORM::factory('page', (int) $id);
 
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append('Edit: '. $page->title);
+			$this->head->title->append('Edit: '. $page->title());
 
-			$this->template->title = 'Pages | Edit: '. $page->title;
-			$this->template->tabs = array('Content', 'Advanced');
+			$this->template->title .= 'Edit: '. $page->title();
+			//$this->template->tabs = array('Content', 'Advanced');
 
 			$this->template->content = View::factory('page/edit', array(
 				'page' => $page,
+				'page_de' => ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => 'de'))->find(),
+				'page_en' => ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => 'en'))->find(),
 				'modules' => module::installed()
 			));
 		}
@@ -109,9 +174,43 @@ class Page_Controller extends Administration_Controller {
 
 	public function newpage()
 	{
+
 		if($_POST)
 		{
-			$page = new Page_Model;
+			$post = $this->input->post('form');
+
+			$info = $post['info'];
+			$de = $post['de'];
+			$en = $post['en'];
+
+			$page = ORM::factory('page');
+			$page->title = $info['title'];
+			$page->save();
+
+			$page_de           = ORM::factory('page_content');
+			$page_de->page_id  = $page->id;
+			$page_de->language = 'de';
+			$page_de->title    = $de['title'];
+			$page_de->uri      = url::title($de['title']);
+			$page_de->content  = $de['content'];
+			$page_de->date     = date("Y-m-d H:i:s");
+			$page_de->modified = date("Y-m-d H:i:s");
+			$page_de->save();
+
+			$page_en           = ORM::factory('page_content');
+			$page_en->page_id  = $page->id;
+			$page_en->language = 'en';
+			$page_en->title    = $en['title'];
+			$page_en->uri      = url::title($en['title']);
+			$page_en->content  = $en['content'];
+			$page_en->date     = date("Y-m-d H:i:s");
+			$page_en->modified = date("Y-m-d H:i:s");
+			$page_en->save();
+
+			$this->session->set_flash('info_message', 'Page created successfully');
+			url::redirect('admin/page');
+
+			/*$page = new Page_Model;
 			$page->user_id = $_SESSION['auth_user']->id;
 
 			$page->title = html::specialchars($this->input->post('form_title'), FALSE);
@@ -130,7 +229,7 @@ class Page_Controller extends Administration_Controller {
 			$page->save();
 
 			$this->session->set_flash('info_message', 'Page created successfully');
-			url::redirect('admin/page');
+			url::redirect('admin/page');*/
 		}
 		else
 		{
@@ -138,7 +237,7 @@ class Page_Controller extends Administration_Controller {
 			$this->head->title->append('New Page');
 
 			$this->template->tabs = array('Content', 'Advanced');
-			$this->template->title = 'Pages | New Page';
+			$this->template->title .= 'New Page';
 			$this->template->content = new View('page/newpage');
 		}
 	}
@@ -170,7 +269,7 @@ class Page_Controller extends Administration_Controller {
 
 		$this->head->title->append('Settings');
 
-		$this->template->title = 'Pages | Settings';
+		$this->template->title .= 'Settings';
 		$this->template->content = View::factory('page/settings', array(
 			'views' => config::get('s7n.page_views'),
 			'default_sidebar_title' => config::get('s7n.default_sidebar_title'),

@@ -1,39 +1,84 @@
-<?php
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * S7Ncms - www.s7n.de
  *
- * Copyright (c) 2007-2008, Eduard Baun <eduard at baun.de>
+ * Copyright (c) 2007-2009, Eduard Baun <eduard at baun.de>
  * All rights reserved.
  *
  * See license.txt for full text and disclaimer
  *
  * @author Eduard Baun <eduard at baun.de>
- * @copyright Eduard Baun, 2007-2008
+ * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
 class Page_Model extends ORM_MPTT {
 
 	protected $children = 'pages';
-
 	protected $belongs_to = array('user');
-
 	protected $sorting = array('lft' => 'ASC');
+	private $_identifier;
 
-	/**
-	 * Allows Pages to be loaded by id or uri title.
-	 */
-	public function unique_key($id = NULL)
+	public static $page_cache = array();
+
+	public $page_columns = array(
+		'uri', 'language', 'title', 'content', 'excerpt',
+		'date', 'user_id', 'modified', 'password', 'status',
+		'view', 'tags', 'keywords');
+
+	public function __construct($id = NULL)
 	{
-		if( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
-			return 'uri';
+		parent::__construct($id);
 
-		return parent::unique_key($id);
+		$this->_identifier = text::random();
 	}
 
-	public function url()
-    {
-        return $this->uri;
-    }
+	public function __get($column)
+	{
+		if (in_array($column, $this->page_columns))
+		{
+			if ( ! isset(self::$page_cache[$this->_identifier]))
+				self::$page_cache[$this->_identifier] = ORM::factory('page_content')
+					->where(array('language' => Router::$language, 'page_id' => $this->id))
+					->find();
+
+			return self::$page_cache[$this->_identifier]->$column;
+		}
+
+		return parent::__get($column);
+	}
+
+	public function title()
+	{
+		return parent::__get('title');
+	}
+
+	public function delete($id = NULL)
+	{
+		if ($id === NULL)
+			$id = $this->id;
+		
+		$this->db->where('page_id', $id)->delete('page_contents');
+
+		if ($id === $this->id AND isset(self::$page_cache[$this->_identifier]))
+			unset(self::$page_cache[$this->_identifier]);		
+
+		return parent::delete($id);
+	}
+
+	public function uri($lang = NULL)
+	{
+		if ($lang === NULL)
+			$lang = Router::$language;
+
+		$path = $this->path();
+		$uri = array();
+		foreach ($path as $x)
+			if ($x->level > 0)
+				$uri[] = ORM::factory('page_content')->select('uri')->where(array('language' => $lang, 'page_id' => $x->id))->find()->uri;
+
+		$uri = implode('/', $uri);
+		return empty($uri) ? '/' : $uri;
+	}
 
     public function paths()
     {
@@ -46,18 +91,18 @@ class Page_Model extends ORM_MPTT {
 			$uris = array();
 
 			$path = $page->path();
+			$last_id = NULL;
 			foreach ($path as $page)
 			{
-				if ($page->level == 0 OR $page->uri == $this->uri)
-				{
+				if ($page->level === 0)
 					continue;
-				}
-				$titles[] = $page->title;
-				$uris[] = $page->uri;
+
+				$titles[] = $page->title();
+				$last_id = $page->id;
 			}
 
-			if ( ! empty($titles))
-				$paths[implode('/', $uris)] = implode(' &rarr; ', $titles);
+			if ( ! empty($titles) AND $last_id !== $this->id)
+				$paths[$last_id] = implode(' &rarr; ', $titles);
 		}
 
 		return $paths;

@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <h3 id="respond">
 	Dein Kommentar
 </h3>

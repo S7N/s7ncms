@@ -1,14 +1,14 @@
-<?php
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * S7Ncms - www.s7n.de
  *
- * Copyright (c) 2007-2008, Eduard Baun <eduard at baun.de>
+ * Copyright (c) 2007-2009, Eduard Baun <eduard at baun.de>
  * All rights reserved.
  *
  * See license.txt for full text and disclaimer
  *
  * @author Eduard Baun <eduard at baun.de>
- * @copyright Eduard Baun, 2007-2008
+ * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
 class Administration_Controller extends Template_Controller {
@@ -36,9 +36,9 @@ class Administration_Controller extends Template_Controller {
 		$this->head = Head::instance();
 
 		// Javascripts
-		$this->head->javascript->append_file('vendor/jquery.js');
-		$this->head->javascript->append_file('vendor/ui.core.js');
-		$this->head->javascript->append_file('vendor/ui.tabs.js');
+		$this->head->javascript->append_file('vendor/jquery/jquery.js');
+		$this->head->javascript->append_file('vendor/jquery/ui/ui.core.js');
+		$this->head->javascript->append_file('vendor/jquery/ui/ui.tabs.js');
 		$this->head->javascript->append_file('themes/admin/js/stuff.js');
 
 		// Stylesheets
@@ -47,13 +47,14 @@ class Administration_Controller extends Template_Controller {
 
 		$this->head->title->set('S7Nadmin');
 
-		$this->template->tasks = array();
+		$this->template->set_global('tasks', array());
+		$this->template->set_global('sidebar', array());
 
 		$this->template->title = '';
 		$this->template->message = $this->session->get('info_message', NULL);
 		$this->template->error = $this->session->get('error_message', NULL);
 		$this->template->content = '';
-		$this->template->head = $this->head;
+		$this->template->set_global('head', $this->head);
 
 		$this->template->searchbar = FALSE;
 		$this->template->searchvalue = '';

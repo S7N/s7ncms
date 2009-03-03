@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <table cellspacing="0" cellpadding="0" class="table">
 	<thead align="left" valign="middle">
 		<tr>
@@ -15,7 +16,7 @@
 			<td><?php echo strftime('%e. %B %Y, %H:%M', strtotime($comment->date)) ?></td>
 			<td class="delete">(<?php echo html::anchor('admin/blog/comments/edit/'.$comment->id, 'edit') ?>)
 			<?php echo html::anchor('admin/blog/comments/delete/'.$comment->id, html::image(
-				'themes/views/admin/images/delete.png',
+				'themes/admin/images/delete.png',
 				array(
 					'alt' => 'Delete Page',
 					'title' => 'Delete Page'

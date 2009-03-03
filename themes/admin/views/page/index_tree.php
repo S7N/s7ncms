@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -29,37 +30,41 @@ existiert ein <abbr title="Ein Controller ist eine selbständige, dynamische Sei
 mit dem selben Namen und wird anstelle der eigentlichen Seite geladen. Sie können trotzdem Unterseiten
 erstellen, um ein Untermenü für diesen Controller zu erzeugen.
 </p>
-<ul class="sortable">
-<?php
-$level = 0;
+<div class="box">
+	<h3>Page Order</h3>
+	<div class="inside">
+		<ul class="sortable">
+		<?php
+		$level = 0;
 
-foreach ($pages as $node):
-	$has_children = (($node->rgt - $node->lft - 1) > 0 );
-	$id = 'page-'.$node->id;
+		foreach ($pages as $node):
+			$has_children = (($node->rgt - $node->lft - 1) > 0 );
+			$id = 'page-'.$node->id;
 
-	$value = View::factory('page/index_tree_value')->set(array('page' => $node))->render();
+			$value = View::factory('page/index_tree_value')->set(array('page' => $node))->render();
 
-	if($has_children) {
-		if($level > $node->level) {
-			echo str_repeat("</ul></li>\n",($level - $node->level));
-			echo '<li id="'.$id.'">'.$value."\n";
-			echo '<ul>'."\n";
-		} else {
-			echo '<li id="'.$id.'">'.$value."\n";
-			echo '<ul>'."\n";
-		}
-	} elseif ($level > $node->level) {
-		echo str_repeat("</ul></li>\n",($level - $node->level));
-		echo '<li id="'.$id.'">'.$value.'</li>'."\n";
-	} else {
-		echo '<li id="'.$id.'">'.$value.'</li>'."\n";
-	}
-	$level = $node->level;
-endforeach;
-echo str_repeat("</ul></li>\n",$level);
-?>
-</ul>
-
+			if($has_children) {
+				if($level > $node->level) {
+					echo str_repeat("</ul></li>\n",($level - $node->level));
+					echo '<li id="'.$id.'">'.$value."\n";
+					echo '<ul>'."\n";
+				} else {
+					echo '<li id="'.$id.'">'.$value."\n";
+					echo '<ul>'."\n";
+				}
+			} elseif ($level > $node->level) {
+				echo str_repeat("</ul></li>\n",($level - $node->level));
+				echo '<li id="'.$id.'">'.$value.'</li>'."\n";
+			} else {
+				echo '<li id="'.$id.'">'.$value.'</li>'."\n";
+			}
+			$level = $node->level;
+		endforeach;
+		echo str_repeat("</ul></li>\n",$level);
+		?>
+		</ul>
+	</div>
+</div>
 <p>
-<button id="save_sort">Save Changes</button>
+<button id="save_sort">Save Page Order</button>
 </p>

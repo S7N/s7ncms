@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <?php if(isset($entries)): ?>
 <p>
     <strong>Entries</strong>

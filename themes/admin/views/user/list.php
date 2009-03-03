@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <h1>Users</h1>
 <p><b><?php echo html::anchor('admin/user/create', 'Create a new user'); ?></b></p>
 

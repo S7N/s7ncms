@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <h1>User - Edit</h1>
 <?php echo form::open('admin/user/edit'); ?>
 <?php echo form::hidden('id', $user->id) ?>

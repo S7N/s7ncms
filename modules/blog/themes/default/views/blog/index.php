@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <?php foreach ($posts as $post): ?>
 	<div class="entry">
 		<div class="entrytitle">

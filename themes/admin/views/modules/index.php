@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <?php if($modules): ?>
 <h1>Available Modules:</h1>
 <table cellspacing="0" cellpadding="0" class="table">

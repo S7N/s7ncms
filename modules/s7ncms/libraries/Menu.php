@@ -1,14 +1,14 @@
-<?php
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * S7Ncms - www.s7n.de
  *
- * Copyright (c) 2007-2008, Eduard Baun <eduard at baun.de>
+ * Copyright (c) 2007-2009, Eduard Baun <eduard at baun.de>
  * All rights reserved.
  *
  * See license.txt for full text and disclaimer
  *
  * @author Eduard Baun <eduard at baun.de>
- * @copyright Eduard Baun, 2007-2008
+ * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
 class Menu_Core {
@@ -24,9 +24,7 @@ class Menu_Core {
 	{
 		$this->type = $type;
 
-		$this->data = ORM::factory('page')
-			->select('id', 'title', 'uri', 'parent_id', 'level')
-			->find_all();
+		$this->data = ORM::factory('page')->find_all();
 
 		foreach ($this->data as $item)
 		{
@@ -80,6 +78,7 @@ class Menu_Core {
 			}
 
 			$item->uri = $this->get($item->parent)->uri.'/'.$item->uri;
+			$item->uri = trim($item->uri, '/');
 		}
 	}
 
@@ -109,6 +108,9 @@ class Menu_Core {
 		if ($this->type == 'submenu')
 			return $this->submenu();
 
+		if (count($this->items) === 0)
+			return '<ul class="menu"></ul>';
+
 		$output = '<ul class="menu">';
 		foreach ($this->items as $item)
 		{
@@ -124,7 +126,15 @@ class Menu_Core {
 
 	public function submenu()
 	{
-		$output = $this->items[$this->first_level(Router::$current_id)]->render(TRUE);
+		if (count($this->items) === 0)
+			return '';
+
+		$id = $this->first_level(Router::$current_id);
+		
+		if ($this->get($id)->level === 0)
+			return '';
+			
+		$output = $this->items[$id]->render(TRUE);
 
 		if (empty($output))
 			return '';

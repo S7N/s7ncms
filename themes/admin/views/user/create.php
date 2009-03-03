@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <h1>User - New</h1>
 <?php echo form::open('admin/user/create'); ?>
 

@@ -1,4 +1,4 @@
-<?php
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * @package  Core
  *
@@ -8,6 +8,15 @@
  * @see http://php.net/setlocale
  */
 $config['language'] = array('de_DE', 'German_Germany');
+
+/**
+ * Available languages.
+ */
+$config['languages'] = array
+(
+	'de' => array('de_DE', 'German_Germany'),
+	'en' => array('en_US', 'English_United States')
+);
 
 /**
  * Locale timezone. Defaults to use the server timezone.

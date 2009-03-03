@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <table cellspacing="0" cellpadding="0" class="table">
 	<thead align="left" valign="middle">
 		<tr>
