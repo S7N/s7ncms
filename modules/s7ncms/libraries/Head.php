@@ -24,6 +24,7 @@ class Head_Core extends ArrayObject {
 	{
 		$this['title']      = new Head_Title;
 		$this['base']       = new Head_Base;
+		$this['meta']       = new Head_Meta;
 		$this['css']        = new Head_Css;
 		$this['javascript'] = new Head_Javascript;
 		$this['link']       = new Head_Link;
@@ -56,6 +57,19 @@ class Head_Partial extends Head_Core {
 		$this->setFlags(ArrayObject::ARRAY_AS_PROPS);
 	}
 
+}
+
+class Head_Meta extends Head_Partial {
+	
+	public function render()
+	{
+		$html = '';
+		foreach ($this as $key => $value)
+			$html .= html::meta($key, $value);
+		
+		return $html;
+	}
+	
 }
 
 class Head_Title extends Head_Partial {
