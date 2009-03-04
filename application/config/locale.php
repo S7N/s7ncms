@@ -14,8 +14,8 @@ $config['language'] = array('de_DE', 'German_Germany');
  */
 $config['languages'] = array
 (
-	'de' => array('de_DE', 'German_Germany'),
-	'en' => array('en_US', 'English_United States')
+	'de' => array('language' => array('de_DE', 'German_Germany'), 'name' => 'Deutsch'),
+	'en' => array('language' => array('en_US', 'English_United States'), 'name' => 'English')
 );
 
 /**

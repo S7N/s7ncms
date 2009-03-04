@@ -47,33 +47,42 @@ class Page_Controller extends Administration_Controller {
 		if($_POST)
 		{
 			$post = $this->input->post('form');
-
-			$info = $post['info'];
-			$de = $post['de'];
-			$en = $post['en'];
-
+			
 			$page = ORM::factory('page', (int) $id);
 
 			if ( ! $page->loaded)
 				Event::run('system.404');
-
-			$page->title = $info['title'];
-
+				
+			$title = array();
+			foreach (Kohana::config('locale.languages') as $key => $value)
+			{
+				$form = $post[$key];
+				
+				$page_content = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => $key))->find();
+				$page_content->title    = $form['title'];
+				$page_content->uri      = url::title($form['title']);
+				$page_content->content  = $form['content'];
+				$page_content->modified = date("Y-m-d H:i:s");
+				$page_content->save();
+				
+				$title[] = $page_content->title;
+			}
+			
 			$type = NULL;
 			$target = NULL;
 
-			if ($info['type'] == 'redirect')
+			if ($post['info']['type'] == 'redirect')
 			{
-				$redirect = trim($info['redirect_target']);
+				$redirect = trim($post['info']['redirect_target']);
 				if ( ! empty($redirect))
 				{
 					$type = 'redirect';
 					$target = $redirect;
 				}
 			}
-			elseif ($info['type'] == 'module')
+			elseif ($post['info']['type'] == 'module')
 			{
-				$module = trim($info['module_target']);
+				$module = trim($post['info']['module_target']);
 				if ( ! empty($module))
 				{
 					$type = 'module';
@@ -83,75 +92,11 @@ class Page_Controller extends Administration_Controller {
 
 			$page->type = $type;
 			$page->target = $target;
+			$page->title = implode(' / ', $title);
 			$page->save();
-
-			$page_de           = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => 'de'))->find();
-			$page_de->page_id  = $page->id;
-			$page_de->language = 'de';
-			$page_de->title    = $de['title'];
-			$page_de->uri      = url::title($de['title']);
-			$page_de->content  = $de['content'];
-			//$page_de->date     = date("Y-m-d H:i:s");
-			$page_de->modified = date("Y-m-d H:i:s");
-			$page_de->save();
-
-			$page_en           = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => 'en'))->find();
-			$page_en->page_id  = $page->id;
-			$page_en->language = 'en';
-			$page_en->title    = $en['title'];
-			$page_en->uri      = url::title($en['title']);
-			$page_en->content  = $en['content'];
-			//$page_en->date     = date("Y-m-d H:i:s");
-			$page_en->modified = date("Y-m-d H:i:s");
-			$page_en->save();
-
+			
 			$this->session->set_flash('info_message', 'Page edited successfully');
 			url::redirect('admin/page');
-
-			/*$page = ORM::factory('page', (int) $this->input->post('form_id'));
-
-			$page->title = html::specialchars($this->input->post('form_title'), FALSE);
-
-			if(strstr(config::get('s7n.page_views'), $this->input->post('form_view')) !== FALSE)
-			{
-				$page->view = trim($this->input->post('form_view'));
-			}
-
-			$page->content = $this->input->post('form_content');
-			$page->uri = url::title($this->input->post('form_title'));
-
-			$page->modified = date("Y-m-d H:i:s");
-			$page->keywords = html::specialchars($this->input->post('form_keywords'), FALSE);
-
-			if ($this->input->post('form_type') == 'redirect')
-			{
-				$target = trim($this->input->post('form_redirect_target'));
-				if ( ! empty($target))
-				{
-					$page->type = 'redirect';
-					$page->target = $this->input->post('form_redirect_target');
-				}
-			}
-			elseif ($this->input->post('form_type') == 'module')
-			{
-				$target = trim($this->input->post('form_module_target'));
-				if ( ! empty($target))
-				{
-					$page->type = 'module';
-					$page->target = $this->input->post('form_module_target');
-				}
-			}
-			else
-			{
-				$page->type = NULL;
-				$page->target = NULL;
-			}
-
-			$page->save();
-
-			$this->session->set_flash('info_message', 'Page edited successfully');
-
-			url::redirect('admin/page');*/
 		}
 		else
 		{
@@ -161,14 +106,15 @@ class Page_Controller extends Administration_Controller {
 			$this->head->title->append('Edit: '. $page->title());
 
 			$this->template->title .= 'Edit: '. $page->title();
-			//$this->template->tabs = array('Content', 'Advanced');
-
 			$this->template->content = View::factory('page/edit', array(
 				'page' => $page,
-				'page_de' => ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => 'de'))->find(),
-				'page_en' => ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => 'en'))->find(),
 				'modules' => module::installed()
 			));
+			
+			foreach (Kohana::config('locale.languages') as $key => $value)
+				$form[$key] = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => $key))->find();
+			
+			$this->template->content->form = $form;
 		}
 	}
 
@@ -178,58 +124,32 @@ class Page_Controller extends Administration_Controller {
 		if($_POST)
 		{
 			$post = $this->input->post('form');
-
-			$info = $post['info'];
-			$de = $post['de'];
-			$en = $post['en'];
-
+			
 			$page = ORM::factory('page');
-			$page->title = $info['title'];
 			$page->save();
-
-			$page_de           = ORM::factory('page_content');
-			$page_de->page_id  = $page->id;
-			$page_de->language = 'de';
-			$page_de->title    = $de['title'];
-			$page_de->uri      = url::title($de['title']);
-			$page_de->content  = $de['content'];
-			$page_de->date     = date("Y-m-d H:i:s");
-			$page_de->modified = date("Y-m-d H:i:s");
-			$page_de->save();
-
-			$page_en           = ORM::factory('page_content');
-			$page_en->page_id  = $page->id;
-			$page_en->language = 'en';
-			$page_en->title    = $en['title'];
-			$page_en->uri      = url::title($en['title']);
-			$page_en->content  = $en['content'];
-			$page_en->date     = date("Y-m-d H:i:s");
-			$page_en->modified = date("Y-m-d H:i:s");
-			$page_en->save();
+				
+			$title = array();
+			foreach (Kohana::config('locale.languages') as $key => $value)
+			{
+				$form = $post[$key];
+				$page_content = ORM::factory('page_content');
+				$page_content->page_id  = $page->id;
+				$page_content->language = $key;
+				$page_content->title    = $form['title'];
+				$page_content->uri      = url::title($form['title']);
+				$page_content->content  = $form['content'];
+				$page_content->date     = date("Y-m-d H:i:s");
+				$page_content->modified = date("Y-m-d H:i:s");
+				$page_content->save();
+				
+				$title[] = $page_content->title;
+			}
+			
+			$page->title = implode(' / ', $title);
+			$page->save();
 
 			$this->session->set_flash('info_message', 'Page created successfully');
 			url::redirect('admin/page');
-
-			/*$page = new Page_Model;
-			$page->user_id = $_SESSION['auth_user']->id;
-
-			$page->title = html::specialchars($this->input->post('form_title'), FALSE);
-			$page->uri = url::title($this->input->post('form_title'));
-
-			$page->view = 'default';
-
-			$page->excerpt = $this->input->post('form_excerpt');
-			$page->content = $this->input->post('form_content');
-
-			$page->date = date("Y-m-d H:i:s");
-			$page->modified = date("Y-m-d H:i:s");
-
-			$page->keywords = html::specialchars($this->input->post('form_keywords'), FALSE);
-
-			$page->save();
-
-			$this->session->set_flash('info_message', 'Page created successfully');
-			url::redirect('admin/page');*/
 		}
 		else
 		{

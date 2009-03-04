@@ -21,26 +21,15 @@ tinyMCE.init({
 </script>
 
 <?php echo form::open('admin/page/newpage') ?>
+<?php foreach (Kohana::config('locale.languages') as $key => $lang): ?>
 <div class="box">
-	<h3>Page Information</h3>
+	<h3>Content <small>(<?php echo $lang['name'] ?>)</small></h3>
 	<div class="inside">
-		<p><?php echo form::label('form[info][title]', 'Title').form::input('form[info][title]') ?></p>
+		<p><?php echo form::label('form['.$key.'][title]', 'Title').form::input('form['.$key.'][title]') ?></p>
+		<p><?php echo form::label('form['.$key.'][content]', 'Content').form::textarea('form['.$key.'][content]') ?></p>
 	</div>
 </div>
-<div class="box">
-	<h3>Content <small>(Deutsch)</small></h3>
-	<div class="inside">
-		<p><?php echo form::label('form[de][title]', 'Title').form::input('form[de][title]') ?></p>
-		<p><?php echo form::label('form[de][content]', 'Content').form::textarea('form[de][content]') ?></p>
-	</div>
-</div>
-<div class="box">
-	<h3>Content <small>(English)</small></h3>
-	<div class="inside">
-		<p><?php echo form::label('form[en][title]', 'Title').form::input('form[en][title]') ?></p>
-		<p><?php echo form::label('form[en][content]', 'Content').form::textarea('form[en][content]') ?></p>
-	</div>
-</div>
+<?php endforeach; ?>
 <p><?php echo form::submit('submit', 'Save') ?></p>
 <?php echo form::close() ?>
 

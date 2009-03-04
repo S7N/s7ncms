@@ -24,7 +24,6 @@ tinyMCE.init({
 <div class="box">
 	<h3>Page Information</h3>
 	<div class="inside">
-		<p><?php echo form::label('form[info][title]', 'Title').form::input('form[info][title]', $page->title()) ?></p>
 		<p>
 			<?php echo form::label('form[info][type]', 'Redirect page or load Module') ?>
 			<?php echo form::radio('form[info][type]', 'none', empty($page->target))?> Do Nothing<br />
@@ -43,19 +42,14 @@ tinyMCE.init({
 
 	</div>
 </div>
+<?php foreach (Kohana::config('locale.languages') as $key => $lang): ?>
 <div class="box">
-	<h3>Content <small>(Deutsch)</small></h3>
+	<h3>Content <small>(<?php echo $lang['name'] ?>)</small></h3>
 	<div class="inside">
-		<p><?php echo form::label('form[de][title]', 'Title').form::input('form[de][title]', $page_de->title) ?></p>
-		<p><?php echo form::label('form[de][content]', 'Content').form::textarea('form[de][content]', $page_de->content) ?></p>
+		<p><?php echo form::label('form['.$key.'][title]', 'Title').form::input('form['.$key.'][title]', $form[$key]->title) ?></p>
+		<p><?php echo form::label('form['.$key.'][content]', 'Content').form::textarea('form['.$key.'][content]', $form[$key]->content) ?></p>
 	</div>
 </div>
-<div class="box">
-	<h3>Content <small>(English)</small></h3>
-	<div class="inside">
-		<p><?php echo form::label('form[en][title]', 'Title').form::input('form[en][title]', $page_en->title) ?></p>
-		<p><?php echo form::label('form[en][content]', 'Content').form::textarea('form[en][content]', $page_en->content) ?></p>
-	</div>
-</div>
+<?php endforeach; ?>
 <p><?php echo form::submit('submit', 'Save') ?></p>
 <?php echo form::close() ?>

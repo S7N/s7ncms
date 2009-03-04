@@ -61,7 +61,7 @@ class language_hook {
 		/*if (empty(Router::$current_uri))
 			Router::$current_uri = Kohana::config('routes._default');*/
 
-		Kohana::config_set('locale.language', self::$available_languages[Router::$language]);
+		Kohana::config_set('locale.language', self::$available_languages[Router::$language]['language']);
 	}
 
 	public static function browser_language()
