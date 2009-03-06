@@ -430,9 +430,6 @@ ul.sortable .folder {
 	margin-bottom: 5px;
 	background-color: #F1F5FA;
 }
-ul.sortable ui-tree-placeholder {
-	height: 10px;
-}
 
 ul.sortable a span {
 	font-weight: bold;
@@ -449,12 +446,4 @@ ul.sortable .movehandle {
 
 ul.sortable .hover {
 	background-color: #bcbcbc;
-}
-
-ul.sortable .hover-up {
-	border-bottom: 3px solid red;
-}
-
-ul.sortable .hover-down {
-	border-top: 3px solid red;
 }

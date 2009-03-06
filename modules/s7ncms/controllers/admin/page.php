@@ -29,11 +29,6 @@ class Page_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$this->head->javascript->append_file('vendor/jquery/ui/ui.draggable.js');
-		$this->head->javascript->append_file('vendor/jquery/ui/ui.droppable.js');
-		$this->head->javascript->append_file('vendor/jquery/ui/ui.sortable.js');
-		$this->head->javascript->append_file('vendor/jquery/ui/ui.tree.js');
-
 		$this->template->content = View::factory('page/index_tree', array(
 			'pages' => ORM::factory('page')->find_all()
 		));
