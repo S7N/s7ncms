@@ -42,6 +42,7 @@ class Administration_Controller extends Template_Controller {
 		$this->head->javascript->append_file('themes/admin/js/stuff.js');
 
 		// Stylesheets
+		$this->head->css->append_file('themes/admin/css/ui/jquery-ui');
 		$this->head->css->append_file('themes/admin/css/layout');
 		$this->head->css->append_file('themes/admin/css/ui.tabs');
 

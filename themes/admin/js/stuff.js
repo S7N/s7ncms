@@ -12,9 +12,26 @@ $(function(){
 	// tabs
     $("#contentmenu").tabs();
     
+    $("#dialog").dialog({
+		autoOpen: false,
+		resizable: false,
+		modal: true,
+		buttons: {
+			'Cancel': function() {
+				$(this).dialog('close');
+			},
+			'Delete': function() {
+				window.location = $("#dialog").dialog('option', 'href');
+				$(this).dialog('close');
+			}
+		}
+	});
+    
     // confirm before delete
 	$('a.confirm').click(function(){
-		if (confirm('Are you sure?')) return true;
-		else return false;
+		$("#dialog").dialog('option', 'href', this.href);
+		$("#dialog").dialog('open');
+		
+		return false;
 	});
 });

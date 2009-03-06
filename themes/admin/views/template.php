@@ -9,6 +9,7 @@
 </head>
 
 <body>
+	<div id="dialog" style="display: none;">Möchten Sie diese Seite inklusive der Unterseiten wirklich löschen?</div>
 	<div id="header">
 		S7Nadmin
 		<div class="info">
