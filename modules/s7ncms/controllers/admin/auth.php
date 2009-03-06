@@ -13,12 +13,7 @@
  */
 class Auth_Controller extends Controller {
 
-	function __construct()
-	{
-		parent::__construct();
-		new Fire_Profiler;
-	}
-	function index()
+	public function index()
 	{
 		url::redirect('admin/auth/login');
 	}
