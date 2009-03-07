@@ -49,7 +49,7 @@ class Settings_Controller extends Administration_Controller {
 			// Site Title
 			config::set('s7n.theme', $this->input->post('theme'));
 
-			$this->session->set_flash('info_message', 'Settings edited successfully');
+			message::info('Settings edited successfully', 'admin/settings');
         }
 
         url::redirect('admin/settings');

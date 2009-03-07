@@ -94,8 +94,7 @@ class Blog_Controller extends Administration_Controller {
 			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
 
-			$this->session->set_flash('info_message', 'Post created successfully');
-			url::redirect('admin/blog');
+			message::info('Post created successfully', 'admin/blog');
 		}
 		else
 		{
@@ -123,9 +122,7 @@ class Blog_Controller extends Administration_Controller {
 			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
 
-			$this->session->set_flash('info_message', 'Post edited successfully');
-
-			url::redirect('admin/blog');
+			message::info('Post edited successfully', 'admin/blog');
 		}
 		else
 		{
@@ -186,18 +183,13 @@ class Blog_Controller extends Administration_Controller {
 	{
 		$post = ORM::factory('blog_post', (int) $id);
 
-		if ($post->id === 0)
-		{
-			$this->session->set_flash('error_message', 'Invalid id');
-			url::redirect('admin/blog');
-		}
+		if ( ! $post->loaded)
+			message::error('Invalid ID', 'admin/blog');
 
 		$post->comment_status = $status;
 		$post->save();
 
-		$this->session->set_flash('info_message', 'Comment status changed to "'.$status.'"');
-
-		url::redirect('admin/blog');
+		message::info('Comment status changed to "'.$status.'"', 'admin/blog');
 	}
 
 	private function comments_edit($id)
@@ -213,9 +205,7 @@ class Blog_Controller extends Administration_Controller {
 
 			Cache::instance()->delete('s7n_blog_feed');
 
-			$this->session->set_flash('info_message', 'Comment edited successfully');
-
-			url::redirect('admin/blog/comments/'.$comment->blog_post_id);
+			message::info('Comment edited successfully', 'admin/blog/comments/'.$comment->blog_post_id);
 		}
 		else
 		{
@@ -234,67 +224,49 @@ class Blog_Controller extends Administration_Controller {
 	private function comments_delete($id)
 	{
 		$comment = ORM::factory('blog_comment', (int) $id);
-		if ($comment->loaded)
-		{
-			$post = ORM::factory('blog_post', (int) $comment->blog_post_id);
-			$post->comment_count -= 1;
-			$post->save();
+		if ( ! $comment->loaded)
+			message::error('Invalid ID', 'admin/blog');
+		
+		$post = ORM::factory('blog_post', (int) $comment->blog_post_id);
+		$post->comment_count -= 1;
+		$post->save();
 
-			$comment->delete();
+		$comment->delete();
 
-			Cache::instance()->delete('s7n_blog_feed_comments');
+		Cache::instance()->delete('s7n_blog_feed_comments');
 
-			$this->session->set_flash('info_message', 'Comment deleted successfully');
-			url::redirect('admin/blog/comments/'.$post->id);
-		}
-		else
-		{
-			$this->session->set_flash('error_message', 'Invalid id');
-			url::redirect('admin/blog');
-		}
+		message::info('Comment deleted successfully', 'admin/blog/comments/'.$post->id);
 	}
 
 	public function delete($id)
 	{
 		$post = ORM::factory('blog_post', (int) $id);
 
-		if ($post->loaded)
-		{
-			// remove comments first
-			Database::instance()->where('blog_post_id', (int) $post->id)->delete('blog_comments');
+		if ( ! $post->loaded)
+			message::error('Invalid ID', 'admin/blog');
+		
+		// remove comments first
+		Database::instance()->where('blog_post_id', (int) $post->id)->delete('blog_comments');
 
-			// then delete the post
-			$post->delete();
+		// then delete the post
+		$post->delete();
 
-			Cache::instance()->delete('s7n_blog_feed');
-			Cache::instance()->delete('s7n_blog_feed_comments');
+		Cache::instance()->delete('s7n_blog_feed');
+		Cache::instance()->delete('s7n_blog_feed_comments');
 
-			$this->session->set_flash('info_message', 'Post deleted sucsessfully');
-		}
-		else
-		{
-			$this->session->set_flash('error_message', 'Invalid id');
-		}
-
-		url::redirect('admin/blog');
+		message::info('Post deleted successfully', 'admin/blog');
 	}
 
 	public function settings()
 	{
 		if($_POST)
 		{
-			$comment_status = 'closed';
-
-			if ($this->input->post('comment_status') == 'open')
-				$comment_status = 'open';
+			$comment_status = ($this->input->post('comment_status') === 'open') ? 'open' : 'closed';
 
 			config::set('blog.comment_status', $comment_status);
-
 			config::set('blog.items_per_page', (int) $this->input->post('items_per_page'));
 
-			$this->session->set_flash('info_message', 'Settings changed successfully');
-
-			url::redirect('admin/blog');
+			message::info('Settings changed successfully', 'admin/blog');
 		}
 		else
 		{

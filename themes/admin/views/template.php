@@ -36,14 +36,6 @@
 			    <input name="q" value="<?php echo $searchvalue ?>" type="search" placeholder="Filter by" autosave="s7n.search" />
 			<?php echo form::close() ?>
 			<?php endif ?>
-
-			<!--<?php if(isset($tabs)): ?>
-			<ul id="contentmenu">
-				<?php foreach ($tabs as $tab): ?>
-                	<li><a href="#tab_<?php echo url::title($tab) ?>"><span><?php echo $tab ?></span></a></li>
-                <?php endforeach ?>
-            </ul>
-			<?php endif ?>-->
 		</div>
 
 		<div id="left">
@@ -62,14 +54,14 @@
 		</div>
 
 		<div id="content">
-			<?php if( $message !== NULL ): ?>
+			<?php if($message = message::info()): ?>
 				<div id="info_message">
 					<p><?php echo $message ?></p>
 				</div>
 			<?php endif; ?>
-			<?php if( $error !== NULL): ?>
+			<?php if($message = message::error()): ?>
 				<div id="error_message">
-					<p><?php echo $error ?></p>
+					<p><?php echo $message ?></p>
 				</div>
 			<?php endif; ?>
 			<?php echo $content ?>

@@ -31,9 +31,7 @@ class Modules_Controller extends Administration_Controller {
     {
     	module::change_status($module, $new_status);
 
-    	$this->session->set_flash('info_message', 'Module status successfully changed.');
-
-    	url::redirect('admin/modules');
+    	message::info('Module status successfully changed', 'admin/modules');
     }
 
     public function install($module)
@@ -42,8 +40,7 @@ class Modules_Controller extends Administration_Controller {
 
 		call_user_func($module.'_installer::install');
 
-		$this->session->set_flash('info_message', 'Module installed successfully.');
-    	url::redirect('admin/modules');
+		message::info('Module installed successfully', 'admin/modules');
     }
 
     public function uninstall($module)
@@ -52,8 +49,7 @@ class Modules_Controller extends Administration_Controller {
 
     	call_user_func($module.'_installer::uninstall');
 
-    	$this->session->set_flash('info_message', 'Module uninstalled successfully.');
-    	url::redirect("admin/modules");
+    	message::info('Module uninstalled successfully', 'admin/modules');
     }
 
 }

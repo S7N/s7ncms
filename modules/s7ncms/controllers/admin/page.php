@@ -90,8 +90,7 @@ class Page_Controller extends Administration_Controller {
 			$page->title = implode(' / ', $title);
 			$page->save();
 			
-			$this->session->set_flash('info_message', 'Page edited successfully');
-			url::redirect('admin/page');
+			message::info('Page edited successfully', 'admin/page');
 		}
 		else
 		{
@@ -143,8 +142,7 @@ class Page_Controller extends Administration_Controller {
 			$page->title = implode(' / ', $title);
 			$page->save();
 
-			$this->session->set_flash('info_message', 'Page created successfully');
-			url::redirect('admin/page');
+			message::info('Page created successfully', 'admin/page');
 		}
 		else
 		{
@@ -160,8 +158,7 @@ class Page_Controller extends Administration_Controller {
 	public function delete($id)
 	{
 		ORM::factory('page', (int) $id)->delete();
-		$this->session->set_flash('info_message', 'Page deleted successfully');
-		url::redirect('admin/page');
+		message::info('Page deleted successfully', 'admin/page');
 	}
 
 	public function settings()
@@ -177,9 +174,7 @@ class Page_Controller extends Administration_Controller {
 			// Default Sidebar Content
             config::set('s7n.default_sidebar_content', $this->input->post('default_sidebar_content'));
 
-			$this->session->set_flash('info_message', 'Page Settings edited successfully');
-
-			url::redirect('admin/page/settings');
+			message::info('Page Settings edited successfully', 'admin/page/settings');
 		}
 
 		$this->head->title->append('Settings');
