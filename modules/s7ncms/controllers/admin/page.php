@@ -95,6 +95,9 @@ class Page_Controller extends Administration_Controller {
 		else
 		{
 			$page = ORM::factory('page', (int) $id);
+			
+			if ( ! $page->loaded)
+				Event::run('system.404');
 
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append('Edit: '. $page->title());
