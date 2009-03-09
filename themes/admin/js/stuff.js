@@ -8,9 +8,6 @@ $(function(){
 
 	// menu
 	$('#navigation li:last').addClass('last');
-
-	// tabs
-    $("#contentmenu").tabs();
     
     $("#dialog").dialog({
 		autoOpen: false,
