@@ -48,6 +48,7 @@ class Administration_Controller extends Template_Controller {
 
 		$this->head->title->set('S7Nadmin');
 
+		$this->template->set_global('theme_url', 'themes/'.config::get('s7n.theme').'/');
 		$this->template->set_global('tasks', array());
 		$this->template->set_global('sidebar', array());
 
