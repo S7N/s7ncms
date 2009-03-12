@@ -29,6 +29,7 @@ class Website_Controller extends Template_Controller {
 		$this->head->css->append_file('themes/'.config::get('s7n.theme').'/css/layout');
 		$this->head->title->set(config::get('s7n.site_title'));
 
+		$this->template->set_global('theme_url', 'themes/'.config::get('s7n.theme').'/');
 		$this->template->head = $this->head;
 	}
 
