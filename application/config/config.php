@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = '/S7Ncms/';
+$config['site_domain'] = dirname($_SERVER['SCRIPT_NAME']);
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -96,8 +96,5 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array
 (
-	'themes',
-	MODPATH.'s7ncms',
-
-	MODPATH.'auth',   // Authentication
+	MODPATH.'s7ncms'	
 );

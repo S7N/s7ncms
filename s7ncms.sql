@@ -22,7 +22,8 @@ CREATE TABLE `modules` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO `modules` VALUES (1, 'blog', 'on');
+INSERT INTO `modules` VALUES (1, 'auth', 'on');
+INSERT INTO `modules` VALUES (2, 'blog', 'on');
 
 CREATE TABLE `pages` (
   `id` int(11) NOT NULL auto_increment,

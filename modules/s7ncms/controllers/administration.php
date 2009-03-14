@@ -11,11 +11,17 @@
  * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
-class Administration_Controller extends Template_Controller {
+abstract class Administration_Controller extends Controller {
 
 	public $session;
 	public $db;
 	public $head;
+	
+	// Template view name
+	public $template = 'template';
+
+	// Default to do auto-rendering
+	public $auto_render = TRUE;
 
 	public function __construct()
 	{
@@ -23,6 +29,15 @@ class Administration_Controller extends Template_Controller {
 		Kohana::config_set('s7n.use_admin_theme', TRUE);
 
 		parent::__construct();
+		
+		// Load the template
+		$this->template = new Admin_View($this->template);
+
+		if ($this->auto_render == TRUE)
+		{
+			// Render the template immediately after the controller method
+			Event::add('system.post_controller', array($this, '_render'));
+		}
 
 		$this->session = Session::instance();
 		$this->db = Database::instance();
@@ -48,7 +63,6 @@ class Administration_Controller extends Template_Controller {
 
 		$this->head->title->set('S7Nadmin');
 
-		$this->template->set_global('theme_url', 'themes/'.config::get('s7n.theme').'/');
 		$this->template->set_global('tasks', array());
 		$this->template->set_global('sidebar', array());
 
@@ -62,8 +76,16 @@ class Administration_Controller extends Template_Controller {
 		$this->template->searchvalue = '';
 	}
 
-	public function recent_entries($number = 10) {
-		return '';
+	/**
+	 * Render the loaded template.
+	 */
+	public function _render()
+	{
+		if ($this->auto_render == TRUE)
+		{
+			// Render the template when the class is destroyed
+			$this->template->render(TRUE);
+		}
 	}
 
 }

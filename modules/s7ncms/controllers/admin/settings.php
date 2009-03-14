@@ -13,6 +13,13 @@
  */
 class Settings_Controller extends Administration_Controller {
 
+	/*public function __construct()
+	{
+		parent::__construct();
+		
+		Sidebar::instance()->add('static', array('title' => 'Modules', 'content' => admin::settings()));
+	}*/
+	
 	public function index()
 	{
 		$themes = array();

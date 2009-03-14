@@ -53,7 +53,10 @@ class module_Core {
 			$modules[basename(dirname(dirname($file)))] = 0;
 
 		foreach (self::installed() as $module)
-			$modules[$module->name] = $module->version;
+		{
+			if (isset($modules[$module->name]))
+				$modules[$module->name] = $module->version;
+		}
 
 		ksort($modules);
 		return $modules;
@@ -85,10 +88,10 @@ class module_Core {
 
 	public static function load_modules()
 	{
-		$new_modules = array();
+		$modules = Kohana::config('core.modules');
 		foreach (self::active() as $module)
-			$new_modules[] = MODPATH . $module->name;
+			array_unshift($modules, MODPATH . $module->name);
 
-		Kohana::config_set('core.modules', array_merge($new_modules, Kohana::config('core.modules')));
+		Kohana::config_set('core.modules', $modules);
 	}
 }

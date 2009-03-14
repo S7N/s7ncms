@@ -15,13 +15,8 @@ class View extends View_Core {
 
 	public function set_filename($name, $type = NULL)
 	{
-		$theme = Kohana::config('s7n.theme');
-
-		if (Kohana::config('s7n.use_admin_theme'))
-			$theme = 'admin';
-
-		if ($path = Kohana::find_file('themes/'.$theme.'/views', $name) OR
-			$path = Kohana::find_file($theme.'/views', $name) OR
+		if ($path = Kohana::find_file('themes/'.theme::$name.'/views', $name) OR
+			$path = Kohana::find_file(theme::$name.'/views', $name) OR
 			$path = Kohana::find_file('default/views', $name))
 		{
 			$this->kohana_filename = $path;
