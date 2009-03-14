@@ -17,10 +17,11 @@ class Page_Model extends ORM_MPTT {
 	protected $belongs_to = array('user');
 	protected $sorting = array('lft' => 'ASC');
 	private $_identifier;
+	private $computed_uri = NULL;
 
 	public static $page_cache = array();
 
-	public $page_columns = array(
+	private $page_columns = array(
 		'uri', 'language', 'title', 'content', 'excerpt',
 		'date', 'user_id', 'modified', 'password', 'status',
 		'view', 'tags', 'keywords');
@@ -67,6 +68,9 @@ class Page_Model extends ORM_MPTT {
 
 	public function uri($lang = NULL)
 	{
+		if ($this->computed_uri !== NULL AND $lang === NULL)
+			return $this->computed_uri;
+		
 		if ($lang === NULL)
 			$lang = Router::$language;
 
@@ -77,7 +81,7 @@ class Page_Model extends ORM_MPTT {
 				$uri[] = ORM::factory('page_content')->select('uri')->where(array('language' => $lang, 'page_id' => $x->id))->find()->uri;
 
 		$uri = implode('/', $uri);
-		return empty($uri) ? '/' : $uri;
+		return $this->computed_uri = empty($uri) ? '/' : $uri;
 	}
 
     public function paths()
