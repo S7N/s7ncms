@@ -12,10 +12,10 @@
  * @version $Id$
  */
 
-Event::add("system.ready", 'module::load_modules');
+Event::add('system.ready', 'module::load_modules');
 Event::add('system.ready', 'config::load');
 
 Event::add_before('system.routing', array('Router', 'setup'), array('language', 'setup'));
 Event::add_before('system.routing', array('Router', 'setup'), array('url', 'new_route'));
 
-Event::add("system.post_routing", 'theme::load_themes');
+Event::add('system.post_routing', 'theme::load_themes');
