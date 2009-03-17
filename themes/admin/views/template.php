@@ -10,6 +10,15 @@
 
 <body>
 	<div id="dialog" style="display: none;">Möchten Sie diese Seite inklusive der Unterseiten wirklich löschen?</div>
+	<div id="uploader" style="display: none;">
+		<?php echo form::open_multipart("admin/upload/save", array('id'=>'imageuploadform', "target" => "uploadiframe")) ?>
+		<?php echo form::upload('picture') ?>
+		<?php echo form::close() ?>
+		<iframe id="uploadiframe" name="uploadiframe" src="#" style="display:none;"></iframe>
+		<div id="uploadmessage"></div>
+	</div>
+	<div id="logoProgress"></div>
+	
 	<div id="header">
 		S7Nadmin
 		<div class="info">
