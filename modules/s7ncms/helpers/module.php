@@ -49,8 +49,10 @@ class module_Core {
 	public static function available() {
 		$modules = array();
 
-		foreach (glob(MODPATH . "*/helpers/*_installer.php") as $file)
-			$modules[basename(dirname(dirname($file)))] = 0;
+		$files = (array) glob(MODPATH . "*/helpers/*_installer.php");
+		if ( ! empty($files))
+			foreach ($files as $file)
+				$modules[basename(dirname(dirname($file)))] = 0;
 
 		foreach (self::installed() as $module)
 		{
