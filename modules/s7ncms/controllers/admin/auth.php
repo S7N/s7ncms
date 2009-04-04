@@ -58,14 +58,14 @@ class Auth_Controller extends Controller {
 				else
 				{
 					$_POST->add_error('password', 'default');
-					$fields = arr::overwrite($_POST->safe_array('username'));
-					$errors = arr::overwrite($_POST->errors('login_error_messages'));
+					$fields = arr::overwrite($fields, $_POST->safe_array('username'));
+					$errors = arr::overwrite($errors, $_POST->errors('login_error_messages'));
 				}
 			}
 			else
 			{
-				$fields = arr::overwrite($_POST->safe_array('username'));
-				$errors = arr::overwrite($_POST->errors('login_error_messages'));
+				$fields = arr::overwrite($fields, $_POST->safe_array('username'));
+				$errors = arr::overwrite($errors, $_POST->errors('login_error_messages'));
 			}
 		}
 
