@@ -122,6 +122,9 @@ class User_Controller extends Administration_Controller {
 		
 		if ($user->loaded)
 		{
+			if ($user->id === Auth::instance()->get_user()->id)
+				message::error('You can\'t delete yourself', 'admin/user');
+			
 			$user->remove(ORM::factory('role', 'login'));
 			$user->remove(ORM::factory('role', 'admin'));
 			$user->delete();
