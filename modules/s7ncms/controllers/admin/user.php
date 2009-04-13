@@ -24,15 +24,15 @@ class User_Controller extends Administration_Controller {
 		$this->head->title->append('User');
 		$this->template->title = html::anchor('admin/user', 'User').' | ';
 	}
-	
+
 	public function index()
 	{
 		$this->template->content = View::factory('user/index', array('users' => ORM::factory('user')->find_all()));
-		
+
 		$this->head->title->append('All Users');
 		$this->template->title .= 'All Users';
 	}
-	
+
 	public function newuser()
 	{
 		$fields = array
@@ -44,17 +44,17 @@ class User_Controller extends Administration_Controller {
 		);
 
 		$errors = $fields;
-			
+
 		if ($_POST)
 		{
 			$user = ORM::factory('user');
-			
+
 			if ($user->validate($_POST, TRUE))
 			{
 				$user->add(ORM::factory('role', 'login'));
 				$user->add(ORM::factory('role', 'admin'));
 				$user->save();
-				
+
 				message::info('User created successfully', 'admin/user');
 			}
 			else
@@ -63,9 +63,9 @@ class User_Controller extends Administration_Controller {
 				$errors = arr::overwrite($errors, $_POST->errors());
 			}
 		}
-		
+
 		$this->template->content = View::factory('user/newuser', array('fields' => $fields, 'errors' => $errors));
-		
+
 		$this->head->title->append('New User');
 		$this->template->title .= 'New User';
 	}
@@ -81,12 +81,12 @@ class User_Controller extends Administration_Controller {
 		);
 
 		$errors = $fields;
-		
+
 		$user = ORM::factory('user', (int) $id);
-		
+
 		if ( ! $user->loaded)
 			Event::run('system.404');
-			
+
 		if ($_POST)
 		{
 			if ($user->validate_edit($_POST))
@@ -94,9 +94,9 @@ class User_Controller extends Administration_Controller {
 				$user->email = $_POST['email'];
 				if (!empty($_POST['password']))
 					$user->password = $_POST['password'];
-				
+
 				$user->save();
-				
+
 				message::info('User edited successfully', 'admin/user');
 			}
 			else
@@ -119,19 +119,19 @@ class User_Controller extends Administration_Controller {
 	public function delete($id)
 	{
 		$user = ORM::factory('user', (int) $id);
-		
+
 		if ($user->loaded)
 		{
 			if ($user->id === Auth::instance()->get_user()->id)
 				message::error('You can\'t delete yourself', 'admin/user');
-			
+
 			$user->remove(ORM::factory('role', 'login'));
 			$user->remove(ORM::factory('role', 'admin'));
 			$user->delete();
-			
+
 			message::info('User deleted successfully', 'admin/user');
 		}
-		
+
 		message::error('Invalid ID', 'admin/user');
 	}
 
