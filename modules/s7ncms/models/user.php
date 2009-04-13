@@ -38,7 +38,7 @@ class User_Model extends ORM {
 
 		return parent::validate($array, $save);
 	}
-	
+
 	public function validate_edit(array & $array, $save = FALSE)
 	{
 		$array = Validation::factory($array)
