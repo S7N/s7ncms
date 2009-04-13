@@ -1,15 +1,15 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 
-<?php echo form::open('admin/user/edit/'.$user->id) ?>
+<?php echo form::open('admin/user/newuser') ?>
 
 <div class="box">
-	<h3>Edit User</h3>
+	<h3>New User</h3>
 	<div class="inside">
 		<p>
 		<?php
 			echo form::label('username', 'User Name');
 			if ( ! empty($errors['username'])) echo $errors['username'];
-			echo form::input('username', $fields['username'], 'readonly="readonly"');
+			echo form::input('username', $fields['username']);
 		?>
 		</p>
 		<p>

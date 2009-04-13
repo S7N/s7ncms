@@ -96,5 +96,6 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array
 (
-	MODPATH.'s7ncms'	
+	MODPATH.'s7ncms',
+	MODPATH.'auth'	
 );
