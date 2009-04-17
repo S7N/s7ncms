@@ -28,6 +28,12 @@ class url extends url_Core {
 		return ($qs === TRUE) ? $lang.'/'.Router::$complete_uri : $lang.'/'.Router::$current_uri;
 	}
 	
+	public static function current_site($uri = '')
+	{
+		$current = explode('/', self::current());
+		return empty($uri) ? $current[0] : $current[0].'/'.$uri;
+	}
+	
 	public static function new_route()
 	{
 		$uri = explode('/', Router::$current_uri);

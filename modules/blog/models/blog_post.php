@@ -66,7 +66,7 @@ class Blog_post_Model extends ORM {
 
 	public function url()
     {
-        return Router::$routed_uri.'/'.$this->uri;
+    	return url::current_site($this->uri);
     }
 
 	public function tags()
@@ -93,7 +93,7 @@ class Blog_post_Model extends ORM {
 
         $result = array();
         foreach ($tags as $title => $count)
-        	$result[] = array('title' => $title, 'count' => $count, 'link' => Router::$routed_uri.'/tag/'.$title);
+        	$result[] = array('title' => $title, 'count' => $count, 'link' => url::current_site('tag/'.$title));
 
         return $result;
 	}

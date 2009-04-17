@@ -40,7 +40,7 @@ class Feed_Controller extends Controller {
 		(
 			'title' => config::get('s7n.site_title'),
 			'description' => '',
-			'link' => Router::$routed_uri,
+			'link' => url::current_site(),
 			'generator' => 'S7Ncms - http://www.s7n.de/'
 		);
 
@@ -78,7 +78,7 @@ class Feed_Controller extends Controller {
 		$info = array
 		(
 			'title' => config::get('s7n.site_title').' (Latest Comments)',
-			'link' => Router::$routed_uri,
+			'link' => url::current_site(),
 			'generator' => 'S7Ncms - http://www.s7n.de/'
 		);
 

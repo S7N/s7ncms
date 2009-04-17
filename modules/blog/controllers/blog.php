@@ -17,7 +17,7 @@ class Blog_Controller extends Website_Controller {
 	{
 		parent::__construct();
 
-		$this->head->link->append(Router::$routed_uri.'/feed');
+		$this->head->link->append(url::current_site('feed'));
 
 		$tags = ORM::factory('blog_post')->tags();
 		if ( ! empty($tags))
