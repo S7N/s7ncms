@@ -26,9 +26,7 @@ class Blog_post_Model extends ORM {
 	public function unique_key($id = NULL)
 	{
 		if( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
-		{
 			return 'uri';
-		}
 
 		return parent::unique_key($id);
 	}
@@ -36,22 +34,19 @@ class Blog_post_Model extends ORM {
 	/**
 	 * increment the comment counter on each new comment
 	 */
-	public function add_comment($object)
+	public function add_comment(ORM $object)
 	{
 		/*
 		 * set the user_id if the poster is logged in
 		 */
-		if(isset($_SESSION['auth_user']))
-		{
-			$object->user_id = $_SESSION['auth_user']->id;
-		}
+		if(Auth::instance()->logged_in())
+			$object->user_id = Auth::instance()->get_user()->id;
 
 		$object->blog_post_id = $this->id;
 		$object->save();
 
 		$this->comment_count += 1;
 		$this->save();
-
 	}
 
 	public function save()
@@ -74,10 +69,9 @@ class Blog_post_Model extends ORM {
         return Router::$routed_uri.'/'.$this->uri;
     }
 
-	public function all_tags()
+	public function tags()
 	{
 		$tags = array();
-		$tags2 = array();
 		$query = Database::instance()->select('tags')->get('blog_posts');
 
 		foreach ($query as $result)
@@ -87,25 +81,21 @@ class Blog_post_Model extends ORM {
             foreach($exploded as $tag) {
                 $tag = trim($tag);
 
-                if(empty($tag)) {continue;}
+                if(empty($tag))
+                	continue;
 
                 if(array_key_exists($tag,$tags))
-                {
 	                $tags[$tag]++;
-	            }
 	            else
-	            {
 	                $tags[$tag] = 1;
-	            }
             }
         }
 
+        $result = array();
         foreach ($tags as $title => $count)
-        {
-        	$tags2[] = array('title' => $title, 'count' => $count, 'link' => Router::$routed_uri.'/tag/'.$title);
-        }
+        	$result[] = array('title' => $title, 'count' => $count, 'link' => Router::$routed_uri.'/tag/'.$title);
 
-        return $tags2;
+        return $result;
 	}
 
 }
