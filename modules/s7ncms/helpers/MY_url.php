@@ -124,17 +124,8 @@ class url extends url_Core {
 
 		if ($found)
 		{
-			// do not load a page if controller with the same name exists
-			if (Kohana::find_file('controllers', $uri[0]))
-			{
-				Router::$routed_uri = $uri[0];
-				return;
-			}
-
 			if ($load_module)
 			{
-				Router::$routed_uri = implode('/', $routed_uri);
-
 				Kohana::config_set('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.implode('/', $routed_arguments));
 				return;
 			}
