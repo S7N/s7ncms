@@ -95,7 +95,7 @@ class url extends url_Core {
 
 			foreach($pages[$level] as $page)
 			{
-				if($page['uri'] == $uri[$level-1])
+				if($page['uri'] == $uri[$level-1] OR $page['target'] == $uri[$level-1])
 				{
 					$found = TRUE;
 
