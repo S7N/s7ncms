@@ -26,8 +26,8 @@ tinyMCE.init({
 	<h3>Edit Blog Post</h3>
 	<div class="inside">
 		<p><?php echo form::label('form_title', 'Title').form::input('form_title', $post->title) ?></p>
-		<p><?php echo form::label('form_content', 'Tags: <small>(Comma separated)</small>').form::input('form_tags', $post->tags) ?></p>
 		<p><?php echo form::label('form_content', 'Content').form::textarea('form_content', $post->content) ?></p>
+		<p><?php echo form::label('form_content', 'Tags: <small>(Comma separated)</small>').form::input('form_tags', $post->tags) ?></p>
 	</div>
 </div>
 

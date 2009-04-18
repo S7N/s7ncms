@@ -30,8 +30,6 @@ class Blog_Controller extends Administration_Controller {
 	{
 		$this->template->searchbar = TRUE;
 
-		$posts = array();
-
 		$q = trim($this->input->get('q'));
 
 		if ( ! empty($q))
@@ -62,8 +60,8 @@ class Blog_Controller extends Administration_Controller {
 	{
 		if($_POST)
 		{
-			$post = new Blog_post_Model;
-			$post->user_id = $_SESSION['auth_user']->id;
+			$post = ORM::factory('blog_post');
+			$post->user_id = Auth::instance()->get_user()->id;
 			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
 
 			$uri = url::title($this->input->post('form_title'));
