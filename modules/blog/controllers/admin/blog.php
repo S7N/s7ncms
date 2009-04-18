@@ -62,31 +62,10 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$post = ORM::factory('blog_post');
 			$post->user_id = Auth::instance()->get_user()->id;
-			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
-
-			$uri = url::title($this->input->post('form_title'));
-
-			// Check if uri already exists and add a suffix
-			$result = $this->db->select('uri')->like('uri', $uri.'%', FALSE)->get('blog_posts');
-			if (count($result) > 0)
-			{
-				$max = 0;
-				foreach ($result as $row)
-				{
-					$suffix = substr($row->uri, strlen($uri)+1);
-					if(ctype_digit($suffix) AND $suffix > $max)
-						$max = $suffix;
-				}
-
-				if ($max === 0)
-					$uri .= '-2';
-				else
-					$uri .= '-'.($max+1);
-			}
-
-			$post->uri = $uri;
+			$post->title = $this->input->post('form_title');
+			$post->uri = blog::unique_title($this->input->post('form_title'));
 			$post->content = $this->input->post('form_content');
-			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
+			$post->tags = $this->input->post('form_tags');
 			$post->save();
 
 			// delete feed cache
@@ -110,11 +89,13 @@ class Blog_Controller extends Administration_Controller {
 		if($_POST)
 		{
 			$post = ORM::factory('blog_post', (int) $this->input->post('form_id'));
-			$post->title = html::specialchars($this->input->post('form_title'), FALSE);
-			// TODO uri-check einbauen
-			$post->uri = url::title($this->input->post('form_title'));
+			
+			if ($this->input->post('form_title') !== $post->title)
+				$post->uri = blog::unique_title($this->input->post('form_title'));
+			
+			$post->title = $this->input->post('form_title');
 			$post->content = $this->input->post('form_content');
-			$post->tags = html::specialchars($this->input->post('form_tags'), FALSE);
+			$post->tags = $this->input->post('form_tags');
 			$post->save();
 
 			// delete feed cache

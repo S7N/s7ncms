@@ -22,7 +22,7 @@
 	<div id="header">
 		S7Nadmin
 		<div class="info">
-			<?php echo html::anchor('admin/auth/logout', 'Logout'); ?>
+			Logged in as <?php echo Auth::instance()->get_user()->username ?> | <?php echo html::anchor('admin/auth/logout', 'Logout'); ?>
 		</div>
 	</div>
 
