@@ -39,10 +39,10 @@ class Blog_Controller extends Administration_Controller {
 			$this->head->title->append('Filter: '.$q);
 
 			$posts = ORM::factory('blog_post')->orlike(array(
-				'title' => '%'.$q.'%',
-				'excerpt' => '%'.$q.'%',
-				'content' => '%'.$q.'%',
-				'tags' => '%'.$q.'%'
+				'title' => $q,
+				'excerpt' => $q,
+				'content' => $q,
+				'tags' => $q
 			))->find_all();
 		}
 		else
