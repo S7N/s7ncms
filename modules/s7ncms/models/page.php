@@ -91,22 +91,19 @@ class Page_Model extends ORM_MPTT {
 		$paths = array('' => 'Do not Redirect');
 		foreach ($pages as $page)
 		{
+			if ($page->id === $this->id)
+				continue;
+
 			$titles = array();
 			$uris = array();
 
-			$path = $page->path();
-			$last_id = NULL;
-			foreach ($path as $page)
-			{
-				if ($page->level === 0)
-					continue;
+			$path = $page->parents(FALSE)->find_all();
 
-				$titles[] = $page->title();
-				$last_id = $page->id;
-			}
+			foreach ($path as $pagex)
+				$titles[] = $pagex->title();
 
-			if ( ! empty($titles) AND $last_id !== $this->id)
-				$paths[$last_id] = implode(' &rarr; ', $titles);
+			$titles[] = $page->title();
+			$paths[$page->id] = implode(' &rarr; ', $titles);
 		}
 
 		return $paths;
