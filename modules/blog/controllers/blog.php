@@ -68,9 +68,6 @@ class Blog_Controller extends Website_Controller {
 
 		$this->head->title->prepend($post->title);
 
-		$this->head->javascript->append_file('vendor/jquery/jquery.js');
-		$this->head->javascript->append_file('modules/blog/themes/default/js/comments.js');
-
 		$form = NULL;
 
 		if ($post->comment_status === 'open' AND config::get('blog.comment_status') === 'open')
@@ -104,33 +101,25 @@ class Blog_Controller extends Website_Controller {
 
 					if ($_POST->validate())
 					{
-						// our 'honeypot' part one
-						if ($this->input->post('location') === 'none' OR
-							$this->session->get_once('location') === 'none')
-						{
-							$comment = ORM::factory('blog_comment');
-							$comment->author  = $_POST['author'];
-							$comment->email   = $_POST['email'];
-							$comment->content = $_POST['content'];
-							$comment->url     = $_POST['url'];
-							$comment->ip      = $this->input->ip_address();
-							$comment->agent   = Kohana::$user_agent;
-							$comment->date    = date("Y-m-d H:i:s", time());
+						
+						$comment = ORM::factory('blog_comment');
+						$comment->author  = $_POST['author'];
+						$comment->email   = $_POST['email'];
+						$comment->content = $_POST['content'];
+						$comment->url     = $_POST['url'];
+						$comment->ip      = $this->input->ip_address();
+						$comment->agent   = Kohana::$user_agent;
+						$comment->date    = date("Y-m-d H:i:s", time());
 
-							$post->add_comment($comment);
+						$post->add_comment($comment);
 
-							Cache::instance()->delete('s7n_blog_feed');
-							Cache::instance()->delete('s7n_blog_feed_comments');
-						}
+						Cache::instance()->delete('s7n_blog_feed');
+						Cache::instance()->delete('s7n_blog_feed_comments');
 
 						url::redirect($post->url());
 					}
 					else
 					{
-						// our 'honeypot' part two
-						if ($this->input->post('location') === 'none')
-							$this->session->set('location', 'none');
-
 						$fields = arr::overwrite($_POST->as_array());
 						$errors = arr::overwrite($_POST->errors('blog_form_error_messages'));
 					}
