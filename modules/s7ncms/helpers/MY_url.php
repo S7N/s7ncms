@@ -30,7 +30,8 @@ class url extends url_Core {
 	
 	public static function current_site($uri = '')
 	{
-		return empty($uri) ? self::current() : self::current().'/'.$uri;
+		$current = preg_replace('#/'.Router::$current_arguments.'$#', '', self::current());
+		return empty($uri) ? $current : $current.'/'.$uri;
 	}
 	
 	public static function new_route()
@@ -120,12 +121,13 @@ class url extends url_Core {
 		}
 
 		Router::$current_id = (int) $id;
+		Router::$current_arguments = implode('/', $routed_arguments);
 
 		if ($found)
 		{
 			if ($load_module)
 			{
-				Kohana::config_set('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.implode('/', $routed_arguments));
+				Kohana::config_set('routes.'.implode('/', $routed_uri).'(/.*)?', $load_module.'/'.Router::$current_arguments);
 				return;
 			}
 

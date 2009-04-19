@@ -15,6 +15,7 @@ class Router extends Router_Core {
 
 	public static $language = NULL;
 	public static $current_id;
+	public static $current_arguments = NULL;
 
 	public static function find_uri()
 	{
