@@ -30,8 +30,7 @@ class url extends url_Core {
 	
 	public static function current_site($uri = '')
 	{
-		$current = explode('/', self::current());
-		return empty($uri) ? $current[0] : $current[0].'/'.$uri;
+		return empty($uri) ? self::current() : self::current().'/'.$uri;
 	}
 	
 	public static function new_route()

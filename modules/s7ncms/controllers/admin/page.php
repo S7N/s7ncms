@@ -123,7 +123,7 @@ class Page_Controller extends Administration_Controller {
 			$post = $this->input->post('form');
 			
 			$page = ORM::factory('page');
-			$page->save();
+			$page->insert_as_last_child($page->root());
 				
 			$title = array();
 			foreach (Kohana::config('locale.languages') as $key => $value)

@@ -161,10 +161,10 @@ abstract class ORM_MPTT_Core extends ORM
 	/**
 	 * Returns the root node.
 	 *
-	 * @access protected
+	 * @access public
 	 * @return object
 	 */
-	protected function root()
+	public function root()
 	{
 		return self::factory($this->object_name)->where($this->left_column, 1)->find();
 	}
@@ -172,10 +172,10 @@ abstract class ORM_MPTT_Core extends ORM
 	/**
 	 * Returns the parent of the current node.
 	 *
-	 * @access protected
+	 * @access public
 	 * @return object
 	 */
-	protected function parent()
+	public function parent()
 	{	
 		// SELECT * FROM `table` WHERE `lft` < int AND `rgt` > int ORDER BY `rgt` ASC LIMIT 1
 		return self::factory($this->object_name)

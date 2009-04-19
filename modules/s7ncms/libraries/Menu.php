@@ -190,11 +190,7 @@ class Menu_Item {
 		$class = $this->active === TRUE ? 'active' : '';
 
 		if (empty($this->children))
-		{
-			$output = '<li class="'.$class.'">'.html::anchor($this->uri, html::specialchars($this->title), array('class' => $class)).'</li>';
-
-			return $output;
-		}
+			return '<li class="'.$class.'">'.html::anchor($this->uri, html::specialchars($this->title), array('class' => $class)).'</li>';
 
 		$output = '<li class="'.$class.'">'.html::anchor($this->uri, html::specialchars($this->title), array('class' => $class));
 		$output .= '<ul>';
@@ -209,6 +205,6 @@ class Menu_Item {
 	public function render_without_children()
 	{
 		$class = $this->active === TRUE ? 'active' : '';
-		return '<li class="'.$class.'">'.html::anchor($this->uri, html::specialchars($this->title), array('class' => $class));
+		return '<li class="'.$class.'">'.html::anchor($this->uri, html::specialchars($this->title), array('class' => $class)).'</li>';
 	}
 }

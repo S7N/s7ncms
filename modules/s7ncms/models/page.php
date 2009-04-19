@@ -13,6 +13,7 @@
  */
 class Page_Model extends ORM_MPTT {
 
+	public $level_column = 'level';
 	protected $children = 'pages';
 	protected $belongs_to = array('user');
 	protected $sorting = array('lft' => 'ASC');
