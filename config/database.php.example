@@ -29,17 +29,17 @@ $config['default'] = array
 	'persistent'    => FALSE,
 	'connection'    => array
 	(
-		'type'     => 'mysqli',
-		'user'     => 'edy',
-		'pass'     => 'edy',
+		'type'     => 'mysql',
+		'user'     => 'dbuser',
+		'pass'     => 'p@ssw0rd',
 		'host'     => 'localhost',
 		'port'     => FALSE,
 		'socket'   => FALSE,
-		'database' => 's7ncms'
+		'database' => 'kohana'
 	),
 	'character_set' => 'utf8',
 	'table_prefix'  => '',
 	'object'        => TRUE,
-	'cache'         => TRUE,
+	'cache'         => FALSE,
 	'escape'        => TRUE
 );
