@@ -33,19 +33,16 @@ class Install_Controller extends Template_Controller {
 			$dbdatabase= $_POST['dbdatabase'];
 		}
 			
-		$this->template->dberror="";
-		
 		try
 		{
 			$this->check_mysql($dbhost, $dbdatabase, $dbuser, $dbpass);
 			
-			echo "db ok";
-			// weiter gehts, alles ok
+			// TODO write db config file
+			echo 'database config ok';
 		} 
 		catch (Exception $e)
 		{
-			echo "db not ok";
-			$this->template->dberror =$e->getMessage();
+			$this->template->error =$e->getMessage();
 		}
 	}
 	
