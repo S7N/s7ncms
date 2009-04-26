@@ -1,3 +1,4 @@
+<?php defined("SYSPATH") or die("No direct script access.") ?>
 <div>
 	<?php echo form::open(); ?>
 	<table>

@@ -1,3 +1,4 @@
+<?php defined("SYSPATH") or die("No direct script access.") ?>
 <style type="text/css">
 body { width: 42em; margin: 0 auto; font-family: sans-serif; font-size: 90%; }
 #tests table { border-collapse: collapse; width: 100%; }
