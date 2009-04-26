@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') OR die('No direct access allowed.');
+<?php defined("SYSPATH") or die("No direct script access.");
 /**
  * @package  Database
  *
@@ -25,11 +25,11 @@
  */
 $config['default'] = array
 (
-	'benchmark'     => TRUE,
+	'benchmark'     => FALSE,
 	'persistent'    => FALSE,
 	'connection'    => array
 	(
-		'type'     => 'mysqli',
+		'type'     => 'mysql',
 		'user'     => 'edy',
 		'pass'     => 'edy',
 		'host'     => 'localhost',

@@ -128,6 +128,3 @@ body { width: 42em; margin: 0 auto; font-family: sans-serif; font-size: 90%; }
 </div>
 
 </div>
-
-</body>
-</html>

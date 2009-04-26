@@ -15,11 +15,6 @@ header { }
 <div class="header">
 <img src="s7n.png" />
 </div>
-<hr />
-<div class="requierments">
-System Test OK
-</div>
-<hr />
 <?php if (isset($error)): ?>
 <div class="error">
 	<?php echo $error ?>
