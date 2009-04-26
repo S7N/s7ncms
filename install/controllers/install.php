@@ -21,19 +21,18 @@ class Install_Controller extends Template_Controller {
 	public function step_systemcheck()
 	{
 		$view = new View('step_systemcheck');
-		// TODO checken ob die Database.conf writable ist
+		// TODO check ob /config is writable
 		
 		$view->php_version           = version_compare(PHP_VERSION, '5.2', '>=');
 		$view->system_directory      = is_dir(SYSPATH) AND is_file(SYSPATH.'core/Bootstrap'.EXT);
 		$view->application_directory = is_dir(APPPATH) AND is_file(APPPATH.'config/config'.EXT);
 		$view->modules_directory     = is_dir(MODPATH);
-		$view->pcre_utf8             = ! @preg_match('/^.$/u', 'ñ');
-		$view->pcre_unicode          = ! @preg_match('/^\pL$/u', 'ñ');
+		$view->pcre_utf8             = @preg_match('/^.$/u', 'ñ');
+		$view->pcre_unicode          = @preg_match('/^\pL$/u', 'ñ');
 		$view->reflection_enabled    = class_exists('ReflectionClass');
 		$view->filters_enabled       = function_exists('filter_list');
 		$view->iconv_loaded          = extension_loaded('iconv');
-		// perhaps not right
-		$view->mbstring              = ! extension_loaded('mbstring') OR (ini_get('mbstring.func_overload') AND MB_OVERLOAD_STRING);
+		$view->mbstring              = ! (extension_loaded('mbstring') AND ini_get('mbstring.func_overload') AND MB_OVERLOAD_STRING);
 		$view->uri_determination     = isset($_SERVER['REQUEST_URI']) OR isset($_SERVER['PHP_SELF']);
 		
 		
@@ -41,12 +40,12 @@ class Install_Controller extends Template_Controller {
 			AND $view->system_directory
 			AND $view->application_directory
 			AND $view->modules_directory
-			AND ! $view->pcre_utf8
-			AND ! $view->pcre_unicode
+			AND $view->pcre_utf8
+			AND $view->pcre_unicode
 			AND $view->reflection_enabled
 			AND $view->filters_enabled
 			AND $view->iconv_loaded
-			AND ! $view->mbstring
+			AND $view->mbstring
 			AND $view->uri_determination)
 			url::redirect('install/step_database');
 		else
