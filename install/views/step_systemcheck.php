@@ -32,7 +32,7 @@ body { width: 42em; margin: 0 auto; font-family: sans-serif; font-size: 90%; }
 		<tr>
 			<th>System Directory</th>
 			<?php if ($system_directory): ?>
-			<td class="pass"><?php echo SYSPATH ?></td>
+			<td class="pass"><code><?php echo SYSPATH ?></code></td>
 			<?php else: ?>
 			<td class="fail">The configured <code>system</code> directory does not exist or does not contain required files.</td>
 			<?php endif ?>
@@ -41,7 +41,7 @@ body { width: 42em; margin: 0 auto; font-family: sans-serif; font-size: 90%; }
 		<tr>
 			<th>Application Directory</th>
 			<?php if ($application_directory): ?>
-			<td class="pass"><?php echo APPPATH ?></td>
+			<td class="pass"><code><?php echo APPPATH ?></code></td>
 			<?php else: ?>
 			<td class="fail">The configured <code>application</code> directory does not exist or does not contain required files.</td>
 			<?php endif ?>
@@ -50,9 +50,18 @@ body { width: 42em; margin: 0 auto; font-family: sans-serif; font-size: 90%; }
 		<tr>
 			<th>Modules Directory</th>
 			<?php if ($modules_directory): ?>
-			<td class="pass"><?php echo MODPATH ?></td>
+			<td class="pass"><code><?php echo MODPATH ?></code></td>
 			<?php else: ?>
 			<td class="fail">The configured <code>modules</code> directory does not exist or does not contain required files.</td>
+			<?php endif ?>
+		</tr>
+		
+		<tr>
+			<th>Config Directory</th>
+			<?php if ($config_writable): ?>
+			<td class="pass"><code><?php echo str_replace('\\', '/', realpath(DOCROOT.'config')).'/' ?></code> is writable</td>
+			<?php else: ?>
+			<td class="fail">The <code><?php echo str_replace('\\', '/', realpath(DOCROOT.'config')).'/' ?></code> directory is not writable.</td>
 			<?php endif ?>
 		</tr>
 	

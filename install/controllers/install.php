@@ -17,16 +17,16 @@ class Install_Controller extends Template_Controller {
 	{
 		url::redirect('install/step_systemcheck');
 	}
-	
+
 	public function step_systemcheck()
 	{
 		$view = new View('step_systemcheck');
-		// TODO check ob /config is writable
-		
+
 		$view->php_version           = version_compare(PHP_VERSION, '5.2', '>=');
 		$view->system_directory      = is_dir(SYSPATH) AND is_file(SYSPATH.'core/Bootstrap'.EXT);
 		$view->application_directory = is_dir(APPPATH) AND is_file(APPPATH.'config/config'.EXT);
 		$view->modules_directory     = is_dir(MODPATH);
+		$view->config_writable       = is_writable(DOCROOT.'config');
 		$view->pcre_utf8             = @preg_match('/^.$/u', 'ñ');
 		$view->pcre_unicode          = @preg_match('/^\pL$/u', 'ñ');
 		$view->reflection_enabled    = class_exists('ReflectionClass');
@@ -34,12 +34,12 @@ class Install_Controller extends Template_Controller {
 		$view->iconv_loaded          = extension_loaded('iconv');
 		$view->mbstring              = ! (extension_loaded('mbstring') AND ini_get('mbstring.func_overload') AND MB_OVERLOAD_STRING);
 		$view->uri_determination     = isset($_SERVER['REQUEST_URI']) OR isset($_SERVER['PHP_SELF']);
-		
-		
+
 		if (    $view->php_version
 			AND $view->system_directory
 			AND $view->application_directory
 			AND $view->modules_directory
+			AND $view->config_writable
 			AND $view->pcre_utf8
 			AND $view->pcre_unicode
 			AND $view->reflection_enabled
@@ -50,29 +50,29 @@ class Install_Controller extends Template_Controller {
 			url::redirect('install/step_database');
 		else
 			$view->failed = true;
-			
+
 		$this->template->content = $view;
 
 	}
-	
+
 	public function step_database()
 	{
 		$this->template->content = View::factory('step_database')->bind('form', $form);
-		
+
 		$form = array(
 			'user' => '',
 			'password' => '',
 			'host' => '',
 			'database' => ''
 		);
-		
+
 		if ($_POST)
 		{
 			$user = $this->input->post('user');
 			$password = $this->input->post('password');
 			$host = $this->input->post('host');
 			$database= $this->input->post('database');
-			
+
 			try
 			{
 				installer::check_database($user, $password, $host, $database);
@@ -83,9 +83,9 @@ class Install_Controller extends Template_Controller {
 				$config->host = $host;
 				$config->database = $database;
 				$config->table_prefix = ''; // TODO
-				
+
 				file_put_contents(DOCROOT.'config/database.php', $config);
-				
+
 				url::redirect('install/step_create_data');
 			} 
 			catch (Exception $e)
@@ -93,7 +93,7 @@ class Install_Controller extends Template_Controller {
 				$form = arr::overwrite($form, $this->input->post());
 				$view = View::factory('error');
 				$error = $e->getMessage();
-				
+
 				// TODO create better error messages
 				switch ($error)
 				{
@@ -112,7 +112,7 @@ class Install_Controller extends Template_Controller {
 					default:
 						$view->error = 'unknown error';
 				}
-				
+
 				$this->template->error = $view;
 			}
 		}
