@@ -54,6 +54,12 @@ class Page_Controller extends Administration_Controller {
 				$form = $post[$key];
 				
 				$page_content = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => $key))->find();
+				if ( ! $page_content->loaded)
+				{
+					$page_content->page_id  = $page->id;
+					$page_content->language = $key;
+					$page_content->date = date("Y-m-d H:i:s");
+				}
 				$page_content->title    = $form['title'];
 				$page_content->uri      = url::title($form['title']);
 				$page_content->content  = $form['content'];
