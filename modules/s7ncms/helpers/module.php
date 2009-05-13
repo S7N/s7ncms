@@ -49,7 +49,7 @@ class module_Core {
 	public static function available() {
 		$modules = array();
 
-		$files = (array) glob(MODPATH . "*/helpers/*_installer.php");
+		$files = (array) glob(MODPATH . '*/helpers/*_installer.php');
 		if ( ! empty($files))
 			foreach ($files as $file)
 				$modules[basename(dirname(dirname($file)))] = 0;
@@ -91,9 +91,21 @@ class module_Core {
 	public static function load_modules()
 	{
 		$modules = Kohana::config('core.modules');
-		foreach (self::active() as $module)
+		$active = self::active();
+		$hooks = array();
+		
+		foreach ($active as $module)
+		{
 			array_unshift($modules, MODPATH . $module->name);
-
+			$files = (array) glob(MODPATH . $module->name. '/hooks/*.php');
+			
+			if ( ! empty($files))
+				$hooks = array_merge($hooks, $files);
+		}
+		
+		foreach ($hooks as $hook)
+			include $hook;
+	
 		Kohana::config_set('core.modules', $modules);
 	}
 }
