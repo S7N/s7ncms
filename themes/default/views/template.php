@@ -5,8 +5,10 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<?php echo $head ?>
+		<?php Event::run('s7n.theme.head') ?>
 	</head>
 	<body>
+		<?php Event::run('s7n.theme.page_top') ?>
 		<div id="header">
 			<div class="widthfix">
 				<div class="logo">
@@ -36,5 +38,6 @@
 			</div>
 		</div>
 		<div class="none"></div>
+		<?php Event::run('s7n.theme.page_bottom') ?>
 	</body>
 </html>
