@@ -112,6 +112,8 @@ class Blog_Controller extends Website_Controller {
 						$comment->date    = date("Y-m-d H:i:s", time());
 
 						$post->add_comment($comment);
+						
+						Event::run('blog.comment_added', $comment);
 
 						Cache::instance()->delete('s7n_blog_feed');
 						Cache::instance()->delete('s7n_blog_feed_comments');

@@ -4,15 +4,15 @@ CREATE TABLE `config` (
   `key` varchar(200) NOT NULL,
   `value` varchar(200) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `config` VALUES (1, 's7n', 'page_views', 'default, extended');
-INSERT INTO `config` VALUES (2, 'blog', 'comment_status', 'open');
-INSERT INTO `config` VALUES (3, 's7n', 'site_title', 'My Website');
-INSERT INTO `config` VALUES (4, 'blog', 'items_per_page', '5');
-INSERT INTO `config` VALUES (5, 's7n','default_sidebar_title','About');
-INSERT INTO `config` VALUES (6, 's7n','default_sidebar_content','Mit S7Ncms wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei S7Ncms handelt es sich um ein speziell für die Anforderungen professioneller Webseiten entwickeltes Content Management System.');
-INSERT INTO `config` VALUES (7, 's7n','theme','default');
+INSERT INTO `config` VALUES (2, 's7n', 'site_title', 'My Website');
+INSERT INTO `config` VALUES (3, 's7n','default_sidebar_title','About');
+INSERT INTO `config` VALUES (4, 's7n','default_sidebar_content','Mit S7Ncms wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei S7Ncms handelt es sich um ein speziell für die Anforderungen professioneller Webseiten entwickeltes Content Management System.');
+INSERT INTO `config` VALUES (5, 's7n','theme','default');
+INSERT INTO `config` VALUES (6, 'blog', 'comment_status', 'open');
+INSERT INTO `config` VALUES (7, 'blog', 'items_per_page', '5');
 
 CREATE TABLE `modules` (
   `id` int(10) NOT NULL auto_increment,
@@ -20,7 +20,7 @@ CREATE TABLE `modules` (
   `version` int(10) default 0,
   `status` varchar(200) default 'off',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `modules` VALUES (1, 'blog', 1, 'on');
 
@@ -38,10 +38,10 @@ CREATE TABLE `pages` (
 
 INSERT INTO `pages` (`id`,`parent_id`,`level`,`lft`,`rgt`,`title`,`type`,`target`)
 VALUES
-	(1,0,0,1,8,'Startseite',NULL,NULL),
-	(2,1,1,2,5,'Products',NULL,NULL),
-	(3,2,2,3,4,'S7Ncms',NULL,NULL),
-	(4,1,1,6,7,'Tagebuch','module','blog');
+	(1,0,0,1,8,'Startseite / Home',NULL,NULL),
+	(2,1,1,2,5,'Produkte / Products',NULL,NULL),
+	(3,2,2,3,4,'S7Ncms / S7Ncms',NULL,NULL),
+	(4,1,1,6,7,'Tagebuch / Diary','module','blog');
 
 CREATE TABLE `page_contents` (
   `id` int(11) NOT NULL auto_increment,

@@ -11,26 +11,26 @@
  * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
-class google_analytics_installer {
+class akismet_installer {
 
 	public static function install()
 	{
-		$version = (int) module::version('google_analytics');
+		$version = (int) module::version('akismet');
 
 		// module is not installed yet
 		if ($version === 0)
 		{
-			config::set('google_analytics.id', 0);
+			config::set('akismet.api_key', NULL);
 
-			module::version('google_analytics', 1);
+			module::version('akismet', 1);
 		}
 	}
 
 	public static function uninstall()
 	{
-		module::delete("google_analytics");
+		module::delete("akismet");
 
-	    Database::instance()->delete('config', array('context' => 'google_analytics'));
+	    Database::instance()->delete('config', array('context' => 'akismet'));
 	}
 
 }
