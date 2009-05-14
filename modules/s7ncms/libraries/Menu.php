@@ -32,7 +32,7 @@ class Menu_Core {
 			$menu->id = (int) $item->id;
 			$menu->title = $item->title;
 			$menu->uri = $item->uri;
-			$menu->parent = (int) $item->parent_id;
+			$menu->parent = (int) $item->parent()->id;
 			$menu->level = (int) $item->level;
 
 			$this->add($menu);

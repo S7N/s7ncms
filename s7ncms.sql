@@ -26,22 +26,22 @@ INSERT INTO `modules` VALUES (1, 'blog', 1, 'on');
 
 CREATE TABLE `pages` (
   `id` int(11) NOT NULL auto_increment,
-  `parent_id` int(11) default NULL,
   `level` int(11) NOT NULL,
   `lft` int(11) default NULL,
   `rgt` int(11) default NULL,
+  `scope` int(11) default 1,
   `title` varchar(200) default NULL,
   `type` varchar(200) default NULL,
   `target` varchar(200) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `pages` (`id`,`parent_id`,`level`,`lft`,`rgt`,`title`,`type`,`target`)
+INSERT INTO `pages` (`id`,`level`,`lft`,`rgt`,`scope`,`title`,`type`,`target`)
 VALUES
-	(1,0,0,1,8,'Startseite / Home',NULL,NULL),
-	(2,1,1,2,5,'Produkte / Products',NULL,NULL),
-	(3,2,2,3,4,'S7Ncms / S7Ncms',NULL,NULL),
-	(4,1,1,6,7,'Tagebuch / Diary','module','blog');
+	(1,0,1,8,1,'Startseite / Home',NULL,NULL),
+	(2,1,2,5,1,'Produkte / Products',NULL,NULL),
+	(3,2,3,4,1,'S7Ncms / S7Ncms',NULL,NULL),
+	(4,1,6,7,1,'Tagebuch / Diary','module','blog');
 
 CREATE TABLE `page_contents` (
   `id` int(11) NOT NULL auto_increment,

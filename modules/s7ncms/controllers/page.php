@@ -20,21 +20,13 @@ class Page_Controller extends Website_Controller {
 		if( ! $page->loaded)
     		Event::run('system.404');
 
-		$view = is_null($page->view) ? 'default' : $page->view;
+    	$page_content = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => Router::$language))->find();
 
-		$this->template->content = View::factory('page/'.$view, array('page' => $page));
+    	Event::run('s7n.display_content', $page_content);
+    	
+		$this->template->content = View::factory('page/default', array('page' => $page_content));
 
 		$this->head->title->append($page->title);
-
-		Sidebar::instance()->add
-		(
-			'Static',
-			array
-			(
-				'title'   => config::get('s7n.default_sidebar_title'),
-				'content' => config::get('s7n.default_sidebar_content')
-			)
-		);
 	}
 
 }
