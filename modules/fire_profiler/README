@@ -1,0 +1,37 @@
+Fire Profiler Module for Kohana PHP Framework
+----------------------------------------------
+http://github.com/justinhernandez/fire_profiler/tree/master
+
+Fire Profiler in module form. Shortened class name to FP and made class methods
+static. By default FirePHP output is suppressed in production mode. Thanks dlib.
+
+
+Examples:
+-----------
+FP::benchmarks(); <-- Kohana benchmarks
+FP::database();   <-- Database queries
+FP::session();    <-- Session data
+FP::post();       <-- Post data
+FP::get();        <-- Get data
+FP::cookies();    <-- Cookie data
+FP::env();        <-- All of the above methods
+
+Other methods:
+-----------------
+FP::disable(); <-- Disable output for specific page
+FP::log($data, 'my_label');
+FP::info('hello', 'my_info_label');
+FP::warn($watch_out, 'warning');
+FP::error($error_message, 'yikes');
+
+
+FirePHP Class Version: 0.3
+
+Install Firebug:
+	https://addons.mozilla.org/en-US/firefox/addon/1843
+
+Install FirePHP:
+	https://addons.mozilla.org/en-US/firefox/addon/6149
+
+Original Source:
+	http://learn.kohanaphp.com/2008/07/21/introducing-fire-profiler/
