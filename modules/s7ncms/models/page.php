@@ -40,7 +40,7 @@ class Page_Model extends ORM_MPTT {
 		{
 			if ( ! isset(self::$page_cache[$this->_identifier]))
 				self::$page_cache[$this->_identifier] = ORM::factory('page_content')
-					->where(array('language' => Router::$language, 'page_id' => $this->id))
+					->where(array('page_id' => $this->id, 'language' => Router::$language))
 					->find();
 
 			return self::$page_cache[$this->_identifier]->$column;
@@ -62,7 +62,7 @@ class Page_Model extends ORM_MPTT {
 		$this->db->where('page_id', $id)->delete('page_contents');
 
 		if ($id === $this->id AND isset(self::$page_cache[$this->_identifier]))
-			unset(self::$page_cache[$this->_identifier]);		
+			unset(self::$page_cache[$this->_identifier]);
 
 		return parent::delete($id);
 	}
