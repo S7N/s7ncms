@@ -121,7 +121,10 @@ class Menu_Core {
 			$item->rendered = FALSE;
 		
 		if (count($this->items()) === 0)
+		{
+			Cache::instance()->set('menu_'.Router::$current_id, '<ul class="menu"></ul>', array('menu'));
 			return '<ul class="menu"></ul>';
+		}
 
 		$output = '<ul class="menu">';
 		foreach ($this->items() as $item)
@@ -148,7 +151,10 @@ class Menu_Core {
 			return '';
 
 		if (count($this->items()) === 0)
+		{
+			Cache::instance()->set('submenu_'.Router::$current_id, '', array('menu'));
 			return '';
+		}
 
 		foreach ($this->items() as $item)
 			$item->rendered = FALSE;
@@ -156,7 +162,11 @@ class Menu_Core {
 		$id = $this->first_level(Router::$current_id);
 		
 		if ($this->get($id)->level === 0)
+		{
+			Cache::instance()->set('submenu_'.Router::$current_id, '', array('menu'));
 			return '';
+		}
+			
 			
 		$output = $this->get($id)->render(TRUE);
 
