@@ -96,6 +96,8 @@ class Page_Controller extends Administration_Controller {
 			$page->title = implode(' / ', $title);
 			$page->save();
 			
+			Cache::instance()->delete_tag('menu');
+			
 			message::info('Page edited successfully', 'admin/page');
 		}
 		else
@@ -150,6 +152,8 @@ class Page_Controller extends Administration_Controller {
 			
 			$page->title = implode(' / ', $title);
 			$page->save();
+			
+			Cache::instance()->delete_tag('menu');
 
 			message::info('Page created successfully', 'admin/page');
 		}
@@ -221,6 +225,9 @@ class Page_Controller extends Administration_Controller {
 		}
 
 		$this->session->set_flash('info_message', 'Page order saved successfully');
+		
+		Cache::instance()->delete_tag('menu');
+		
 		exit;
 	}
 

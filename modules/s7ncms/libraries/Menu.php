@@ -17,31 +17,12 @@ class Menu_Core {
 	static $uri = array();
 
 	public $items = array();
-	public $data = NULL;
+	public static $data = NULL;
 	public $type = NULL;
 
 	public function __construct($type = NULL)
 	{
 		$this->type = $type;
-
-		$this->data = ORM::factory('page')->find_all();
-
-		foreach ($this->data as $item)
-		{
-			$menu = new Menu_Item;
-			$menu->id = (int) $item->id;
-			$menu->title = $item->title;
-			$menu->uri = $item->uri;
-			$menu->parent = (int) $item->parent()->id;
-			$menu->level = (int) $item->level;
-
-			$this->add($menu);
-
-			if ($menu->id === Router::$current_id)
-				$this->set_active($menu->id);
-		}
-
-		$this->generate_uris();
 
 		self::$instance = $this;
 	}
@@ -68,7 +49,7 @@ class Menu_Core {
 
 	public function generate_uris()
 	{
-		foreach ($this->items as $item)
+		foreach ($this->items() as $item)
 		{
 			if ($item->parent === 0)
 			{
@@ -99,20 +80,51 @@ class Menu_Core {
 	{
 		return (string) $this->render();
 	}
+	
+	public function items()
+	{
+		if (empty($this->items))
+		{
+			if (empty(self::$data))
+				self::$data = ORM::factory('page')->find_all();
+
+			foreach (self::$data as $item)
+			{
+				$menu = new Menu_Item;
+				$menu->id = (int) $item->id;
+				$menu->title = $item->title;
+				$menu->uri = $item->uri;
+				$menu->parent = (int) $item->parent()->id;
+				$menu->level = (int) $item->level;
+	
+				$this->add($menu);
+	
+				if ($menu->id === Router::$current_id)
+					$this->set_active($menu->id);
+			}
+	
+			$this->generate_uris();
+		}
+		
+		return $this->items;
+	}
 
 	public function render()
 	{
-		foreach ($this->items as $item)
-			$item->rendered = FALSE;
-
 		if ($this->type == 'submenu')
 			return $this->submenu();
 
-		if (count($this->items) === 0)
+		if (($cache = Cache::instance()->get('menu_'.Router::$current_id)) !== NULL)
+			return $cache;
+
+		foreach ($this->items() as $item)
+			$item->rendered = FALSE;
+		
+		if (count($this->items()) === 0)
 			return '<ul class="menu"></ul>';
 
 		$output = '<ul class="menu">';
-		foreach ($this->items as $item)
+		foreach ($this->items() as $item)
 		{
 			if ($item->level !== 1)
 				continue;
@@ -121,24 +133,38 @@ class Menu_Core {
 		}
 		$output .= '</ul>';
 
+		Cache::instance()->set('menu_'.Router::$current_id, $output, array('menu'));
+		
 		return $output;
 	}
 
 	public function submenu()
 	{
-		if (count($this->items) === 0)
+		$cache = Cache::instance()->get('submenu_'.Router::$current_id);
+		if ( ! empty($cache))
+			return '<ul class="submenu">'.$cache.'</ul>';
+
+		if ($cache === '')
 			return '';
 
+		if (count($this->items()) === 0)
+			return '';
+
+		foreach ($this->items() as $item)
+			$item->rendered = FALSE;
+			
 		$id = $this->first_level(Router::$current_id);
 		
 		if ($this->get($id)->level === 0)
 			return '';
 			
-		$output = $this->items[$id]->render(TRUE);
+		$output = $this->get($id)->render(TRUE);
 
+		Cache::instance()->set('submenu_'.Router::$current_id, $output, array('menu'));
+		
 		if (empty($output))
 			return '';
-
+			
 		return '<ul class="submenu">'.$output.'</ul>';
 	}
 
