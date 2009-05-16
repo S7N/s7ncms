@@ -70,6 +70,7 @@ class Blog_Controller extends Administration_Controller {
 
 			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
+			Cache::instance()->delete_tag('route');
 
 			message::info('Post created successfully', 'admin/blog');
 		}
@@ -100,6 +101,7 @@ class Blog_Controller extends Administration_Controller {
 
 			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
+			Cache::instance()->delete_tag('route');
 
 			message::info('Post edited successfully', 'admin/blog');
 		}
@@ -232,6 +234,7 @@ class Blog_Controller extends Administration_Controller {
 
 		Cache::instance()->delete('s7n_blog_feed');
 		Cache::instance()->delete('s7n_blog_feed_comments');
+		Cache::instance()->delete_tag('route');
 
 		message::info('Post deleted successfully', 'admin/blog');
 	}

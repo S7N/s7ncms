@@ -97,6 +97,7 @@ class Page_Controller extends Administration_Controller {
 			$page->save();
 			
 			Cache::instance()->delete_tag('menu');
+			Cache::instance()->delete_tag('route');
 			
 			message::info('Page edited successfully', 'admin/page');
 		}
@@ -154,6 +155,7 @@ class Page_Controller extends Administration_Controller {
 			$page->save();
 			
 			Cache::instance()->delete_tag('menu');
+			Cache::instance()->delete_tag('route');
 
 			message::info('Page created successfully', 'admin/page');
 		}
@@ -171,6 +173,10 @@ class Page_Controller extends Administration_Controller {
 	public function delete($id)
 	{
 		ORM::factory('page', (int) $id)->delete();
+
+		Cache::instance()->delete_tag('menu');
+		Cache::instance()->delete_tag('route');
+
 		message::info('Page deleted successfully', 'admin/page');
 	}
 
@@ -227,6 +233,7 @@ class Page_Controller extends Administration_Controller {
 		$this->session->set_flash('info_message', 'Page order saved successfully');
 		
 		Cache::instance()->delete_tag('menu');
+		Cache::instance()->delete_tag('route');
 		
 		exit;
 	}
