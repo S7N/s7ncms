@@ -45,16 +45,16 @@ class Formo_mval {
 	{
 		if (is_object($model))
 		{
-			self::$mval_model =& $model;
+			self::$mval_model = $model;
 		}
 		elseif (isset(self::$form->model[$model]) AND is_object(self::$form->model[$model]))
 		{
-			self::$mval_model =& self::$form->model[$model];
+			self::$mval_model = self::$form->model[$model];
 		}
 		else
 		{
 			$model_name = ucfirst($model).'_Model';
-			self::$mval_model =& new $model_name($construct_data);
+			self::$mval_model = new $model_name($construct_data);
 		}
 		
 		return self::$mval_model;
@@ -95,8 +95,8 @@ class Formo_mval {
 		{
 			if (self::$form->$element->error)
 			{
-				self::$form->error = TRUE;
-				self::$form->validated = FALSE;
+				self::$form->set('error', TRUE);
+				self::$form->set('validated', FALSE);
 			}
 		}
 	}		

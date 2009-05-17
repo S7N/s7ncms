@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
-	Version 1.1.0b6
+	Version 1.1.0 RC1
 	avanthill.com/formo_manual/
 	
 	Requires Formo and Formo_Group
@@ -32,7 +32,7 @@ class Formo_Element_Core {
 	
 	public $was_validated = FALSE;
 	
-	public $required = TRUE;
+	public $required = FALSE;
 	public $rule = array();
 	
 	public $error_msg = "Invalid";
@@ -50,7 +50,7 @@ class Formo_Element_Core {
 	 * or open and close.
 	 *
 	 * @return  string
-	 */	
+	 */
 	function __toString() {
 		return $this->render();
 	}
@@ -59,7 +59,7 @@ class Formo_Element_Core {
 	 * Magic __construct method. creates element object,
 	 * $name, and $info
 	 *
-	 */	
+	 */
 	public function __construct ($name='',$info=array())
 	{
 		$data = array('object'=>$this, 'name'=>$name, 'info'=>$info);
@@ -71,7 +71,7 @@ class Formo_Element_Core {
 		if ($data['info'])
 		{
 			$this->add_info($data['info']);
-		}		
+		}
 
 		Event::run('formoel.add', $this);
 	}
@@ -89,7 +89,7 @@ class Formo_Element_Core {
 	 * Magic __set method. Keeps track of tags added to element
 	 *
 	 * @return  string
-	 */	
+	 */
 	public function __set($var, $val)
 	{
 		if ( ! is_object($val) AND ! in_array($var, $this->attributes))
@@ -158,7 +158,7 @@ class Formo_Element_Core {
 		else
 		{
 			$this->class = (isset($this->class)) ? $this->class.' '.$class : $class;
-		}		
+		}
 	}
 
 	// remove_class method. Removes class from object
@@ -193,7 +193,7 @@ class Formo_Element_Core {
 		$this->value(NULL);
 	}
 
-	// add_rule method. Adds a rule to the object		
+	// add_rule method. Adds a rule to the object
 	public function add_rule($rule, $error_msg='')
 	{
 		if ($rule == 'required')
@@ -225,7 +225,7 @@ class Formo_Element_Core {
 		{
 			$error_msg = ($error_msg) ? $error_msg : $this->error_msg;
 			$this->rule[] = array('rule'=>$rule, 'error_msg'=>$error_msg);
-		}		
+		}
 	}
 
 	// remove_tag method. Removes a tag from object
@@ -278,7 +278,7 @@ class Formo_Element_Core {
 				else
 				{
 					$values[$match] = Input::instance()->post($match);
-				}				
+				}
 			}
 
 			return Formo::$function($this->value, $values);
@@ -296,7 +296,8 @@ class Formo_Element_Core {
 		}
 		elseif (method_exists('Validation', $function))
 		{
-			$use_args = ( ! empty($args[0])) ? $args[0] : array();
+			$use_args = ( ! isset($args[0])) ? array() : $args[0];
+			$use_args = ( ! is_array($args[0])) ? array($use_args) : $use_args;
 			return Validation::$function($this->value, $use_args);
 		}
 		elseif ( ! in_array($function, $form_level_rules))
@@ -330,7 +331,7 @@ class Formo_Element_Core {
 		}
 	}
 	
-	// validate method. checks to see if element is required	
+	// validate method. checks to see if element is required
 	public function validate()
 	{
 		if ($this->error)
@@ -344,7 +345,7 @@ class Formo_Element_Core {
 		return $this->error;
 	}
 
-	// add post data to element	
+	// add post data to element
 	public function add_post($value)
 	{
 		$this->value = $value;
@@ -379,7 +380,7 @@ class Formo_Element_Core {
 		{
 			$open = preg_replace('/{error_msg_class}/',$this->error_msg_class,$this->error_open);
 			return $open.$this->error.$this->error_close;
-		}	
+		}
 	}
 
 	// element method. returns element with formatting
@@ -445,14 +446,14 @@ class Formo_Element_Core {
 	 * get method. Fully turns element into formatted text
 	 *
 	 * @return  text or array
-	 */									
+	 */
 	public function get($get_as_array = FALSE)
 	{
 		Event::run('formoel.pre_render', $this);
 		if ( ! $get_as_array)
 		{
 			return $this->build();
-		}	
+		}
 		else
 		{
 			return $this->build_array();

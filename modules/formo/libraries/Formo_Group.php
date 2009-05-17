@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
-	Version 1.1.0b5
+	Version 1.1.0 RC1
 	avanthill.com/formo_manual/
 	
 	Requires Formo and Formo_Group
