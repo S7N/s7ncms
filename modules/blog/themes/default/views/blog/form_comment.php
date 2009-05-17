@@ -3,27 +3,29 @@
 	Dein Kommentar
 </h3>
 
-<?php echo form::open(NULL, array('id' => 'commentform'), array('form_key' => $form_key)) ?>
+<?php echo form::open(NULL, array('id' => 'commentform')) ?>
+	<?php echo $__form_object ?>
+	<?php echo $token ?>
 	<p>
-		<?php echo empty($errors['author']) ? form::input('author', $fields['author']) : form::input('author', $fields['author'], 'class="error"') ?>
-		<?php echo form::label('author', 'Name') ?>
-		<?php if ( ! empty($errors['author'])): ?><br /><span class="error"><?php echo $errors['author'] ?></span><?php endif ?>
+		<?php echo empty($author_error) ? form::input('author', $author->value) : form::input('author', $author->value, 'class="error"') ?>
+		<?php echo form::label('author', $author->label) ?>
+		<?php if ( ! empty($author_error)): ?><br /><span class="error"><?php echo $author_error ?></span><?php endif ?>
 	</p>
 	<p>
-		<?php echo empty($errors['email']) ? form::input('email', $fields['email']) : form::input('email', $fields['email'], 'class="error"') ?>
-		<?php echo form::label('email', 'E-Mail') ?>
-		<?php if ( ! empty($errors['email'])): ?><br /><span class="error"><?php echo $errors['email'] ?></span><?php endif ?>
+		<?php echo empty($email_error) ? form::input('email', $email->value) : form::input('email', $email->value, 'class="error"') ?>
+		<?php echo form::label('email', $email->label) ?>
+		<?php if ( ! empty($email_error)): ?><br /><span class="error"><?php echo $email_error ?></span><?php endif ?>
 	</p>
 	<p>
-		<?php echo empty($errors['url']) ? form::input('url', $fields['url']) : form::input('url', $fields['url'], 'class="error"') ?>
-		<?php echo form::label('url', 'Homepage') ?>
-		<?php if ( ! empty($errors['url'])): ?><br /><span class="error"><?php echo $errors['url'] ?></span><?php endif ?>
+		<?php echo empty($url_error) ? form::input('url', $url->value) : form::input('url', $url->value, 'class="error"') ?>
+		<?php echo form::label('url', $url->label) ?>
+		<?php if ( ! empty($url_error)): ?><br /><span class="error"><?php echo $url_error ?></span><?php endif ?>
 	</p>
 	<p>
-		<?php echo empty($errors['content']) ? form::textarea('content', $fields['content']) : form::textarea('content', $fields['content'], 'class="error"') ?>
-		<?php if ( ! empty($errors['content'])): ?><br /><span class="error"><?php echo $errors['content'] ?></span><?php endif ?>
+		<?php echo empty($content_error) ? form::textarea('content', $content->value) : form::textarea('content', $content->value, 'class="error"') ?>
+		<?php if ( ! empty($content_error)): ?><br /><span class="error"><?php echo $content_error ?></span><?php endif ?>
 	</p>
 	<p>
-		<?php echo form::submit('submit', ' Abschicken ') ?>
+		<?php echo form::submit('submit', $submit->value) ?>
 	</p>
 <?php echo form::close() ?>

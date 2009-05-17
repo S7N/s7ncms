@@ -72,67 +72,46 @@ class Blog_Controller extends Website_Controller {
 
 		if ($post->comment_status === 'open' AND config::get('blog.comment_status') === 'open')
 		{
-			$fields = array
-			(
-				'author'  => '',
-				'email'   => '',
-				'url'     => '',
-				'content' => '',
-			);
+			$form = Formo::factory()
+				->add('csrf', 'token')
+				->add('text', 'author', array('label' => 'Name'))
+				->add('text', 'email', array('label' => 'EMail'))
+				->add('text', 'url', array('label' => 'Homepage'))
+				->add('textarea', 'content')
+				->add('submit', 'Submit')
+				
+				->pre_filter('all', 'trim')
+				->pre_filter('author', 'security::xss_clean')
+				->pre_filter('content', 'security::xss_clean')
+				->pre_filter('url', 'security::xss_clean')
+				->pre_filter('url', 'format::url')
+				
+				->add_rule('author', 'required', 'Please provide your name')
+				->add_rule('email', 'valid::email', 'Invalid E-Mail')
+				->add_rule('content', 'required', 'Please add your Comment');
 
-			$errors = $fields;
-
-			if ($_POST)
+			if ($form->validate())
 			{
-				// Prevents CSRF
-				if ($this->session->get_once('form_key') === $_POST['form_key'])
-				{
-					$_POST = new Validation($_POST);
+				$comment = ORM::factory('blog_comment');
+				$comment->author  = $form->author->value;
+				$comment->email   = $form->email->value;
+				$comment->content = $form->content->value;
+				$comment->url     = $form->url->value;
+				$comment->ip      = $this->input->ip_address();
+				$comment->agent   = Kohana::$user_agent;
+				$comment->date    = date("Y-m-d H:i:s", time());
 
-					$_POST
-					->pre_filter('trim')
+				$post->add_comment($comment);
+				
+				Event::run('blog.comment_added', $comment);
 
-					->post_filter('security::xss_clean', 'url', 'author', 'content')
-					->post_filter('format::url', 'url')
+				Cache::instance()->delete('s7n_blog_feed');
+				Cache::instance()->delete('s7n_blog_feed_comments');
 
-					->add_rules('author', 'required', 'length[2,40]')
-					->add_rules('email', 'valid::email')
-					->add_rules('content', 'required');
-
-					if ($_POST->validate())
-					{
-						
-						$comment = ORM::factory('blog_comment');
-						$comment->author  = $_POST['author'];
-						$comment->email   = $_POST['email'];
-						$comment->content = $_POST['content'];
-						$comment->url     = $_POST['url'];
-						$comment->ip      = $this->input->ip_address();
-						$comment->agent   = Kohana::$user_agent;
-						$comment->date    = date("Y-m-d H:i:s", time());
-
-						$post->add_comment($comment);
-						
-						Event::run('blog.comment_added', $comment);
-
-						Cache::instance()->delete('s7n_blog_feed');
-						Cache::instance()->delete('s7n_blog_feed_comments');
-
-						url::redirect($post->url());
-					}
-					else
-					{
-						$fields = arr::overwrite($_POST->as_array());
-						$errors = arr::overwrite($_POST->errors('blog_form_error_messages'));
-					}
-				}
+				url::redirect($post->url());
 			}
 
-			$form = View::factory('blog/form_comment', array(
-				'fields' => $fields,
-				'errors' => $errors,
-				'form_key' => $_SESSION['form_key'] = text::random('alnum', 16)
-			));
+			$form = View::factory('blog/form_comment', $form->get(TRUE));
 		}
 
 		$this->template->content = View::factory('blog/view', array(
