@@ -18,8 +18,8 @@ class Blog_Controller extends Administration_Controller {
 		parent::__construct();
 
 		$this->template->tasks = array(
-			array('admin/blog/newpost', 'New Post'),
-			array('admin/blog/settings', 'Edit Settings')
+			array('admin/blog/newpost', __('New Post')),
+			array('admin/blog/settings', __('Edit Settings'))
 		);
 
 		$this->head->title->append('Blog');
@@ -35,8 +35,8 @@ class Blog_Controller extends Administration_Controller {
 		if ( ! empty($q))
 		{
 			$this->template->searchvalue = $q;
-			$this->template->title .= 'Filter: '.$q;
-			$this->head->title->append('Filter: '.$q);
+			$this->template->title .= __('Filter: %filter', array('%filter' => $q));
+			$this->head->title->append(__('Filter: %filter', array('%filter' => $q)));
 
 			$posts = ORM::factory('blog_post')->orlike(array(
 				'title' => $q,
@@ -47,8 +47,8 @@ class Blog_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->template->title .= 'All Posts';
-			$this->head->title->append('All Posts');
+			$this->template->title .= __('All Posts');
+			$this->head->title->append(__('All Posts'));
 
 			$posts = ORM::factory('blog_post')->find_all();
 		}
@@ -72,15 +72,14 @@ class Blog_Controller extends Administration_Controller {
 			Cache::instance()->delete('s7n_blog_feed');
 			Cache::instance()->delete_tag('route');
 
-			message::info('Post created successfully', 'admin/blog');
+			message::info(__('Post created successfully'), 'admin/blog');
 		}
 		else
 		{
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append('New Post');
+			$this->head->title->append(__('New Post'));
 
-			$this->template->title .= 'New Post';
-			$this->template->tabs = array('Content', 'Advanced');
+			$this->template->title .= __('New Post');
 			$this->template->content = View::factory('blog/newpost');
 		}
 	}
@@ -103,17 +102,15 @@ class Blog_Controller extends Administration_Controller {
 			Cache::instance()->delete('s7n_blog_feed');
 			Cache::instance()->delete_tag('route');
 
-			message::info('Post edited successfully', 'admin/blog');
+			message::info(__('Post edited successfully'), 'admin/blog');
 		}
 		else
 		{
 			$post = ORM::factory('blog_post', (int) $this->uri->segment(4));
 
-			$this->template->tabs = array('Content', 'Advanced');
-
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append('Edit: '. $post->title);
-			$this->template->title .= 'Edit: '. $post->title;
+			$this->head->title->append(__('Edit: %title', array('%title' =>$post->title)));
+			$this->template->title .= __('Edit: %title', array('%title' =>$post->title));
 
 			$this->template->content = View::factory('blog/edit', array('post' => $post));
 		}
@@ -146,8 +143,8 @@ class Blog_Controller extends Administration_Controller {
 		$this->template->content = new View('blog/comments');
 		$this->template->content->comments = $post->blog_comments;
 
-		$this->head->title->append('Comments for: '. $post->title);
-		$this->template->title .= 'Comments for: '. $post->title;
+		$this->head->title->append(__('Comments for: %title', array('%title' => $post->title)));
+		$this->template->title .= __('Comments for: %title', array('%title' => $post->title));
 	}
 
 	private function comments_open($id)
@@ -165,12 +162,12 @@ class Blog_Controller extends Administration_Controller {
 		$post = ORM::factory('blog_post', (int) $id);
 
 		if ( ! $post->loaded)
-			message::error('Invalid ID', 'admin/blog');
+			message::error(__('Invalid ID'), 'admin/blog');
 
 		$post->comment_status = $status;
 		$post->save();
 
-		message::info('Comment status changed to "'.$status.'"', 'admin/blog');
+		message::info(__('Comment status changed to "%status"', array('status' => $status)), 'admin/blog');
 	}
 
 	private function comments_edit($id)
@@ -186,15 +183,15 @@ class Blog_Controller extends Administration_Controller {
 
 			Cache::instance()->delete('s7n_blog_feed');
 
-			message::info('Comment edited successfully', 'admin/blog/comments/'.$comment->blog_post_id);
+			message::info(__('Comment edited successfully'), 'admin/blog/comments/'.$comment->blog_post_id);
 		}
 		else
 		{
 			$comment = ORM::factory('blog_comment', (int) $id);
 
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append('Edit: Comment #'. $comment->id);
-			$this->template->title .= 'Edit: Comment #'. $comment->id;
+			$this->head->title->append(__('Edit comment #%id', array('%id' => $comment->id)));
+			$this->template->title .= __('Edit comment #%id', array('%id' => $comment->id));
 
 			$this->template->content = View::factory('blog/editcomment', array(
 				'comment' => $comment
@@ -206,7 +203,7 @@ class Blog_Controller extends Administration_Controller {
 	{
 		$comment = ORM::factory('blog_comment', (int) $id);
 		if ( ! $comment->loaded)
-			message::error('Invalid ID', 'admin/blog');
+			message::error(__('Invalid ID'), 'admin/blog');
 		
 		$post = ORM::factory('blog_post', (int) $comment->blog_post_id);
 		$post->comment_count -= 1;
@@ -216,7 +213,7 @@ class Blog_Controller extends Administration_Controller {
 
 		Cache::instance()->delete('s7n_blog_feed_comments');
 
-		message::info('Comment deleted successfully', 'admin/blog/comments/'.$post->id);
+		message::info(__('Comment deleted successfully'), 'admin/blog/comments/'.$post->id);
 	}
 
 	public function delete($id)
@@ -224,7 +221,7 @@ class Blog_Controller extends Administration_Controller {
 		$post = ORM::factory('blog_post', (int) $id);
 
 		if ( ! $post->loaded)
-			message::error('Invalid ID', 'admin/blog');
+			message::error(__('Invalid ID'), 'admin/blog');
 		
 		// remove comments first
 		Database::instance()->where('blog_post_id', (int) $post->id)->delete('blog_comments');
@@ -236,7 +233,7 @@ class Blog_Controller extends Administration_Controller {
 		Cache::instance()->delete('s7n_blog_feed_comments');
 		Cache::instance()->delete_tag('route');
 
-		message::info('Post deleted successfully', 'admin/blog');
+		message::info(__('Post deleted successfully'), 'admin/blog');
 	}
 
 	public function settings()
@@ -248,12 +245,12 @@ class Blog_Controller extends Administration_Controller {
 			config::set('blog.comment_status', $comment_status);
 			config::set('blog.items_per_page', (int) $this->input->post('items_per_page'));
 
-			message::info('Settings changed successfully', 'admin/blog');
+			message::info(__('Settings changed successfully'), 'admin/blog');
 		}
 		else
 		{
-			$this->head->title->append('Settings');
-			$this->template->title .= 'Settings';
+			$this->head->title->append(__('Settings'));
+			$this->template->title .= __('Settings');
 
 			$this->template->content = new View('blog/settings');
 			$this->template->content->items_per_page = config::get('blog.items_per_page');

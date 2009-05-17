@@ -3,10 +3,10 @@
 <table cellspacing="0" cellpadding="0" class="table">
 	<thead align="left" valign="middle">
 		<tr>
-			<td>Module</td>
-			<td>Version</td>
-			<td>Description</td>
-			<td>Action</td>
+			<td><?php echo __('Module') ?></td>
+			<td><?php echo __('Version') ?></td>
+			<td><?php echo __('Description') ?></td>
+			<td><?php echo __('Action') ?></td>
 			<td class="delete">&nbsp;</td>
 		</tr>
 	</thead>
@@ -16,12 +16,12 @@
 			<td><?php echo $module->name ?></td>
 			<td><?php echo $module->version ?></td>
 			<td><?php echo $module->description ?></td>
-			<td><?php echo html::anchor('admin/modules/install/'.$module->uri, 'install'); ?></td>
+			<td><?php echo html::anchor('admin/modules/install/'.$module->uri, __('install')); ?></td>
 			<td class="delete"><?php echo html::anchor('admin/modules/uninstall/'.$module->uri, html::image(
 				'themes/admin/images/delete.png',
 				array(
-					'alt' => 'Uninstall Module',
-					'title' => 'Uninstall Module'
+					'alt' => __('Uninstall Module'),
+					'title' => __('Uninstall Module')
 					)
 				)); ?></td>
 		</tr>

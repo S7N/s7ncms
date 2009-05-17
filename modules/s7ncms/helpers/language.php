@@ -51,9 +51,6 @@ class language_Core {
 			url::redirect($redirect);
 		}
 
-		/*if (empty(Router::$current_uri))
-			Router::$current_uri = Kohana::config('routes._default');*/
-
 		Kohana::config_set('locale.language', language::$available_languages[Router::$language]['language']);
 	}
 	

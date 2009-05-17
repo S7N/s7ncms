@@ -17,8 +17,8 @@ class Modules_Controller extends Administration_Controller {
 	{
 		parent::__construct();
 
-		$this->head->title->append('Modules');
-		$this->template->title = 'Modules';
+		$this->head->title->append(__('Modules'));
+		$this->template->title = __('Modules');
 	}
 	public function index()
 	{
@@ -31,7 +31,7 @@ class Modules_Controller extends Administration_Controller {
     {
     	module::change_status($module, $new_status);
 
-    	message::info('Module status successfully changed', 'admin/modules');
+    	message::info(__('Module status successfully changed'), 'admin/modules');
     }
 
     public function install($module)
@@ -40,7 +40,7 @@ class Modules_Controller extends Administration_Controller {
 
 		call_user_func($module.'_installer::install');
 
-		message::info('Module installed successfully', 'admin/modules');
+		message::info(__('Module installed successfully'), 'admin/modules');
     }
 
     public function uninstall($module)
@@ -49,7 +49,7 @@ class Modules_Controller extends Administration_Controller {
 
     	call_user_func($module.'_installer::uninstall');
 
-    	message::info('Module uninstalled successfully', 'admin/modules');
+    	message::info(__('Module uninstalled successfully'), 'admin/modules');
     }
 
 }

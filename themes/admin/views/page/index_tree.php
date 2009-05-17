@@ -31,7 +31,7 @@ mit dem selben Namen und wird anstelle der eigentlichen Seite geladen. Sie könn
 erstellen, um ein Untermenü für diesen Controller zu erzeugen.
 </p>
 <div class="box">
-	<h3>Page Order</h3>
+	<h3><?php echo __('Page Order') ?>Page Order</h3>
 	<div class="inside">
 		<ul class="sortable">
 		<?php
@@ -66,5 +66,5 @@ erstellen, um ein Untermenü für diesen Controller zu erzeugen.
 	</div>
 </div>
 <p>
-<button id="save_sort">Save Page Order</button>
+<button id="save_sort"><?php echo __('Save page order') ?></button>
 </p>

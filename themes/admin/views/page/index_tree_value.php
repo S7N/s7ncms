@@ -7,13 +7,12 @@
     	<?php echo html::image('themes/admin/images/warning.png') ?>
     <?php endif ?>
     </div>
-    <!-- div style="position:absolute;right:30px;">(<strong>Last updated:</strong> <?php echo $page->modified; ?>)</div-->
     <div class="delete" style="position:absolute;right:10px;">
     <?php echo html::anchor('admin/page/delete/'.$page->id, html::image(
 		'themes/admin/images/delete.png',
 		array(
-			'alt' => 'Delete Page',
-			'title' => 'Delete Page'
+			'alt' => __('Delete Page'),
+			'title' => __('Delete Page')
 		)), array('class' => 'confirm'))
 	?>
     </div>

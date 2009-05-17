@@ -74,11 +74,11 @@ class Blog_Controller extends Website_Controller {
 		{
 			$form = Formo::factory()
 				->add('csrf', 'token')
-				->add('text', 'author', array('label' => 'Name'))
-				->add('text', 'email', array('label' => 'EMail'))
-				->add('text', 'url', array('label' => 'Homepage'))
-				->add('textarea', 'content')
-				->add('submit', 'Submit')
+				->add('text', 'author', array('label' => __('Name')))
+				->add('text', 'email', array('label' => __('Email')))
+				->add('text', 'url', array('label' => __('Homepage')))
+				->add('textarea', 'content', array('label' => __('Comment')))
+				->add('submit', __('Submit'))
 				
 				->pre_filter('all', 'trim')
 				->pre_filter('author', 'security::xss_clean')
@@ -86,9 +86,10 @@ class Blog_Controller extends Website_Controller {
 				->pre_filter('url', 'security::xss_clean')
 				->pre_filter('url', 'format::url')
 				
-				->add_rule('author', 'required', 'Please provide your name')
-				->add_rule('email', 'valid::email', 'Invalid E-Mail')
-				->add_rule('content', 'required', 'Please add your Comment');
+				->add_rule('author', 'required', __('You must provide your name'))
+				->add_rule('author', 'length[2,40]', __('Your Name is too long'))
+				->add_rule('email', 'valid::email', __('Email address is not valid'))
+				->add_rule('content', 'required', __('You must enter a comment'));
 
 			if ($form->validate())
 			{

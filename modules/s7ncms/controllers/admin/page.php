@@ -18,13 +18,13 @@ class Page_Controller extends Administration_Controller {
 		parent::__construct();
 
 		$this->template->tasks = array(
-			array('admin/page', 'Show All'),
-			array('admin/page/newpage', 'New Page'),
-			array('admin/page/settings', 'Edit Settings')
+			array('admin/page', __('Show All')),
+			array('admin/page/newpage', __('New Page')),
+			array('admin/page/settings', __('Edit Settings'))
 		);
 
-		$this->head->title->append('Pages');
-		$this->template->title = 'Pages | ';
+		$this->head->title->append(__('Pages'));
+		$this->template->title = __('Pages').' | ';
 	}
 
 	public function index()
@@ -33,8 +33,8 @@ class Page_Controller extends Administration_Controller {
 			'pages' => ORM::factory('page')->find_all()
 		));
 
-		$this->head->title->append('All Pages');
-		$this->template->title .= 'All Pages';
+		$this->head->title->append(__('All Pages'));
+		$this->template->title .= __('All Pages');
 	}
 
 	public function edit($id)
@@ -99,7 +99,7 @@ class Page_Controller extends Administration_Controller {
 			Cache::instance()->delete_tag('menu');
 			Cache::instance()->delete_tag('route');
 			
-			message::info('Page edited successfully', 'admin/page');
+			message::info(__('Page edited successfully'), 'admin/page');
 		}
 		else
 		{
@@ -109,9 +109,9 @@ class Page_Controller extends Administration_Controller {
 				Event::run('system.404');
 
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append('Edit: '. $page->title());
+			$this->head->title->append(__('Edit: %title', array('%title' => $page->title())));
 
-			$this->template->title .= 'Edit: '. $page->title();
+			$this->template->title .= __('Edit: %title', array('%title' => $page->title()));
 			$this->template->content = View::factory('page/edit', array(
 				'page' => $page,
 				'modules' => module::installed()
@@ -157,15 +157,14 @@ class Page_Controller extends Administration_Controller {
 			Cache::instance()->delete_tag('menu');
 			Cache::instance()->delete_tag('route');
 
-			message::info('Page created successfully', 'admin/page');
+			message::info(__('Page created successfully'), 'admin/page');
 		}
 		else
 		{
 			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append('New Page');
-
-			$this->template->tabs = array('Content', 'Advanced');
-			$this->template->title .= 'New Page';
+			$this->head->title->append(__('New Page'));
+			
+			$this->template->title .= __('New Page');
 			$this->template->content = new View('page/newpage');
 		}
 	}
@@ -177,7 +176,7 @@ class Page_Controller extends Administration_Controller {
 		Cache::instance()->delete_tag('menu');
 		Cache::instance()->delete_tag('route');
 
-		message::info('Page deleted successfully', 'admin/page');
+		message::info(__('Page deleted successfully'), 'admin/page');
 	}
 
 	public function settings()
@@ -193,12 +192,12 @@ class Page_Controller extends Administration_Controller {
 			// Default Sidebar Content
             config::set('s7n.default_sidebar_content', $this->input->post('default_sidebar_content'));
 
-			message::info('Page Settings edited successfully', 'admin/page/settings');
+			message::info(__('Page Settings edited successfully'), 'admin/page/settings');
 		}
 
-		$this->head->title->append('Settings');
+		$this->head->title->append(__('Settings'));
 
-		$this->template->title .= 'Settings';
+		$this->template->title .= __('Settings');
 		$this->template->content = View::factory('page/settings', array(
 			'views' => config::get('s7n.page_views'),
 			'default_sidebar_title' => config::get('s7n.default_sidebar_title'),
@@ -218,7 +217,7 @@ class Page_Controller extends Administration_Controller {
 
 		if ($this->level_zero > 1)
 		{
-			$this->session->set_flash('error_message', 'Page order could not be saved.');
+			$this->session->set_flash('error_message', __('Page order could not be saved.'));
 			exit;
 		}
 
@@ -230,7 +229,7 @@ class Page_Controller extends Administration_Controller {
 				->update('pages');
 		}
 
-		$this->session->set_flash('info_message', 'Page order saved successfully');
+		$this->session->set_flash('info_message', __('Page order saved successfully'));
 		
 		Cache::instance()->delete_tag('menu');
 		Cache::instance()->delete_tag('route');

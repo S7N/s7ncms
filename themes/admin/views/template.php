@@ -22,7 +22,7 @@
 	<div id="header">
 		S7Nadmin
 		<div class="info">
-			Logged in as <?php echo Auth::instance()->get_user()->username ?> | <?php echo html::anchor('admin/auth/logout', 'Logout'); ?>
+			<?php echo __('Logged in as %username', array('username' => Auth::instance()->get_user()->username)) ?> | <?php echo html::anchor('admin/auth/logout', __('Logout')); ?>
 		</div>
 	</div>
 
@@ -42,7 +42,7 @@
 			<h2><?php echo $title ?></h2>
 			<?php if ($searchbar): ?>
 			<?php echo form::open(NULL, array('id' => 'searchbar', 'method' => 'get')) ?>
-			    <input name="q" value="<?php echo $searchvalue ?>" type="search" placeholder="Filter by" autosave="s7n.search" />
+			    <input name="q" value="<?php echo $searchvalue ?>" type="search" placeholder="<?php echo __('Filter by') ?>" autosave="s7n.search" />
 			<?php echo form::close() ?>
 			<?php endif ?>
 		</div>
@@ -52,7 +52,7 @@
 				<?php echo Sidebar::instance() ?>
 
 				<?php if(isset($tasks) AND !empty($tasks)): ?>
-					<h3>Tasks</h3>
+					<h3><?php echo __('Tasks') ?></h3>
 					<p>
 						<?php foreach($tasks as $task): ?>
 							<?php echo html::anchor($task[0], $task[1]); ?><br />

@@ -26,12 +26,12 @@ class Akismet_Controller extends Administration_Controller {
 		if($_POST)
 		{
 			config::set('akismet.api_key', $this->input->post('akismet_api_key'));
-			message::info('Settings changed successfully', 'admin/akismet');
+			message::info(__('Settings changed successfully'), 'admin/akismet');
 		}
 		else
 		{
-			$this->head->title->append('Settings');
-			$this->template->title .= 'Settings';
+			$this->head->title->append(__('Settings'));
+			$this->template->title .= __('Settings');
 
 			$this->template->content = new View('akismet/settings');
 			$this->template->content->akismet_api_key = config::get('akismet.api_key');

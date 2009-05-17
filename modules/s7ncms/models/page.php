@@ -89,7 +89,7 @@ class Page_Model extends ORM_MPTT {
     {
 		$pages = $this->find_all();
 
-		$paths = array('' => 'Do not Redirect');
+		$paths = array('' => __('Do not Redirect'));
 		foreach ($pages as $page)
 		{
 			if ($page->id === $this->id)

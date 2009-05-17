@@ -3,7 +3,7 @@
 	<div class="entrytitle">
 		<h2><?php echo html::anchor($post->url(), $post->title) ?></h2>
 		<h3 class="date">
-			<?php echo strftime('%e. %B %Y, %H:%M', strtotime($post->date)) ?> (<?php echo $post->comment_count ?> Kommentar(e))
+			<?php echo strftime('%e. %B %Y, %H:%M', strtotime($post->date)) ?>
 		</h3>
 	</div>
 	<?php echo $post->content ?>
@@ -11,7 +11,7 @@
 <div id="comments">
 <?php if (count($comments) > 0): ?>
 	<h3>
-		<?php echo $post->comment_count ?> Antworten
+		<?php echo __n('One comment', '%count comments', $post->comment_count) ?>
 	</h3>
 	<ol class="commentlist">
 		<?php $counter = 1; foreach ($comments as $comment): ?>

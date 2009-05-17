@@ -10,9 +10,9 @@
 <p class="pagination">
 
 	<?php if ($previous_page): ?>
-		<a href="<?php echo str_replace('{page}', $previous_page, $url) ?>" class="nextprev">&laquo;&nbsp;<?php echo Kohana::lang('pagination.previous') ?></a>
+		<a href="<?php echo str_replace('{page}', $previous_page, $url) ?>" class="nextprev">&laquo;&nbsp;<?php echo __('Previous') ?></a>
 	<?php else: ?>
-		<span class="nextprev">&laquo;&nbsp;<?php echo Kohana::lang('pagination.previous') ?></span>
+		<span class="nextprev">&laquo;&nbsp;<?php echo __('Previous') ?></span>
 	<?php endif ?>
 
 
@@ -76,9 +76,9 @@
 
 
 	<?php if ($next_page): ?>
-		<a href="<?php echo str_replace('{page}', $next_page, $url) ?>" class="nextprev"><?php echo Kohana::lang('pagination.next') ?>&nbsp;&raquo;</a>
+		<a href="<?php echo str_replace('{page}', $next_page, $url) ?>" class="nextprev"><?php echo __('Next') ?>&nbsp;&raquo;</a>
 	<?php else: ?>
-		<span class="nextprev"><?php echo Kohana::lang('pagination.next') ?>&nbsp;&raquo;</span>
+		<span class="nextprev"><?php echo __('Next') ?>&nbsp;&raquo;</span>
 	<?php endif ?>
 
 </p>

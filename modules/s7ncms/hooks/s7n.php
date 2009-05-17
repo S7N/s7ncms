@@ -24,3 +24,16 @@ Event::add_before('system.routing', array('Router', 'setup'), array('language', 
 Event::add_before('system.routing', array('Router', 'setup'), array('url', 'new_route'));
 
 Event::add('system.post_routing', 'theme::load_themes');
+
+function __($string, array $values = array())
+{
+	return empty($values) ? $string : strtr($string, $values);
+}
+
+function __n($singular, $plural, $count, array $values = array())
+{
+	if ($count === 1)
+		return empty($values) ? $singular : strtr($singular, $values);
+		
+	return strtr($plural, array_merge($values, array('%count' => $count)));
+}

@@ -1,12 +1,11 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <?php if($users): ?>
-
 <table cellspacing="0" cellpadding="0" class="table">
 	<thead align="left" valign="middle">
 		<tr>
-			<td>User Name</td>
-			<td>Full Name</td>
-			<td>Email</td>
+			<td><?php echo __('Username') ?></td>
+			<td><?php echo __('Full name') ?></td>
+			<td><?php echo __('Email') ?></td>
 			<td class="delete">&nbsp;</td>
 		</tr>
 	</thead>
@@ -20,8 +19,8 @@
 			<?php echo html::anchor('admin/user/delete/'.$user->id, html::image(
 				'themes/admin/images/delete.png',
 				array(
-					'alt' => 'Delete User',
-					'title' => 'Delete User'
+					'alt' => __('Delete User'),
+					'title' => __('Delete User')
 				)), array('class' => 'confirm')) ?>
 			</td>
 		</tr>

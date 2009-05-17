@@ -2,10 +2,10 @@
 <table cellspacing="0" cellpadding="0" class="table">
 	<thead align="left" valign="middle">
 		<tr>
-			<td>Title</td>
-			<td>Created on</td>
-			<td>Author</td>
-			<td>Comments</td>
+			<td><?php echo __('Title') ?></td>
+			<td><?php echo __('Created on') ?></td>
+			<td><?php echo __('Author') ?></td>
+			<td><?php echo __('Comments') ?></td>
 			<td class="delete">&nbsp;</td>
 		</tr>
 	</thead>
@@ -21,17 +21,17 @@
 			<td><?php echo $post->user->username ?></td>
 			<td>
 				<?php if($post->comment_status === 'open'): ?>
-					<?php echo html::anchor('admin/blog/comments/close/'.$post->id, 'open') ?>
+					<?php echo html::anchor('admin/blog/comments/close/'.$post->id, __('open')) ?>
 				<?php else: ?>
-					<?php echo html::anchor('admin/blog/comments/open/'.$post->id, 'closed') ?>
+					<?php echo html::anchor('admin/blog/comments/open/'.$post->id, __('closed')) ?>
 				<?php endif ?>
 			</td>
 			<td class="delete">
 			<?php echo html::anchor('admin/blog/delete/'.$post->id, html::image(
 				'themes/admin/images/delete.png',
 				array(
-					'alt' => 'Delete Page',
-					'title' => 'Delete Page'
+					'alt' => __('Delete Page'),
+					'title' => __('Delete Page')
 				)), array('class' => 'confirm'))
 			?>
 			</td>

@@ -18,19 +18,19 @@ class User_Controller extends Administration_Controller {
 		parent::__construct();
 
 		$this->template->tasks = array(
-			array('admin/user/newuser', 'New User')
+			array('admin/user/newuser', __('New User'))
 		);
 
-		$this->head->title->append('User');
-		$this->template->title = html::anchor('admin/user', 'User').' | ';
+		$this->head->title->append(__('User'));
+		$this->template->title = html::anchor('admin/user', __('User')).' | ';
 	}
 
 	public function index()
 	{
 		$this->template->content = View::factory('user/index', array('users' => ORM::factory('user')->find_all()));
 
-		$this->head->title->append('All Users');
-		$this->template->title .= 'All Users';
+		$this->head->title->append(__('All Users'));
+		$this->template->title .= __('All Users');
 	}
 
 	public function newuser()
@@ -55,7 +55,7 @@ class User_Controller extends Administration_Controller {
 				$user->add(ORM::factory('role', 'admin'));
 				$user->save();
 
-				message::info('User created successfully', 'admin/user');
+				message::info(__('User created successfully'), 'admin/user');
 			}
 			else
 			{
@@ -66,8 +66,8 @@ class User_Controller extends Administration_Controller {
 
 		$this->template->content = View::factory('user/newuser', array('fields' => $fields, 'errors' => $errors));
 
-		$this->head->title->append('New User');
-		$this->template->title .= 'New User';
+		$this->head->title->append(__('New User'));
+		$this->template->title .= __('New User');
 	}
 	
 	public function edit($id)
@@ -97,7 +97,7 @@ class User_Controller extends Administration_Controller {
 
 				$user->save();
 
-				message::info('User edited successfully', 'admin/user');
+				message::info(__('User edited successfully'), 'admin/user');
 			}
 			else
 			{
@@ -112,27 +112,25 @@ class User_Controller extends Administration_Controller {
 		
 		$this->template->content = View::factory('user/edit', array('user' => $user, 'fields' => $fields, 'errors' => $errors));
 
-		$this->head->title->append('Edit User');
-		$this->template->title .= 'Edit User';
+		$this->head->title->append(__('Edit User'));
+		$this->template->title .= __('Edit User');
 	}
 	
 	public function delete($id)
 	{
 		$user = ORM::factory('user', (int) $id);
 
-		if ($user->loaded)
-		{
-			if ($user->id === Auth::instance()->get_user()->id)
-				message::error('You can\'t delete yourself', 'admin/user');
+		if ( ! $user->loaded)
+			message::error(__('Invalid ID'), 'admin/user');
 
-			$user->remove(ORM::factory('role', 'login'));
-			$user->remove(ORM::factory('role', 'admin'));
-			$user->delete();
+		if ($user->id === Auth::instance()->get_user()->id)
+			message::error(__('You can\'t delete yourself'), 'admin/user');
 
-			message::info('User deleted successfully', 'admin/user');
-		}
+		$user->remove(ORM::factory('role', 'login'));
+		$user->remove(ORM::factory('role', 'admin'));
+		$user->delete();
 
-		message::error('Invalid ID', 'admin/user');
+		message::info(__('User deleted successfully'), 'admin/user');
 	}
 
 }

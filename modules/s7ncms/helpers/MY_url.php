@@ -147,9 +147,6 @@ class url extends url_Core {
 			$routed_uri = $cache['routed_uri'];
 		}
 		
-		
-		
-
 		if ($found)
 		{
 			if ($load_module)

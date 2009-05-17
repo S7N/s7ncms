@@ -13,13 +13,6 @@
  */
 class Settings_Controller extends Administration_Controller {
 
-	/*public function __construct()
-	{
-		parent::__construct();
-		
-		Sidebar::instance()->add('static', array('title' => 'Modules', 'content' => admin::settings()));
-	}*/
-	
 	public function index()
 	{
 		$themes = array();
@@ -36,9 +29,9 @@ class Settings_Controller extends Administration_Controller {
 			}
 		}
 
-		$this->head->title->append('Settings');
+		$this->head->title->append(__('Settings'));
 
-		$this->template->title = 'Settings';
+		$this->template->title = __('Settings');
 	    $this->template->content = View::factory('settings/settings', array(
     		'site_title' => config::get('s7n.site_title'),
 	    	'theme' => config::get('s7n.theme'),
@@ -56,7 +49,7 @@ class Settings_Controller extends Administration_Controller {
 			// Site Title
 			config::set('s7n.theme', $this->input->post('theme'));
 
-			message::info('Settings edited successfully', 'admin/settings');
+			message::info(__('Settings edited successfully'), 'admin/settings');
         }
 
         url::redirect('admin/settings');
