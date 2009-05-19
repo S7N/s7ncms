@@ -51,7 +51,7 @@ class Formo_auto_i18n {
 		$element = Event::$data;
 		
 		// skip the __form_object and already internationalized elements
-		if($element->name != '__form_object' AND !$element->already_i18nd)
+		if($element->name != '__form_object' AND !in_array('i18nd',$element->attributes))
 		{
 			// fetch label's i18n string, if not found use element's name
 			if($element->label AND !in_array($element->type,array('button','submit')))
@@ -84,7 +84,7 @@ class Formo_auto_i18n {
 			}
 			
 			// mark the element as internationalized
-			$element->already_i18nd = TRUE;
+			$element->add_attribute('i18nd');
 		}
 	}
 		

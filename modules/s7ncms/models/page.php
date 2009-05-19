@@ -58,8 +58,10 @@ class Page_Model extends ORM_MPTT {
 	{
 		if ($id === NULL)
 			$id = $this->id;
-		
-		$this->db->where('page_id', $id)->delete('page_contents');
+
+		$descendants = $this->descendants(TRUE)->find_all();
+		foreach ($descendants as $descendant)
+			$this->db->delete('page_contents', array('page_id' => $descendant->id));
 
 		if ($id === $this->id AND isset(self::$page_cache[$this->_identifier]))
 			unset(self::$page_cache[$this->_identifier]);

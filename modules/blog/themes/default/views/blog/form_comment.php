@@ -5,7 +5,7 @@
 
 <?php echo form::open(NULL, array('id' => 'commentform')) ?>
 	<?php echo $__form_object ?>
-	<?php echo $token ?>
+	<?php echo $csrf ?>
 	<p>
 		<?php echo empty($author_error) ? form::input('author', $author->value) : form::input('author', $author->value, 'class="error"') ?>
 		<?php echo form::label('author', $author->label) ?>

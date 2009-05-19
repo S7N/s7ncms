@@ -73,7 +73,7 @@ class Blog_Controller extends Website_Controller {
 		if ($post->comment_status === 'open' AND config::get('blog.comment_status') === 'open')
 		{
 			$form = Formo::factory()
-				->add('csrf', 'token')
+				->plugin('csrf')
 				->add('text', 'author', array('label' => __('Name')))
 				->add('text', 'email', array('label' => __('Email')))
 				->add('text', 'url', array('label' => __('Homepage')))

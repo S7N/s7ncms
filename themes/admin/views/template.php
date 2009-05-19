@@ -6,6 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<?php echo $head ?>
+	<?php Event::run('s7n.admin.theme.head') ?>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
 	<div id="header">
 		S7Nadmin
 		<div class="info">
-			<?php echo __('Logged in as %username', array('username' => Auth::instance()->get_user()->username)) ?> | <?php echo html::anchor('admin/auth/logout', __('Logout')); ?>
+			<?php echo __('Logged in as %username', array('%username' => Auth::instance()->get_user()->username)) ?> | <?php echo html::anchor('admin/auth/logout', __('Logout')); ?>
 		</div>
 	</div>
 

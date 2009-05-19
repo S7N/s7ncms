@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /* 
-	Version 1.1.0 RC1
+	Version 1.1
 	avanthill.com/formo_manual/
 		
 	Requires Formo_Element and Formo_Group
@@ -29,7 +29,7 @@ class Formo_Core {
 	public $_post_type;
 	public $_cleared;
 			
-	public $_open = '<form action="{action}" method="{method}" class="{class}">';
+	public $_open = '<form action="{action}" method="{method}" class="{class}" name="{name}">';
 	public $_close = '</form>';
 	public $_action;
 	public $_method = 'post';
@@ -44,12 +44,12 @@ class Formo_Core {
 	public $_globals = array();
 	public $_defaults = array();
 		
-	public function __construct($name='noname',$type='')
+	public function __construct($name='formo',$type='')
 	{
 		$data = array('name'=>$name, 'type'=>$type);
 		Event::run('formo.pre_construct', $data);
 		
-		$this->_formo_name = ($data['name']) ? $data['name'] : 'noname';
+		$this->_formo_name = ($data['name']) ? $data['name'] : 'formo';
 		$this->_formo_type = $data['type'];
 		$this->add('hidden','__form_object',array('value'=>$this->_formo_name));
 		
@@ -116,7 +116,9 @@ class Formo_Core {
 		$formo_var = '_'.$function;
 		
 		// if the first value is an element and the method exists in the element, run that method
-		if ( ! is_array($element) AND isset($this->$element) AND method_exists($this->$element, $function))
+		if ( ! is_array($element) AND isset($this->$element)
+		    AND ! isset($this->$element->$function)
+		    AND method_exists($this->$element, $function))
 		{
 			unset($values[0]);
 			call_user_func_array(array($this->$element, $function), $values);
@@ -131,7 +133,7 @@ class Formo_Core {
 		// if it is an element and the property exists, set it
 		elseif (isset($this->$function) AND isset($values[1]))
 		{
-			$this->$function->$element = $values[1];
+			$this->$function->$element($values[1]);
 			return $this;
 		}
 		// if it is an element and no property is defined, it's value
@@ -180,7 +182,7 @@ class Formo_Core {
 		// if all else fails, let's just use the last accessed object
 		elseif (self::$last_accessed)
 		{
-			$this->{self::$last_accessed}->$function = $element;
+			$this->{self::$last_accessed}->$function($element);
 		}
 		
 		return $this;
@@ -219,14 +221,14 @@ class Formo_Core {
 	 *
 	 * @return  object
 	 */			
-	public static function factory($name='noname',$type='')
+	public static function factory($name='formo',$type='')
 	{	
 		return new Formo($name, $type);
 	}
 	
-	public static function instance($name='noname')
+	public static function instance($name='formo')
 	{
-		$name = ($name) ? $name : 'noname';
+		$name = ($name) ? $name : 'formo';
 		return (isset(self::$_instance[$name])) ? self::$_instance[$name] : new Formo($name);
 	}
 	
@@ -414,20 +416,6 @@ class Formo_Core {
 		}
 	}		
 		
-	protected function _set_type($element, $type)
-	{
-		self::include_file('driver', $type);
-		$class = 'Formo_'.$type.'_Driver';
-		
-		$vals = get_object_vars($this->$element);
-
-		unset($this->$element);
-		unset($vals['type']);
-		unset($vals['tags']);
-		
-		$this->add($type, $element, $vals);
-	}
-	
 	/**
 	 * set method. set form object value
 	 * 
@@ -436,13 +424,9 @@ class Formo_Core {
 	 */								
 	public function set($tag,$value,$other='')
 	{
-		if (isset($this->_elements[$tag]) AND $value != 'type')
+		if (isset($this->_elements[$tag]))
 		{
-			$this->$tag->$value = $other;
-		}
-		elseif (isset($this->_elements[$tag]) AND $value == 'type')
-		{
-			$this->_set_type($tag, $other);
+			$this->$tag->$value($other);
 		}
 		else
 		{
@@ -671,6 +655,13 @@ class Formo_Core {
 		return $this;
 	}
 	
+	public function rule($rule, $message)
+	{
+		$this->{self::$last_accessed}->add_rule($rule, $message);
+		
+		return $this;
+	}
+	
 	/**
 	 * add_rules. Add a rule to a set of elements
 	 *
@@ -744,7 +735,7 @@ class Formo_Core {
 		{
 			$_file = Kohana::find_file($path.'_core', $file);
 		}
-
+				
 		include_once($_file);
 		self::$__includes[] = $file;
 	}				
@@ -947,8 +938,8 @@ class Formo_Core {
 	 */	
 	private function _make_opentag()
 	{
-		$search = array('/{action}/','/{method}/','/{class}/');
-		$replace = array($this->_action,$this->_method,$this->_class);
+		$search = array('/{action}/','/{method}/','/{class}/','/{name}/');
+		$replace = array($this->_action,$this->_method,$this->_class,$this->_formo_name);
 		return preg_replace($search,$replace,$this->_open);
 	}
 					
@@ -1014,6 +1005,7 @@ class Formo_Core {
 		return $form;
 	}
 	
+	// returns array of all errors
 	public function get_errors()
 	{
 		$this->validate();

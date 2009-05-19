@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
-	Version 1.1.0 RC1
+	Version 1.1
 	avanthill.com/formo_manual/
 	
 	Requires Formo and Formo_Group
@@ -111,6 +111,14 @@ class Formo_Group_Core {
 		$this->$var = $val;
 	}
 	
+	// makes attribute equal to value[0]
+	public function __call($function ,$values)
+	{
+		$this->$function = $values[0];
+		
+		return $this;
+	}	
+	
 	/**
 	 * Magic __toString method. Returns all formatted elements without label
 	 * or open and close.
@@ -187,7 +195,7 @@ class Formo_Group_Core {
 			}
 		}		
 	}
-	
+		
 	private function _find_checked_radio()
 	{
 		foreach ($this->elements as $k=>$v)

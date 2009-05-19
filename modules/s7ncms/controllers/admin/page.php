@@ -108,7 +108,7 @@ class Page_Controller extends Administration_Controller {
 			if ( ! $page->loaded)
 				Event::run('system.404');
 
-			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
+			//$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append(__('Edit: %title', array('%title' => $page->title())));
 
 			$this->template->title .= __('Edit: %title', array('%title' => $page->title()));
@@ -129,12 +129,27 @@ class Page_Controller extends Administration_Controller {
 
 		if($_POST)
 		{
+			$root = ORM::factory('page')->root(1);
+			if ( ! $root->loaded)
+			{
+				// TODO move this to ORM_MPTT library
+				$root->{$root->left_column}  = 1;
+				$root->{$root->right_column} = 2;
+				$root->{$root->level_column} = 0;
+				$root->{$root->scope_column} = 1;
+				$root->save();
+				$page = $root;
+			}
+			else
+			{
+				$page = ORM::factory('page');
+				$page->insert_as_last_child($root);
+			}
+
 			$post = $this->input->post('form');
 			
-			$page = ORM::factory('page');
-			$page->insert_as_last_child($page->root(1));
-				
 			$title = array();
+			
 			foreach (Kohana::config('locale.languages') as $key => $value)
 			{
 				$form = $post[$key];
@@ -171,7 +186,11 @@ class Page_Controller extends Administration_Controller {
 
 	public function delete($id)
 	{
-		ORM::factory('page', (int) $id)->delete();
+		$page = ORM::factory('page', (int) $id);
+		if ( ! $page->loaded)
+			message::info(__('Invalid ID'), 'admin/page');
+
+		$page->delete();
 
 		Cache::instance()->delete_tag('menu');
 		Cache::instance()->delete_tag('route');
@@ -224,7 +243,7 @@ class Page_Controller extends Administration_Controller {
 		foreach($this->tree as $node)
 		{
 			$this->db
-				->set(array('parent_id' => $node['parent_id'], 'level' => $node['level'], 'lft' => $node['lft'], 'rgt' => $node['rgt']))
+				->set(array('level' => $node['level'], 'lft' => $node['lft'], 'rgt' => $node['rgt']))
 				->where('id', $node['id'])
 				->update('pages');
 		}
@@ -255,7 +274,6 @@ class Page_Controller extends Administration_Controller {
 
 			$this->tree[] = array(
 				'id' => $id,
-				'parent_id' => $parent,
 				'level' => $level,
 				'lft' => $left,
 				'rgt' => $right

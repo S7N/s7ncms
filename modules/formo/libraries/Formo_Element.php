@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
-	Version 1.1.0 RC1
+	Version 1.1
 	avanthill.com/formo_manual/
 	
 	Requires Formo and Formo_Group
@@ -381,6 +381,21 @@ class Formo_Element_Core {
 			$open = preg_replace('/{error_msg_class}/',$this->error_msg_class,$this->error_open);
 			return $open.$this->error.$this->error_close;
 		}
+	}
+	
+	// change element's type
+	public function type($new_type)
+	{
+		Formo::include_file('driver', $new_type);
+		$form = Formo::instance($this->formo_name);
+		
+		$vals = get_object_vars($this);
+
+		unset($form->{$this->name});
+		unset($vals['type']);
+		unset($vals['tags']);
+		
+		$form->add($new_type, $this->name, $vals);
 	}
 
 	// element method. returns element with formatting
