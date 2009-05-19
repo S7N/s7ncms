@@ -48,7 +48,7 @@ abstract class ORM_MPTT_Core extends ORM
 	 * Constructor
 	 *
 	 * @access public
-	 * @param integer $id 
+	 * @param integer $id
 	 */
 	public function __construct($id = NULL)
 	{
@@ -67,7 +67,7 @@ abstract class ORM_MPTT_Core extends ORM
 	 * @return boolean
 	 **/
 	public function new_scope($scope, array $additional_fields = array())
-	{	
+	{
 		// Make sure the specified scope doesn't already exist.
 		$search = ORM_MPTT::factory($this->object_name)->where($this->scope_column, $scope)->find_all();
 
@@ -225,7 +225,7 @@ abstract class ORM_MPTT_Core extends ORM
 	 * @return ORM_MPTT
 	 */
 	public function parent()
-	{	
+	{
 		return $this->parents()->where($this->level_column, $this->{$this->level_column} - 1)->find();
 	}
 	
@@ -279,7 +279,7 @@ abstract class ORM_MPTT_Core extends ORM
 	 * @return ORM_MPTT
 	 */
 	public function descendants($self = FALSE, $direction = 'ASC')
-	{		
+	{
 		$left_operator = $self ? '>=' : '>';
 		$right_operator = $self ? '<=' : '<';
 			
@@ -301,7 +301,7 @@ abstract class ORM_MPTT_Core extends ORM
 	 * @return ORM_MPTT
 	 */
 	public function siblings($self = FALSE, $direction = 'ASC')
-	{	
+	{
 		$siblings = ORM_MPTT::factory($this->object_name)
 			->where(array(
 					$this->left_column.' >' => $this->parent->{$this->left_column},
@@ -455,20 +455,6 @@ abstract class ORM_MPTT_Core extends ORM
 	}
 	
 	/**
-	 * Overloaded save method
-	 *
-	 * @access public
-	 * @return ORM_MPTT|bool 
-	 */
-	public function save()
-	{
-		if ($this->loaded === TRUE)
-			return parent::save();
-		
-		return FALSE;
-	}
-	
-	/**
 	 * Removes a node and it's descendants.
 	 *
 	 * $usless_param prevents a strict error that breaks PHPUnit like hell!
@@ -492,7 +478,7 @@ abstract class ORM_MPTT_Core extends ORM
 	 * @param string $key first table column.
 	 * @param string $val second table column.
 	 * @param string $indent character used for indenting.
-	 * @return array 
+	 * @return array
 	 */
 	public function select_list($key = NULL, $val = NULL, $indent = NULL)
 	{
@@ -536,7 +522,7 @@ abstract class ORM_MPTT_Core extends ORM
 	 */
 	public function move_to_first_child($target)
 	{
-		$this->lock();	
+		$this->lock();
 		
 		// Move should only work on nodes that are already in the tree.. if its not already it the tree it needs to be inserted!
 		if (!$this->loaded)
@@ -680,11 +666,11 @@ abstract class ORM_MPTT_Core extends ORM
 	 * Move
 	 *
 	 * @param integer $new_left left value for the new node position.
-	 * @param integer $level_offset 
+	 * @param integer $level_offset
 	 */
 	protected function move($new_left, $level_offset, $new_scope)
 	{
-		$this->lock();		
+		$this->lock();
 		
 		$size = $this->get_size();
 		
@@ -697,7 +683,7 @@ abstract class ORM_MPTT_Core extends ORM
 		// Update the values.
 		$this->db->query('UPDATE '.$this->table_name.' SET `'.$this->left_column.'` = `'.$this->left_column.'` + '.$offset.', `'.$this->right_column.'` = `'.$this->right_column.'` + '.$offset.'
 		, `'.$this->level_column.'` = `'.$this->level_column.'` + '.$level_offset.'
-		, `'.$this->scope_column.'` = '.$new_scope.' 
+		, `'.$this->scope_column.'` = '.$new_scope.'
 		WHERE `'.$this->left_column.'` >= '.$this->{$this->left_column}.' AND `'.$this->right_column.'` <= '.$this->{$this->right_column}.' AND `'.$this->scope_column.'` = '.$this->{$this->scope_column});
 		
 		$this->delete_space($this->{$this->left_column}, $size);
@@ -739,10 +725,10 @@ abstract class ORM_MPTT_Core extends ORM
 	}
 	
 	/**
-	 * Verify the tree is in good order 
-	 * 
+	 * Verify the tree is in good order
+	 *
 	 * This functions speed is irrelevant - its really only for debugging and unit tests
-	 * 
+	 *
 	 * @todo Look for any nodes no longer contained by the root node.
 	 * @todo Ensure every node has a path to the root via ->parents();
 	 * @access public
