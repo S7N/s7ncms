@@ -18,7 +18,7 @@ CREATE TABLE `modules` (
   `id` int(10) NOT NULL auto_increment,
   `name` varchar(200) default NULL,
   `version` int(10) default 0,
-  `status` varchar(200) default 'off',
+  `status` varchar(200) default 'on',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -36,12 +36,14 @@ CREATE TABLE `pages` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `pages` (`id`,`level`,`lft`,`rgt`,`scope`,`title`,`type`,`target`)
+INSERT INTO `pages` (`id`,`level`,`lft`,`rgt`,`title`,`type`,`target`,`scope`)
 VALUES
-	(1,0,1,8,1,'Startseite / Home',NULL,NULL),
-	(2,1,2,5,1,'Produkte / Products',NULL,NULL),
-	(3,2,3,4,1,'S7Ncms / S7Ncms',NULL,NULL),
-	(4,1,6,7,1,'Tagebuch / Diary','module','blog');
+	(6,1,10,11,'Über S7Ncms / About S7Ncms',NULL,NULL,1),
+	(5,1,8,9,'Blog / Blog','module','blog',1),
+	(4,2,5,6,'Amet / Amet',NULL,NULL,1),
+	(3,2,3,4,'Dolor Sit / Dolor Sit',NULL,NULL,1),
+	(2,1,2,7,'Lorem Ipsum / Lorem Ipsum',NULL,NULL,1),
+	(1,0,1,12,'Startseite / Home Page',NULL,NULL,1);
 
 CREATE TABLE `page_contents` (
   `id` int(11) NOT NULL auto_increment,
@@ -68,14 +70,18 @@ CREATE TABLE `page_contents` (
 
 INSERT INTO `page_contents` (`id`,`page_id`,`language`,`keywords`,`user_id`,`date`,`title`,`excerpt`,`content`,`uri`,`tags`,`view`,`modified`,`password`,`status`,`type`,`target`)
 VALUES
-	(1,1,'de',NULL,0,'2009-03-04 00:12:50','Startseite',NULL,'<p>Willkommen</p>','startseite',NULL,NULL,'2009-03-04 00:12:50',NULL,'published',NULL,NULL),
-	(2,1,'en',NULL,0,'2009-03-04 00:12:50','Home',NULL,'<p>Welcome</p>','home',NULL,NULL,'2009-03-04 00:12:50',NULL,'published',NULL,NULL),
-	(3,2,'de',NULL,0,'2009-03-04 00:13:33','Produkte',NULL,'<p>Produkte</p>','produkte',NULL,NULL,'2009-03-04 00:13:33',NULL,'published',NULL,NULL),
-	(4,2,'en',NULL,0,'2009-03-04 00:13:33','Products',NULL,'<p>Products</p>','products',NULL,NULL,'2009-03-04 00:13:33',NULL,'published',NULL,NULL),
-	(5,3,'de',NULL,0,'2009-03-04 00:14:28','S7Ncms',NULL,'<p>Das ist S7Ncms</p>','s7ncms',NULL,NULL,'2009-03-04 00:14:28',NULL,'published',NULL,NULL),
-	(6,3,'en',NULL,0,'2009-03-04 00:14:28','S7Ncms',NULL,'<p>This is S7Ncms</p>','s7ncms',NULL,NULL,'2009-03-04 00:14:28',NULL,'published',NULL,NULL),
-	(7,4,'de',NULL,0,'2009-03-04 00:15:04','Tagebuch',NULL,'<p>---</p>','tagebuch',NULL,NULL,'2009-03-04 00:15:18',NULL,'published',NULL,NULL),
-	(8,4,'en',NULL,0,'2009-03-04 00:15:04','Diary',NULL,'<p>---</p>','diary',NULL,NULL,'2009-03-04 00:15:18',NULL,'published',NULL,NULL);
+	(1,1,'de',NULL,0,'2009-05-19 23:05:20','Startseite',NULL,'<p>Das ist die Startseite von S7Ncms.</p>','startseite',NULL,NULL,'2009-05-19 23:05:20',NULL,'published',NULL,NULL),
+	(2,1,'en',NULL,0,'2009-05-19 23:05:20','Home Page',NULL,'<p>This is the home page of S7Ncms.</p>','home-page',NULL,NULL,'2009-05-19 23:05:20',NULL,'published',NULL,NULL),
+	(3,2,'de',NULL,0,'2009-05-19 23:06:17','Lorem Ipsum',NULL,'<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','lorem-ipsum',NULL,NULL,'2009-05-19 23:06:17',NULL,'published',NULL,NULL),
+	(4,2,'en',NULL,0,'2009-05-19 23:06:17','Lorem Ipsum',NULL,'<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','lorem-ipsum',NULL,NULL,'2009-05-19 23:06:17',NULL,'published',NULL,NULL),
+	(5,3,'de',NULL,0,'2009-05-19 23:15:31','Dolor Sit',NULL,'<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','dolor-sit',NULL,NULL,'2009-05-19 23:15:31',NULL,'published',NULL,NULL),
+	(6,3,'en',NULL,0,'2009-05-19 23:15:31','Dolor Sit',NULL,'<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','dolor-sit',NULL,NULL,'2009-05-19 23:15:31',NULL,'published',NULL,NULL),
+	(7,4,'de',NULL,0,'2009-05-19 23:16:03','Amet',NULL,'<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','amet',NULL,NULL,'2009-05-19 23:16:03',NULL,'published',NULL,NULL),
+	(8,4,'en',NULL,0,'2009-05-19 23:16:03','Amet',NULL,'<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','amet',NULL,NULL,'2009-05-19 23:16:03',NULL,'published',NULL,NULL),
+	(9,5,'de',NULL,0,'2009-05-19 23:13:56','Blog',NULL,'','blog',NULL,NULL,'2009-05-19 23:14:12',NULL,'published',NULL,NULL),
+	(10,5,'en',NULL,0,'2009-05-19 23:13:56','Blog',NULL,'','blog',NULL,NULL,'2009-05-19 23:14:12',NULL,'published',NULL,NULL),
+	(11,6,'de',NULL,0,'2009-05-19 23:19:21','Über S7Ncms',NULL,'<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','uber-s7ncms',NULL,NULL,'2009-05-19 23:19:21',NULL,'published',NULL,NULL),
+	(12,6,'en',NULL,0,'2009-05-19 23:19:21','About S7Ncms',NULL,'<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','about-s7ncms',NULL,NULL,'2009-05-19 23:19:21',NULL,'published',NULL,NULL);
 
 CREATE TABLE `roles` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -109,3 +115,48 @@ CREATE TABLE `users` (
   UNIQUE KEY `uniq_username` (`username`),
   UNIQUE KEY `uniq_email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `blog_posts` (
+  `id` bigint(20) unsigned NOT NULL auto_increment,
+  `user_id` bigint(20) NOT NULL default '0',
+  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `content` longtext NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `excerpt` text,
+  `status` varchar(20) NOT NULL default 'published',
+  `comment_status` varchar(20) NOT NULL default 'open',
+  `ping_status` varchar(20) NOT NULL default 'open',
+  `password` varchar(20) default '',
+  `uri` varchar(200) NOT NULL default '',
+  `modified` datetime NOT NULL default '0000-00-00 00:00:00',
+  `comment_count` bigint(20) NOT NULL default '0',
+  `tags` text,
+  PRIMARY KEY  (`id`),
+  KEY `uri` (`uri`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `blog_posts` (`id`,`user_id`,`date`,`content`,`title`,`excerpt`,`status`,`comment_status`,`ping_status`,`password`,`uri`,`modified`,`comment_count`,`tags`)
+VALUES
+	(1,1,'2009-05-19 23:00:00','<p>This is my <strong>first</strong> blog post.</p>\n<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','First Blog Post',NULL,'published','open','open','','first-blog-post','2009-05-19 23:00:00',1,'Lorem Ipsum, Test'),
+	(1,1,'2009-05-19 23:00:0','<p>This is my <strong>second</strong> blog post.</p>\n<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>','Second Blog Post',NULL,'published','open','open','','second-blog-post','2009-05-19 23:00:00',0,'Dolor Sit, Test');
+
+CREATE TABLE `blog_comments` (
+  `id` bigint(20) unsigned NOT NULL auto_increment,
+  `blog_post_id` int(11) NOT NULL default '0',
+  `author` varchar(200) NOT NULL,
+  `email` varchar(100) default NULL,
+  `url` varchar(200) default NULL,
+  `ip` varchar(100) NOT NULL default '0.0.0.0',
+  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `content` text,
+  `approved` varchar(20) NOT NULL default '1',
+  `agent` varchar(255) default NULL,
+  `type` varchar(20) NOT NULL default 'comment',
+  `user_id` bigint(20) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `blog_posts_id` (`blog_post_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `blog_comments` (`id`,`blog_post_id`,`author`,`email`,`url`,`ip`,`date`,`content`,`approved`,`agent`,`type`,`user_id`)
+VALUES
+	(1,1,'Edy','edy@edy-b.de','http://www.edy-b.de/','127.0.0.1','2009-05-19 23:00:00','Nice CMS!','1','Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.0.6) Gecko/2009020614 Firefox/3.0.6 BeatnikPad FirePHP/0.2.4','comment',0);
