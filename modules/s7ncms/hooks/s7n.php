@@ -12,11 +12,6 @@
  * @version $Id$
  */
 
-$config = Kohana::config('database.default');
-
-if (empty($config))
-	url::redirect('install.php');
-
 Event::add('system.ready', 'module::load_modules');
 Event::add('system.ready', 'config::load');
 
