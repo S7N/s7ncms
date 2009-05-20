@@ -91,19 +91,12 @@ class Install_Controller extends Template_Controller {
 			$password = $this->input->post('password');
 			$hostname = $this->input->post('hostname');
 			$database = $this->input->post('database');
+			$table_prefix = ''; // TODO
 
 			try
 			{
 				installer::check_database($username, $password, $hostname, $database);
-				
-				$config = new View('database_config');
-				$config->username = $username;
-				$config->password = $password;
-				$config->hostname = $hostname;
-				$config->database = $database;
-				$config->table_prefix = ''; // TODO
-
-				file_put_contents(DOCROOT.'config/database.php', $config);
+				installer::create_database_config($username, $password, $hostname, $database, $table_prefix);
 
 				url::redirect('install/step_create_data');
 			}
@@ -132,7 +125,6 @@ class Install_Controller extends Template_Controller {
 				}
 			}
 		}
-
 	}
 	
 	public function step_create_data()

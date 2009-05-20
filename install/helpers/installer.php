@@ -40,5 +40,17 @@ class installer {
 
 		return TRUE;
 	}
+	
+	public function create_database_config($username, $password, $hostname, $database, $table_prefix)
+	{
+		$config = new View('database_config');
+		$config->username     = $username;
+		$config->password     = $password;
+		$config->hostname     = $hostname;
+		$config->database     = $database;
+		$config->table_prefix = $table_prefix;
+
+		file_put_contents(DOCROOT.'config/database.php', $config);
+	}
 
 }
