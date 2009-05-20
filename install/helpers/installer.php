@@ -31,7 +31,7 @@ class installer {
 				throw new Exception('connect_to_host');
 				
 			else
-				throw new Exception('connect');
+				throw new Exception(mysql_error());
 		}
 
 		if ( ! $select = mysql_select_db($database, $link)) {

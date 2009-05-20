@@ -3,4 +3,7 @@
 if (file_exists(DOCROOT.'config/database.php'))
 	require_once(DOCROOT.'config/database.php');
 else
-	url::redirect('install.php');
+{
+	header('Location: install.php');
+	exit;
+}

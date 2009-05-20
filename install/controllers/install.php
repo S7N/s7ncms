@@ -37,17 +37,17 @@ class Install_Controller extends Template_Controller {
 		$view = new View('step_systemcheck');
 
 		$view->php_version           = version_compare(PHP_VERSION, '5.2', '>=');
-		$view->system_directory      = is_dir(SYSPATH) AND is_file(SYSPATH.'core/Bootstrap'.EXT);
-		$view->application_directory = is_dir(APPPATH) AND is_file(DOCROOT.'application/config/config'.EXT);
+		$view->system_directory      = (is_dir(SYSPATH) AND is_file(SYSPATH.'core/Bootstrap'.EXT));
+		$view->application_directory = (is_dir(APPPATH) AND is_file(DOCROOT.'application/config/config'.EXT));
 		$view->modules_directory     = is_dir(MODPATH);
-		$view->config_writable       = is_dir(DOCROOT.'config') AND is_writable(DOCROOT.'config');
-		$view->cache_writable        = is_dir(DOCROOT.'application/cache') AND is_writable(DOCROOT.'application/cache');
+		$view->config_writable       = (is_dir(DOCROOT.'config') AND is_writable(DOCROOT.'config'));
+		$view->cache_writable        = (is_dir(DOCROOT.'application/cache') AND is_writable(DOCROOT.'application/cache'));
 		$view->pcre_utf8             = @preg_match('/^.$/u', 'ñ');
 		$view->pcre_unicode          = @preg_match('/^\pL$/u', 'ñ');
 		$view->reflection_enabled    = class_exists('ReflectionClass');
 		$view->filters_enabled       = function_exists('filter_list');
 		$view->iconv_loaded          = extension_loaded('iconv');
-		$view->mbstring              = ! (extension_loaded('mbstring') AND ini_get('mbstring.func_overload') AND MB_OVERLOAD_STRING);
+		$view->mbstring              = ( ! (extension_loaded('mbstring') AND ini_get('mbstring.func_overload') AND MB_OVERLOAD_STRING));
 		$view->uri_determination     = isset($_SERVER['REQUEST_URI']) OR isset($_SERVER['PHP_SELF']);
 
 		if (    $view->php_version
@@ -87,16 +87,19 @@ class Install_Controller extends Template_Controller {
 
 		if ($_POST)
 		{
-			$username = $this->input->post('username');
-			$password = $this->input->post('password');
-			$hostname = $this->input->post('hostname');
-			$database = $this->input->post('database');
-			$table_prefix = ''; // TODO
+			$data = array(
+				'username' => $username = $this->input->post('username'),
+				'password' => $password = $this->input->post('password'),
+				'hostname' => $hostname = $this->input->post('hostname'),
+				'database' => $database = $this->input->post('database'),
+				'table_prefix' => '' // TODO
+			);
 
 			try
 			{
 				installer::check_database($username, $password, $hostname, $database);
-				installer::create_database_config($username, $password, $hostname, $database, $table_prefix);
+
+				Session::instance()->set('database_data', $data);
 
 				url::redirect('install/step_create_data');
 			}
@@ -121,7 +124,7 @@ class Install_Controller extends Template_Controller {
 						$this->error = 'could not select the database';
 						break;
 					default:
-						$this->error = 'unknown error';
+						$this->error = $error;
 				}
 			}
 		}
@@ -129,7 +132,50 @@ class Install_Controller extends Template_Controller {
 	
 	public function step_create_data()
 	{
-		$this->content = 'create data here';
+		$data = Session::instance()->get('database_data');
+		$password = text::random('alnum', 8);
+		$password_hash = Auth::instance()->hash_password($password);
+		
+		$sql = View::factory('sql_dump', array('table_prefix' => $data['table_prefix'], 'password_hash' => $password_hash))->render();
+		$sql = explode("\n", $sql);
+		
+		mysql_connect($data["hostname"], $data["username"], $data["password"]);
+		mysql_select_db($data["database"]);
+		
+		$buffer = '';
+		foreach ($sql as $line)
+		{
+			$buffer .= $line;
+			if (preg_match('/;$/', $line))
+			{
+				mysql_query($buffer);
+				
+				$buffer = '';
+			}
+			
+		}
+		
+		Session::instance()->set('password', $password);
+		
+		url::redirect('install/finalize');
 	}
+	
+	public function finalize()
+	{
+		$data = Session::instance()->get('database_data');
+		installer::create_database_config($data['username'], $data['password'], $data['hostname'], $data['database'], $data['table_prefix']);
+		
+		$password = Session::instance()->get('password');
+		$this->content = 'sollte nun gehen! dein passwort lautet: <b>'.$password.'</b> gut merken! und nun '.html::anchor('/', 'klick mich mal an').' :-)';
+	}
+	
+	public function test()
+	{
+		$password = text::random('alnum', 8);
+		$password_hash = Auth::instance()->hash_password($password);
+		
+		echo Kohana::debug($password, $password_hash);
+	}
+	
 
 }
