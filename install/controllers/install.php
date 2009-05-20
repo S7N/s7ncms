@@ -15,8 +15,9 @@ class Install_Controller extends Template_Controller {
 
 	public function __construct()
 	{
-		//if (file_exists(DOCROOT.'config/database.php'))
-		//	die('S7Ncms is already installed.');
+		if (file_exists(DOCROOT.'config/database.php'))
+			die('S7Ncms is already installed.');
+		
 		parent::__construct();
 		
 		$this->template->bind('title', $this->title);

@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <?php echo html::stylesheet('themes/admin/css/layout') ?>
     <?php echo html::script('vendor/jquery/jquery') ?>
+    <?php echo html::script('vendor/jquery/jquery-ui.min') ?>
     <?php echo html::script('themes/admin/js/stuff') ?>
 </head>
 
