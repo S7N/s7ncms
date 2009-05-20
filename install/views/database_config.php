@@ -31,9 +31,9 @@ $config['default'] = array
 	'connection'    => array
 	(
 		'type'     => 'mysql',
-		'user'     => '<?php echo $user ?>',
+		'user'     => '<?php echo $username ?>',
 		'pass'     => '<?php echo $password ?>',
-		'host'     => '<?php echo $host ?>',
+		'host'     => '<?php echo $hostname ?>',
 		'port'     => FALSE,
 		'socket'   => FALSE,
 		'database' => '<?php echo $database ?>'

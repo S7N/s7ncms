@@ -1,44 +1,13 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
-<div>
-	<?php echo form::open(); ?>
-	<table>
-	
-		<tr>
-			<td>
-				<label for="user">Username</label>
-			</td>
-			<td>
-				<?php echo form::input('user', $form['user']) ?>
-			</td>
-		</tr>
-		
-		<tr>
-			<td>
-				<label for="password">Password</label>
-			</td>
-			<td>
-				<?php echo form::password('password', $form['password']) ?>
-			</td>
-		</tr>
-		
-		<tr>
-			<td>
-				<label for="host">Hostname</label>
-			</td>
-			<td>
-				<?php echo form::input('host', $form['host']) ?>
-			</td>
-		</tr>
-		
-		<tr>
-			<td>
-				<label for="database">Database</label>
-			</td>
-			<td>
-				<?php echo form::input('database', $form['database']) ?>
-			</td>
-		</tr>	
-	</table>
-	<?php echo form::submit('submit', 'OK') ?>
-	<?php echo form::close() ?>
+<?php echo form::open(); ?>
+<div class="box">
+	<div class="inside">
+		<p><?php echo form::label('username', 'Username').form::input('username', $form['username']) ?></p>
+		<p><?php echo form::label('password', 'Password').form::input('password', $form['password']) ?></p>
+		<p><?php echo form::label('hostname', 'Hostname').form::input('hostname', $form['hostname']) ?></p>
+		<p><?php echo form::label('database', 'Database').form::input('database', $form['database']) ?></p>
+	</div>
 </div>
+
+<p><?php echo form::submit('submit', 'Next') ?></p>
+<?php echo form::close() ?>

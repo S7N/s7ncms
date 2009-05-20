@@ -18,9 +18,9 @@ class installer {
 		
 	}
 
-	public static function check_database($user, $password, $host, $database)
+	public static function check_database($username, $password, $hostname, $database)
 	{
-		if ( ! $link = @mysql_connect($host, $user, $password)) {
+		if ( ! $link = @mysql_connect($hostname, $username, $password)) {
 			if (strpos(mysql_error(), 'Access denied') !== FALSE)
 				throw new Exception('access');
 				

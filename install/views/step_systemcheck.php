@@ -1,25 +1,17 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 <style type="text/css">
-body { width: 42em; margin: 0 auto; font-family: sans-serif; font-size: 90%; }
-#tests table { border-collapse: collapse; width: 100%; }
-#tests table th,
-#tests table td { padding: 0.2em 0.4em; text-align: left; vertical-align: top; }
-#tests table th { width: 12em; font-weight: normal; font-size: 1.2em; }
-#tests table tr:nth-child(odd) { background: #eee; }
-#tests table td.pass { color: #191; }
-#tests table td.fail { color: #911; }
-#tests #results { color: #fff; }
-#tests #results p { padding: 0.8em 0.4em; }
-#tests #results p.pass { background: #191; }
-#tests #results p.fail { background: #911; }
+	#tests table th,
+	#tests table td { padding: 0.2em 0.4em; text-align: left; vertical-align: top; }
+	#tests table td.pass { color: #191; }
+	#tests table td.fail { color: #911; }
+	#tests #results { color: #fff; }
+	#tests #results p { padding: 0.8em 0.4em; }
+	#tests #results p.pass { background: #191; }
+	#tests #results p.fail { background: #911; }
 </style>
 
-<h1>Environment Tests</h1>
-
-<p>The following tests have been run to determine if S7Ncms will work in your environment.</p>
-
 <div id="tests">
-	<table cellspacing="0">	
+	<table cellspacing="0">
 		<tr>
 			<th>PHP Version</th>
 			<?php if ($php_version): ?>
@@ -61,7 +53,16 @@ body { width: 42em; margin: 0 auto; font-family: sans-serif; font-size: 90%; }
 			<?php if ($config_writable): ?>
 			<td class="pass"><code><?php echo str_replace('\\', '/', realpath(DOCROOT.'config')).'/' ?></code> is writable</td>
 			<?php else: ?>
-			<td class="fail">The <code><?php echo str_replace('\\', '/', realpath(DOCROOT.'config')).'/' ?></code> directory is not writable.</td>
+			<td class="fail">The directory <code><?php echo str_replace('\\', '/', realpath(DOCROOT.'config')).'/' ?></code> does not exist or is not writable.</td>
+			<?php endif ?>
+		</tr>
+		
+		<tr>
+			<th>Cache Directory</th>
+			<?php if ($cache_writable): ?>
+			<td class="pass"><code><?php echo str_replace('\\', '/', realpath(DOCROOT.'application/cache')).'/' ?></code> is writable</td>
+			<?php else: ?>
+			<td class="fail">The <code><?php echo str_replace('\\', '/', realpath(DOCROOT.'application/cache')).'/' ?></code> directory is not writable.</td>
 			<?php endif ?>
 		</tr>
 	
@@ -122,8 +123,4 @@ body { width: 42em; margin: 0 auto; font-family: sans-serif; font-size: 90%; }
 		</tr>
 	
 	</table>
-	
-	<div id="results">
-		<p class="fail">S7Ncms may not work correctly with your environment.</p>
-	</div>
 </div>
