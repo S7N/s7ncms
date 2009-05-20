@@ -1,4 +1,5 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
+SET NAMES 'utf8';
 
 CREATE TABLE `<?php echo $table_prefix ?>config` (
   `id` int(11) NOT NULL auto_increment,
