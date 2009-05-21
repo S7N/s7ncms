@@ -32,18 +32,18 @@ $kohana_modules = 'modules';
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_system = 'system';
+$kohana_system = 'kohana';
 
 /**
  * S7Ncms upload directory. This directory contains all uploaded files
- * 
+ *
  * This path can be absolute or relative to this file.
  */
 $s7n_upload = 'upload';
 
 /**
  * S7Ncms themes directory. This directory contains themes used in S7Ncms
- * 
+ *
  * This path can be absolute or relative to this file.
  */
 $s7n_themes = 'themes';
