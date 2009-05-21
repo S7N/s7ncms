@@ -78,7 +78,7 @@ class Blog_Controller extends Website_Controller {
 				->add('text', 'email', array('label' => __('Email')))
 				->add('text', 'url', array('label' => __('Homepage')))
 				->add('textarea', 'content', array('label' => __('Comment')))
-				->add('submit', __('Submit'))
+				->add('submit', 'submit', __('Submit'))
 				
 				->pre_filter('all', 'trim')
 				->pre_filter('author', 'security::xss_clean')

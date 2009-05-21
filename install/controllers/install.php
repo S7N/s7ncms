@@ -41,7 +41,7 @@ class Install_Controller extends Template_Controller {
 		$view->application_directory = (is_dir(APPPATH) AND is_file(DOCROOT.'application/config/config'.EXT));
 		$view->modules_directory     = is_dir(MODPATH);
 		$view->config_writable       = (is_dir(DOCROOT.'config') AND is_writable(DOCROOT.'config'));
-		$view->cache_writable        = (is_dir(DOCROOT.'application/cache') AND is_writable(DOCROOT.'application/cache'));
+		$view->cache_writable        = (is_dir(DOCROOT.'config/cache') AND is_writable(DOCROOT.'config/cache'));
 		$view->pcre_utf8             = @preg_match('/^.$/u', 'ñ');
 		$view->pcre_unicode          = @preg_match('/^\pL$/u', 'ñ');
 		$view->reflection_enabled    = class_exists('ReflectionClass');

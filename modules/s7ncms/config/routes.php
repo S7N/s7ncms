@@ -9,4 +9,4 @@ $config['_default'] = 'none';
 /**
  * Default route to use for administration
  */
-$config['admin'] = 'admin/dashboard';
+$config['admin'] = 'admin/page';

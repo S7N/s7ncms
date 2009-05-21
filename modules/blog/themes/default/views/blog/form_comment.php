@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <h3 id="respond">
-	<?php echo __('Your comment')?>
+	<?php echo __('Your comment')?>:
 </h3>
 
 <?php echo form::open(NULL, array('id' => 'commentform')) ?>

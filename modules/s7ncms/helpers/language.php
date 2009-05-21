@@ -52,6 +52,7 @@ class language_Core {
 		}
 
 		Kohana::config_set('locale.language', language::$available_languages[Router::$language]['language']);
+		I18n::$lang = language::$available_languages[Router::$language]['language'][0];
 	}
 	
 	public static function browser_language()

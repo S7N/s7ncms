@@ -114,7 +114,7 @@ class Menu_Core {
 		if ($this->type == 'submenu')
 			return $this->submenu();
 
-		if (($cache = Cache::instance()->get('menu_'.Router::$current_id)) !== NULL)
+		if (($cache = Cache::instance()->get('menu_'.Router::$language.'_'.Router::$current_id)) !== NULL)
 			return $cache;
 
 		foreach ($this->items() as $item)
@@ -122,7 +122,7 @@ class Menu_Core {
 		
 		if (count($this->items()) === 0)
 		{
-			Cache::instance()->set('menu_'.Router::$current_id, '<ul class="menu"></ul>', array('menu'));
+			Cache::instance()->set('menu_'.Router::$language.'_'.Router::$current_id, '<ul class="menu"></ul>', array('menu'));
 			return '<ul class="menu"></ul>';
 		}
 
@@ -136,14 +136,14 @@ class Menu_Core {
 		}
 		$output .= '</ul>';
 
-		Cache::instance()->set('menu_'.Router::$current_id, $output, array('menu'));
+		Cache::instance()->set('menu_'.Router::$language.'_'.Router::$current_id, $output, array('menu'));
 		
 		return $output;
 	}
 
 	public function submenu()
 	{
-		$cache = Cache::instance()->get('submenu_'.Router::$current_id);
+		$cache = Cache::instance()->get('submenu_'.Router::$language.'_'.Router::$current_id);
 		if ( ! empty($cache))
 			return '<ul class="submenu">'.$cache.'</ul>';
 
@@ -152,7 +152,7 @@ class Menu_Core {
 
 		if (count($this->items()) === 0)
 		{
-			Cache::instance()->set('submenu_'.Router::$current_id, '', array('menu'));
+			Cache::instance()->set('submenu_'.Router::$language.'_'.Router::$current_id, '', array('menu'));
 			return '';
 		}
 
@@ -163,14 +163,14 @@ class Menu_Core {
 		
 		if ($this->get($id)->level === 0)
 		{
-			Cache::instance()->set('submenu_'.Router::$current_id, '', array('menu'));
+			Cache::instance()->set('submenu_'.Router::$language.'_'.Router::$current_id, '', array('menu'));
 			return '';
 		}
 			
 			
 		$output = $this->get($id)->render(TRUE);
 
-		Cache::instance()->set('submenu_'.Router::$current_id, $output, array('menu'));
+		Cache::instance()->set('submenu_'.Router::$language.'_'.Router::$current_id, $output, array('menu'));
 		
 		if (empty($output))
 			return '';

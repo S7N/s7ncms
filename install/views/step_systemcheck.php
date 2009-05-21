@@ -60,9 +60,9 @@
 		<tr>
 			<th>Cache Directory</th>
 			<?php if ($cache_writable): ?>
-			<td class="pass"><code><?php echo str_replace('\\', '/', realpath(DOCROOT.'application/cache')).'/' ?></code> is writable</td>
+			<td class="pass"><code><?php echo str_replace('\\', '/', realpath(DOCROOT.'config/cache')).'/' ?></code> is writable</td>
 			<?php else: ?>
-			<td class="fail">The <code><?php echo str_replace('\\', '/', realpath(DOCROOT.'application/cache')).'/' ?></code> directory is not writable.</td>
+			<td class="fail">The <code><?php echo str_replace('\\', '/', realpath(DOCROOT.'config/cache')).'/' ?></code> directory is not writable.</td>
 			<?php endif ?>
 		</tr>
 	

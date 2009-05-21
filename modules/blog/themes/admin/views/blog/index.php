@@ -15,7 +15,7 @@
 			<td>
 				<?php echo html::anchor('admin/blog/edit/'.$post->id, $post->title) ?>
 				&mdash;
-				<?php echo html::anchor('admin/blog/comments/'.$post->id, $post->comment_count.' comment(s)') ?>
+				<?php echo html::anchor('admin/blog/comments/'.$post->id, __n('One comment', '%count comments', $post->comment_count)) ?>
 			</td>
 			<td><?php echo $post->date ?></td>
 			<td><?php echo $post->user->username ?></td>

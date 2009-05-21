@@ -39,7 +39,7 @@ class url extends url_Core {
 		if ((strpos(Router::$current_uri, 'admin')) === 0)
 			return;
 		
-		$cache_name = 'route_'.str_replace('/', '_', Router::$current_uri);
+		$cache_name = 'route_'.Router::$language.'_'.str_replace('/', '_', Router::$current_uri);
 		
 		if (($cache = Cache::instance()->get($cache_name)) === NULL)
 		{

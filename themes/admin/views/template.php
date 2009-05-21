@@ -29,7 +29,7 @@
 
 	<div id="navigation">
 		<ul>
-			<li><?php echo html::anchor('admin/dashboard', 'Dashboard'); ?></li>
+			<!--li><?php echo html::anchor('admin/dashboard', 'Dashboard'); ?></li-->
 			<li><?php echo html::anchor('admin/page', 'Pages'); ?></li>
 			<?php echo menus::modules() ?>
 			<li><?php echo html::anchor('admin/modules', 'Modules'); ?></li>
