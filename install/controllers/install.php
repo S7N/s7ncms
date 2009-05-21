@@ -166,16 +166,9 @@ class Install_Controller extends Template_Controller {
 		installer::create_database_config($data['username'], $data['password'], $data['hostname'], $data['database'], $data['table_prefix']);
 		
 		$password = Session::instance()->get('password');
-		$this->content = 'sollte nun gehen! dein passwort lautet: <b>'.$password.'</b> gut merken! und nun '.html::anchor('/', 'klick mich mal an').' :-)';
-	}
-	
-	public function test()
-	{
-		$password = text::random('alnum', 8);
-		$password_hash = Auth::instance()->hash_password($password);
+		Session::instance()->destroy();
 		
-		echo Kohana::debug($password, $password_hash);
+		$this->content = View::factory('finalize', array('password' => $password));
 	}
-	
 
 }
