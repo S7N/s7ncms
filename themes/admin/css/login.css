@@ -17,8 +17,8 @@ body {
 	padding-bottom: 40px;
 }
 
-#message {
-	color: red;
+#message, .error {
+	color: #AD151F;
 }
 
 #login {

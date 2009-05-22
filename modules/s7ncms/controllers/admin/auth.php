@@ -27,53 +27,33 @@ class Auth_Controller extends Controller {
 			else
 				url::redirect();
 		}
-
-		$fields = array
-		(
-			'username' => '',
-			'password' => ''
-		);
-
-		$errors = $fields;
-
-		if ($_POST)
+		
+		$view = View::factory('login')->bind('form', $form)->bind('error', $error);
+		
+		$form = Formo::factory()
+			->add('text', 'username', array('label' => __('Username')))
+			->add('text', 'password', array('label' => __('Password')))
+			->add('submit', 'submit', array('label' => __('Login')))
+			
+			->add_rule('username', 'required', __('You must enter a username'))
+			->add_rule('password', 'required', __('You must enter a password'));
+			
+		if ($form->validate())
 		{
-			$_POST = new Validation($_POST);
+			// Load the user
+			$user = ORM::factory('user', $form->username);
 
-			$_POST
-				->add_rules('username', 'required')
-				->add_rules('password', 'required');
-
-			if ($_POST->validate())
+			// Attempt a login
+			if ($user->loaded AND Auth::instance()->login($user, $form->password))
 			{
-				// Load the user
-				$user = ORM::factory('user', $_POST['username']);
-
-				// Attempt a login
-				if (Auth::instance()->login($user, $_POST['password']))
-				{
-					$url = Session::instance()->get_once('redirect_me_to');
-					url::redirect(empty($url) ? 'admin' : $url);
-				}
-				else
-				{
-					$_POST->add_error('password', 'default');
-					$fields = arr::overwrite($fields, $_POST->safe_array('username'));
-					$errors = arr::overwrite($errors, $_POST->errors('login_error_messages'));
-				}
+				$url = Session::instance()->get_once('redirect_me_to');
+				url::redirect(empty($url) ? 'admin' : $url);
 			}
-			else
-			{
-				$fields = arr::overwrite($fields, $_POST->safe_array('username'));
-				$errors = arr::overwrite($errors, $_POST->errors('login_error_messages'));
-			}
+			
+			$error = __('Invalid username or password');
 		}
-
-		// Display the form
-		echo View::factory('login', array(
-			'fields' => $fields,
-			'errors' => $errors
-		));
+		
+		echo $view;
 	}
 
 	public function logout()

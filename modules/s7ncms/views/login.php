@@ -16,23 +16,26 @@
     <div id="logo"><?php echo html::image('themes/default/images/s7n_logo.png') ?></div>
     <div id="formular">
         <div id="message">
-        <?php foreach ($errors as $error): ?>
-        	<?php echo $error ?><br />
-        <?php endforeach ?>
+        <?php if ( ! empty($error)): ?>
+        	<?php echo $error ?>
+        <?php endif ?>
         </div>
 
-        <?php echo form::open(NULL) ?>
-        	<p class="email">
-        		<?php echo form::label('username', 'Username') ?><br />
-        		<?php echo form::input('username', $fields['username']) ?>
-        	</p>
-        	<p class="password">
-        		<?php echo form::label('password', 'Password') ?><br />
-        		<?php echo form::password('password') ?>
-        	</p>
-        	<p class="submit">
-        		<?php echo form::submit('submit', ' Login ') ?>
-        	</p>
+		<?php echo form::open() ?>
+			<?php echo $form->__form_object ?>
+	        <p class="email">
+	        	<?php echo form::label($form->username->name, $form->username->label) ?><br />
+	        	<?php echo empty($form->username->error) ? form::input($form->username->name, $form->username->value) : form::input($form->username->name, $form->username->value, 'class="error"') ?>
+	        	<?php if ( ! empty($form->username->error)): ?><br /><span class="error"><?php echo $form->username->error ?></span><?php endif ?>
+	        </p>
+	        <p class="password">
+	        	<?php echo form::label($form->password->name, $form->password->label) ?><br />
+	        	<?php echo empty($form->password->error) ? form::input($form->password->name) : form::input($form->password->name, '', 'class="error"') ?>
+	        	<?php if ( ! empty($form->password->error)): ?><br /><span class="error"><?php echo $form->password->error ?></span><?php endif ?>
+	        </p>
+	        <p class="submit">
+	        	<?php echo form::submit($form->submit->name, $form->submit->label) ?>
+	        </p>
         <?php echo form::close() ?>
     </div>
 </div>
