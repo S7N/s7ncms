@@ -8,10 +8,7 @@
 	<?php echo html::stylesheet('themes/admin/css/login.css', 'screen'); ?>
 	<title>S7Ncms login</title>
 	<script type="text/javascript">
-        function focusElement() {
-            document.getElementById('username').focus();
-        }
-        window.onload = focusElement;
+        window.onload = function () {document.getElementById('username').focus();};
     </script>
 </head>
 <body>

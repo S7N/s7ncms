@@ -92,7 +92,10 @@ class Blog_Controller extends Website_Controller {
 				->add_rule('content', 'required', __('You must enter a comment'));
 
 			if (config::get('blog.enable_captcha') === 'yes')
+			{
 				$form->add('captcha', 'security', array('label' => __('Security code')));
+				$form->security->error_msg = __('Invalid security code');
+			}
 
 			if ($form->validate())
 			{

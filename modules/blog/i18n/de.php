@@ -64,10 +64,12 @@ return array(
 	'Name' => 'Name',
 	'Email' => 'E-Mail',
 	'Homepage' => 'Homepage',
+	'Security code' => 'Sicherheits-Code',
 	'Submit' => 'Abschicken',
 	
 	'You must provide your name' => 'Sie müssen Ihren namen eingeben',
 	'Your Name is too long' => 'Der Name ist zu lang',
 	'Email address is not valid' => 'Die E-Mail-Adresse ist ungültig',
 	'You must enter a comment' => 'Sie müssen einen Kommentar eingeben',
+	'Invalid security code' => 'Ungültiger Sicherheitscode'
 );
