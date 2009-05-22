@@ -578,7 +578,7 @@ final class Kohana {
 	{
 		if ($lifetime > 0)
 		{
-			$path = self::$internal_cache_path.'kohana_'.$name;
+			$path = self::$internal_cache_path.'kohana_'.$name.EXT;
 
 			if (is_file($path))
 			{
@@ -586,7 +586,10 @@ final class Kohana {
 				if ((time() - filemtime($path)) < $lifetime)
 				{
 					// Cache is valid
-					return unserialize(file_get_contents($path));
+					ob_start();
+					include $path;
+					$data = ob_get_clean();
+					return unserialize($data);
 				}
 				else
 				{
@@ -614,7 +617,7 @@ final class Kohana {
 		if ($lifetime < 1)
 			return FALSE;
 
-		$path = self::$internal_cache_path.'kohana_'.$name;
+		$path = self::$internal_cache_path.'kohana_'.$name.EXT;
 
 		if ($data === NULL)
 		{
@@ -624,7 +627,7 @@ final class Kohana {
 		else
 		{
 			// Write data to cache file
-			return (bool) file_put_contents($path, serialize($data));
+			return (bool) file_put_contents($path, "<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>".serialize($data));
 		}
 	}
 

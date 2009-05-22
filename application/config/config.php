@@ -35,7 +35,7 @@ $config['internal_cache'] = TRUE;
 /**
  * Internal cache directory.
  */
-$config['internal_cache_path'] = DOCROOT.'config/cache';
+$config['internal_cache_path'] = DOCROOT.'config/cache/';
 
 /**
  * Enable or disable gzip output compression. This can dramatically decrease

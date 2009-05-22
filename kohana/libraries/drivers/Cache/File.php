@@ -104,8 +104,9 @@ class Cache_File_Driver implements Cache_Driver {
 			$tags = implode('+', $tags);
 		}
 
+		$data = "<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>".serialize($data);
 		// Write out a serialized cache
-		return (bool) file_put_contents($this->directory.$id.'~'.$tags.'~'.$lifetime, serialize($data));
+		return (bool) file_put_contents($this->directory.$id.'~'.$tags.'~'.$lifetime.EXT, $data);
 	}
 
 	/**
@@ -166,18 +167,12 @@ class Cache_File_Driver implements Cache_Driver {
 				// Turn off errors while reading the file
 				$ER = error_reporting(0);
 
-				if (($data = file_get_contents($file)) !== FALSE)
-				{
-					// Unserialize the data
-					$data = unserialize($data);
-				}
-				else
-				{
-					// Delete the data
-					unset($data);
-				}
-
-				// Turn errors back on
+				ob_start();
+				include $file;
+				$data = ob_get_clean();
+				
+				$data = unserialize($data);
+				
 				error_reporting($ER);
 			}
 		}
