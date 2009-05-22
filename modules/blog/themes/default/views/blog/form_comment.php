@@ -25,6 +25,14 @@
 		<?php echo empty($content_error) ? form::textarea('content', $content->value) : form::textarea('content', $content->value, 'class="error"') ?>
 		<?php if ( ! empty($content_error)): ?><br /><span class="error"><?php echo $content_error ?></span><?php endif ?>
 	</p>
+	<?php if (config::get('blog.enable_captcha') === 'yes'):?>
+	<p>
+		<?php echo $security->get_captcha() ?><br />
+		<?php echo empty($security_error) ? form::input('security') : form::input('security', '', 'class="error"') ?>
+		<?php echo form::label('security', $security->label) ?>
+		<?php if ( ! empty($security_error)): ?><br /><span class="error"><?php echo $security_error ?></span><?php endif ?>
+	</p>
+	<?php endif; ?>
 	<p>
 		<?php echo form::submit('submit', $submit->value) ?>
 	</p>

@@ -91,6 +91,9 @@ class Blog_Controller extends Website_Controller {
 				->add_rule('email', 'valid::email', __('Email address is not valid'))
 				->add_rule('content', 'required', __('You must enter a comment'));
 
+			if (config::get('blog.enable_captcha') === 'yes')
+				$form->add('captcha', 'security', array('label' => __('Security code')));
+
 			if ($form->validate())
 			{
 				$comment = ORM::factory('blog_comment');

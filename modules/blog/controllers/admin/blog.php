@@ -72,6 +72,8 @@ class Blog_Controller extends Administration_Controller {
 			Cache::instance()->delete('s7n_blog_feed');
 			Cache::instance()->delete_tag('route');
 
+			Event::run('s7n.admin.blog.post_created', $post);
+
 			message::info(__('Post created successfully'), 'admin/blog');
 		}
 		else
@@ -240,8 +242,10 @@ class Blog_Controller extends Administration_Controller {
 	{
 		if($_POST)
 		{
+			$enable_captcha = ($this->input->post('enable_captcha') === 'yes') ? 'yes' : 'no';
 			$comment_status = ($this->input->post('comment_status') === 'open') ? 'open' : 'closed';
 
+			config::set('blog.enable_captcha', $enable_captcha);
 			config::set('blog.comment_status', $comment_status);
 			config::set('blog.items_per_page', (int) $this->input->post('items_per_page'));
 
@@ -254,6 +258,7 @@ class Blog_Controller extends Administration_Controller {
 
 			$this->template->content = new View('blog/settings');
 			$this->template->content->items_per_page = config::get('blog.items_per_page');
+			$this->template->content->enable_captcha = config::get('blog.enable_captcha') == 'yes' ? TRUE : FALSE;
 			$this->template->content->comment_status = config::get('blog.comment_status') == 'open' ? TRUE : FALSE;
 		}
 	}

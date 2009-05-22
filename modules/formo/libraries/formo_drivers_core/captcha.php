@@ -43,7 +43,7 @@ class Formo_captcha_Driver extends Formo_Element {
 		if ( ! $this->captcha)
 		{
 			$this->captcha = Captcha::factory($this->group);
-		}		
+		}
 		
 		// add the clear html to the close tag
 		$this->close = $this->clear.$this->close;
@@ -57,7 +57,17 @@ class Formo_captcha_Driver extends Formo_Element {
 				 . $this->input_open
 				 . '<input type="text" name="'.$this->name.'"'.Formo::quicktagss($this->_find_tags()).' />'."\n"
 				 . $this->input_close;
-		}		
+		}
+	}
+	
+	public function get_captcha()
+	{
+		if ( ! $this->captcha)
+		{
+			$this->captcha = Captcha::factory($this->group);
+		}
+		
+		return $this->captcha;
 	}
 
 	protected function validate_this()
@@ -69,5 +79,5 @@ class Formo_captcha_Driver extends Formo_Element {
 			
 			return $this->error;
 		}
-	}	
+	}
 }

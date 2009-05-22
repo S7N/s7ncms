@@ -64,6 +64,7 @@ class blog_installer {
 			");
 
 			config::set('blog.items_per_page', 5);
+			config::set('blog.enable_captcha', 'yes');
 			config::set('blog.comment_status', 'open');
 
 			module::version('blog', 1);
