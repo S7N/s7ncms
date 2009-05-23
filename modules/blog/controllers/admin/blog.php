@@ -59,17 +59,28 @@ class Blog_Controller extends Administration_Controller {
 
 	public function create()
 	{
-		if($_POST)
+		$this->head->title->append(__('New Post'));
+		$this->template->title .= __('New Post');
+		
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add('text', 'title', array('label' => __('Title')))
+			->add('textarea', 'content', array('label' => __('Content')))
+			->add('text', 'tags', array('label' => __('Tags: <small>(Comma separated)</small>')))
+			->add('submit', 'submit', array('label' => __('Submit')))
+			
+			->add_rule('title', 'required', __('Please choose a title'));
+			
+		if($form->validate())
 		{
 			$post = ORM::factory('blog_post');
 			$post->user_id = Auth::instance()->get_user()->id;
-			$post->title = $this->input->post('form_title');
-			$post->uri = blog::unique_title($this->input->post('form_title'));
-			$post->content = $this->input->post('form_content');
-			$post->tags = $this->input->post('form_tags');
+			$post->title = $form->title->value;
+			$post->uri = blog::unique_title($form->title->value);
+			$post->content = $form->content->value;
+			$post->tags = $form->tags->value;
 			$post->save();
 
-			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
 			Cache::instance()->delete_tag('route');
 
@@ -77,44 +88,48 @@ class Blog_Controller extends Administration_Controller {
 
 			message::info(__('Post created successfully'), 'admin/blog');
 		}
-		else
-		{
-			$this->head->title->append(__('New Post'));
-
-			$this->template->title .= __('New Post');
-			$this->template->content = View::factory('blog/create');
-		}
+		
+		$this->template->content = View::factory('blog/create', $form->get(TRUE));
 	}
 
-	public function edit()
+	public function edit($id)
 	{
-		if($_POST)
+		$post = ORM::factory('blog_post', (int) $id);
+		
+		if ( ! $post->loaded)
+			message::error(__('Invalid ID'), 'admin/blog');
+		
+		$this->head->title->append(__('Edit: %title', array('%title' =>$post->title)));
+		$this->template->title .= __('Edit: %title', array('%title' =>$post->title));
+			
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add('text', 'title', array('label' => __('Title'), 'value' => $post->title))
+			->add('textarea', 'content', array('label' => __('Content'), 'value' => $post->content))
+			->add('text', 'tags', array('label' => __('Tags: <small>(Comma separated)</small>'), 'value' => $post->tags))
+			->add('submit', 'submit', array('label' => __('Submit')))
+			
+			->add_rule('title', 'required', __('Please choose a title'));
+		
+		if($form->validate())
 		{
-			$post = ORM::factory('blog_post', (int) $this->input->post('form_id'));
+			if ($form->title->value !== $post->title)
+				$post->uri = blog::unique_title($form->title->value);
 			
-			if ($this->input->post('form_title') !== $post->title)
-				$post->uri = blog::unique_title($this->input->post('form_title'));
-			
-			$post->title = $this->input->post('form_title');
-			$post->content = $this->input->post('form_content');
-			$post->tags = $this->input->post('form_tags');
+			$post->title = $form->title->value;
+			$post->content = $form->content->value;
+			$post->tags = $form->tags->value;
 			$post->save();
 
-			// delete feed cache
 			Cache::instance()->delete('s7n_blog_feed');
 			Cache::instance()->delete_tag('route');
 
-			message::info(__('Post edited successfully'), 'admin/blog');
+			message::info(__('Post edited successfully'), 'admin/blog/edit/'. (int) $id);
 		}
-		else
-		{
-			$post = ORM::factory('blog_post', (int) $this->uri->segment(4));
 
-			$this->head->title->append(__('Edit: %title', array('%title' =>$post->title)));
-			$this->template->title .= __('Edit: %title', array('%title' =>$post->title));
+		$this->template->content = View::factory('blog/edit', $form->get(TRUE));
+		$this->template->content->post = $post;
 
-			$this->template->content = View::factory('blog/edit', array('post' => $post));
-		}
 	}
 
 	public function delete($id)
@@ -124,10 +139,6 @@ class Blog_Controller extends Administration_Controller {
 		if ( ! $post->loaded)
 			message::error(__('Invalid ID'), 'admin/blog');
 		
-		// remove comments first
-		Database::instance()->where('blog_post_id', (int) $post->id)->delete('blog_comments');
-
-		// then delete the post
 		$post->delete();
 
 		Cache::instance()->delete('s7n_blog_feed');
@@ -139,30 +150,32 @@ class Blog_Controller extends Administration_Controller {
 
 	public function settings()
 	{
-		if($_POST)
-		{
-			$enable_captcha = ($this->input->post('enable_captcha') === 'yes') ? 'yes' : 'no';
-			$enable_tagcloud = ($this->input->post('enable_tagcloud') === 'yes') ? 'yes' : 'no';
-			$comment_status = ($this->input->post('comment_status') === 'open') ? 'open' : 'closed';
+		$this->head->title->append(__('Settings'));
+		$this->template->title .= __('Settings');
+			
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add('text', 'items_per_page', array('label' => __('Blog entries per page'), 'value' => config::get('blog.items_per_page')))
+			->add('checkbox', 'enable_captcha', array('label' => __('Enable captcha'), 'checked' => (config::get('blog.enable_captcha') === 'yes')))
+			->add('checkbox', 'enable_tagcloud', array('label' => __('Enable tag cloud'), 'checked' => (config::get('blog.enable_tagcloud') === 'yes')))
+			->add('checkbox', 'comment_status', array('label' => __('Enable comments'), 'checked' => (config::get('blog.comment_status') === 'open')))
+			->add('submit', 'submit', array('label' => __('Submit')))
+			
+			->add_rule('items_per_page', 'required', __('Please enter a number'))
+			->add_rule('items_per_page', 'digit', __('This must be a number'));
 
-			config::set('blog.enable_captcha', $enable_captcha);
-			config::set('blog.enable_tagcloud', $enable_tagcloud);
-			config::set('blog.comment_status', $comment_status);
-			config::set('blog.items_per_page', (int) $this->input->post('items_per_page'));
+		
+		if($form->validate())
+		{
+			config::set('blog.enable_captcha', $form->enable_captcha->checked ? 'yes' : 'no');
+			config::set('blog.enable_tagcloud', $form->enable_tagcloud->checked ? 'yes' : 'no');
+			config::set('blog.comment_status', $form->comment_status->checked ? 'open' : 'closed');
+			config::set('blog.items_per_page', $form->items_per_page->value);
 
 			message::info(__('Settings changed successfully'), 'admin/blog/settings');
 		}
-		else
-		{
-			$this->head->title->append(__('Settings'));
-			$this->template->title .= __('Settings');
-
-			$this->template->content = new View('blog/settings');
-			$this->template->content->items_per_page = config::get('blog.items_per_page');
-			$this->template->content->enable_captcha = config::get('blog.enable_captcha') == 'yes' ? TRUE : FALSE;
-			$this->template->content->enable_tagcloud = config::get('blog.enable_tagcloud') == 'yes' ? TRUE : FALSE;
-			$this->template->content->comment_status = config::get('blog.comment_status') == 'open' ? TRUE : FALSE;
-		}
+		
+		$this->template->content = new View('blog/settings', $form->get(TRUE));
 	}
 
 }

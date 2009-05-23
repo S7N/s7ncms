@@ -39,6 +39,10 @@ class Comments_Controller extends Administration_Controller {
 	public function view($blog_post_id)
 	{
 		$post = ORM::factory('blog_post', (int) $blog_post_id);
+		
+		if ( ! $post->loaded)
+			message::error(__('Invalid ID'), 'admin/blog');
+
 		$this->template->content = new View('blog/comments');
 		$this->template->content->comments = $post->blog_comments;
 
@@ -48,48 +52,50 @@ class Comments_Controller extends Administration_Controller {
 
 	public function edit($id)
 	{
-		if($_POST)
+		$comment = ORM::factory('blog_comment', (int) $id);
+		
+		if ( ! $comment->loaded)
+			message::error(__('Invalid ID'), 'admin/blog');
+		
+		$this->head->title->append(__('Edit comment #%id', array('%id' => $comment->id)));
+		$this->template->title .= __('Edit comment #%id', array('%id' => $comment->id));
+		
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add('text', 'author', array('label' => __('Author'), 'value' => $comment->author))
+			->add('text', 'email', array('label' => __('Email'), 'value' => $comment->email))
+			->add('text', 'url', array('label' => __('Homepage'), 'value' => $comment->url))
+			->add('textarea', 'content', array('label' => __('Comment'), 'value' => $comment->content))
+			->add('submit', 'submit', array('label' => __('Save')));
+			
+		if($form->validate())
 		{
-			$comment = ORM::factory('blog_comment', (int) $id);
-			$comment->author = $this->input->post('form_author');
-			$comment->email = $this->input->post('form_email');
-			$comment->url = $this->input->post('form_url');
-			$comment->content = $this->input->post('form_content');
+			$comment->author = $form->author->value;
+			$comment->email = $form->email->value;
+			$comment->url = $form->url->value;
+			$comment->content = $form->content->value;
 			$comment->save();
 
-			Cache::instance()->delete('s7n_blog_feed');
+			Cache::instance()->delete('s7n_blog_feed_comments');
 
 			message::info(__('Comment edited successfully'), 'admin/blog/comments/view/'.$comment->blog_post_id);
 		}
-		else
-		{
-			$comment = ORM::factory('blog_comment', (int) $id);
-
-			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append(__('Edit comment #%id', array('%id' => $comment->id)));
-			$this->template->title .= __('Edit comment #%id', array('%id' => $comment->id));
-
-			$this->template->content = View::factory('blog/editcomment', array(
-				'comment' => $comment
-			));
-		}
+		
+		$this->template->content = View::factory('blog/editcomment', $form->get(TRUE));
 	}
 	
 	public function delete($id)
 	{
 		$comment = ORM::factory('blog_comment', (int) $id);
+		
 		if ( ! $comment->loaded)
 			message::error(__('Invalid ID'), 'admin/blog');
 		
-		$post = ORM::factory('blog_post', (int) $comment->blog_post_id);
-		$post->comment_count -= 1;
-		$post->save();
-
 		$comment->delete();
 
 		Cache::instance()->delete('s7n_blog_feed_comments');
 
-		message::info(__('Comment deleted successfully'), 'admin/blog/comments/view/'.$post->id);
+		message::info(__('Comment deleted successfully'), 'admin/blog');
 	}
 	
 	public function close($blog_post_id)

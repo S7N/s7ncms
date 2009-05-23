@@ -27,6 +27,7 @@ return array(
 	'Content' => 'Inhalt',
 	'Tags: <small>(Comma separated)</small>' => 'Tags: <small>(mit Kommata getrennt)</small>',
 	'Save' => 'Speichern',
+	'Please choose a title' => 'Bitte einen Titel eingeben',
 
 	'Comments' => 'Kommentare',
 	'Edit Comment' => 'Kommentar bearbeiten',
@@ -58,6 +59,8 @@ return array(
 	'Enable captcha' => 'Captcha aktivieren',
 	'Enable tag cloud' => 'Tagcloud aktivieren',
 	'Enable comments' => 'Kommentare erlauben',
+	'Please enter a number' => 'Bitte geben Sie eine Zahl ein',
+	'This must be a number' => 'Es muss eine Zahl sein',
 
 	'One comment' => 'Ein Kommentar',
 	'%count comments' => array(

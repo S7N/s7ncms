@@ -58,6 +58,13 @@ class Blog_post_Model extends ORM {
 
 		parent::save();
 	}
+	
+	public function delete($id = NULL)
+	{
+		Database::instance()->where('blog_post_id', (int) $this->id)->delete('blog_comments');
+		
+		parent::delete($id);
+	}
 
 	public function count_posts()
 	{
