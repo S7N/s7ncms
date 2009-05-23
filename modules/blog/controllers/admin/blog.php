@@ -243,13 +243,15 @@ class Blog_Controller extends Administration_Controller {
 		if($_POST)
 		{
 			$enable_captcha = ($this->input->post('enable_captcha') === 'yes') ? 'yes' : 'no';
+			$enable_tagcloud = ($this->input->post('enable_tagcloud') === 'yes') ? 'yes' : 'no';
 			$comment_status = ($this->input->post('comment_status') === 'open') ? 'open' : 'closed';
 
 			config::set('blog.enable_captcha', $enable_captcha);
+			config::set('blog.enable_tagcloud', $enable_tagcloud);
 			config::set('blog.comment_status', $comment_status);
 			config::set('blog.items_per_page', (int) $this->input->post('items_per_page'));
 
-			message::info(__('Settings changed successfully'), 'admin/blog');
+			message::info(__('Settings changed successfully'), 'admin/blog/settings');
 		}
 		else
 		{
@@ -259,6 +261,7 @@ class Blog_Controller extends Administration_Controller {
 			$this->template->content = new View('blog/settings');
 			$this->template->content->items_per_page = config::get('blog.items_per_page');
 			$this->template->content->enable_captcha = config::get('blog.enable_captcha') == 'yes' ? TRUE : FALSE;
+			$this->template->content->enable_tagcloud = config::get('blog.enable_tagcloud') == 'yes' ? TRUE : FALSE;
 			$this->template->content->comment_status = config::get('blog.comment_status') == 'open' ? TRUE : FALSE;
 		}
 	}

@@ -55,7 +55,8 @@ return array(
 	'Settings changes successfully' => 'Einstellungen erfolgreich bearbeitet',
 	'Blog entries per page' => 'Blogeinträge pro Seite',
 	'Enable captcha' => 'Captcha aktivieren',
-	'Enable comments' => 'Kommentare einschalten',
+	'Enable tag cloud' => 'Tagcloud aktivieren',
+	'Enable comments' => 'Kommentare erlauben',
 
 	'One comment' => 'Ein Kommentar',
 	'%count comments' => array(
