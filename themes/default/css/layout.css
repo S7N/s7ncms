@@ -89,6 +89,9 @@ a:hover {
 	color: #EFEFEF;
 	font-size: 3em;
 }
+.logo a {
+	color: #EFEFEF;
+}
 
 /* @end */
 
