@@ -15,8 +15,9 @@ INSERT INTO `<?php echo $table_prefix ?>config` VALUES (3, 's7n','default_sideba
 INSERT INTO `<?php echo $table_prefix ?>config` VALUES (4, 's7n','default_sidebar_content','Mit S7Ncms wird die Verwaltung Ihrer Internetpräsenz zum Kinderspiel. Bei S7Ncms handelt es sich um ein speziell für die Anforderungen professioneller Webseiten entwickeltes Content Management System.');
 INSERT INTO `<?php echo $table_prefix ?>config` VALUES (5, 's7n','theme','default');
 INSERT INTO `<?php echo $table_prefix ?>config` VALUES (6, 'blog', 'enable_captcha', 'yes');
-INSERT INTO `<?php echo $table_prefix ?>config` VALUES (7, 'blog', 'comment_status', 'open');
-INSERT INTO `<?php echo $table_prefix ?>config` VALUES (8, 'blog', 'items_per_page', '5');
+INSERT INTO `<?php echo $table_prefix ?>config` VALUES (7, 'blog', 'enable_tagcloud', 'yes');
+INSERT INTO `<?php echo $table_prefix ?>config` VALUES (8, 'blog', 'comment_status', 'open');
+INSERT INTO `<?php echo $table_prefix ?>config` VALUES (9, 'blog', 'items_per_page', '5');
 
 CREATE TABLE `<?php echo $table_prefix ?>modules` (
   `id` int(10) NOT NULL auto_increment,

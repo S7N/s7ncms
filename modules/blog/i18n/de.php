@@ -34,6 +34,7 @@ return array(
 	'closed' => 'geschlossen',
 
 	'New Post' => 'Neuer Eintrag',
+	'All comments' => 'Alle Kommentare',
 	'Edit Settings' => 'Einstellungen bearbeiten',
 	'All Posts' => 'Alle Einträge',
 	'Filter: %filter' => 'Filter: %filter',

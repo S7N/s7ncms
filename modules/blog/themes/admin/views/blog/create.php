@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 
-<?php echo form::open('admin/blog/newpost') ?>
+<?php echo form::open() ?>
 
 <div class="box">
 	<h3><?php echo __('New Blog Post') ?></h3>

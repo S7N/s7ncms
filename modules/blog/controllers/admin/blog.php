@@ -18,7 +18,8 @@ class Blog_Controller extends Administration_Controller {
 		parent::__construct();
 
 		$this->template->tasks = array(
-			array('admin/blog/newpost', __('New Post')),
+			array('admin/blog/create', __('New Post')),
+			array('admin/blog/comments', __('All comments')),
 			array('admin/blog/settings', __('Edit Settings'))
 		);
 
@@ -56,7 +57,7 @@ class Blog_Controller extends Administration_Controller {
 		$this->template->content = View::factory('blog/index', array('posts' => $posts));
 	}
 
-	public function newpost()
+	public function create()
 	{
 		if($_POST)
 		{
@@ -78,11 +79,10 @@ class Blog_Controller extends Administration_Controller {
 		}
 		else
 		{
-			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append(__('New Post'));
 
 			$this->template->title .= __('New Post');
-			$this->template->content = View::factory('blog/newpost');
+			$this->template->content = View::factory('blog/create');
 		}
 	}
 
@@ -110,112 +110,11 @@ class Blog_Controller extends Administration_Controller {
 		{
 			$post = ORM::factory('blog_post', (int) $this->uri->segment(4));
 
-			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
 			$this->head->title->append(__('Edit: %title', array('%title' =>$post->title)));
 			$this->template->title .= __('Edit: %title', array('%title' =>$post->title));
 
 			$this->template->content = View::factory('blog/edit', array('post' => $post));
 		}
-	}
-
-	public function comments($action, $id = NULL)
-	{
-		// accept only valid actions
-		if (in_array($action, array('open', 'close', 'edit', 'delete')))
-		{
-			$function_name = 'comments_'.$action;
-
-			if(ctype_digit($id))
-				$this->$function_name($id);
-			else
-				Event::run('system.404');
-		}
-		else
-		{
-			if(ctype_digit($action))
-				$this->comments_view($action);
-			else
-				Event::run('system.404');
-		}
-	}
-
-	private function comments_view($id)
-	{
-		$post = ORM::factory('blog_post', (int) $id);
-		$this->template->content = new View('blog/comments');
-		$this->template->content->comments = $post->blog_comments;
-
-		$this->head->title->append(__('Comments for: %title', array('%title' => $post->title)));
-		$this->template->title .= __('Comments for: %title', array('%title' => $post->title));
-	}
-
-	private function comments_open($id)
-	{
-		$this->comments_status('open', $id);
-	}
-
-	private function comments_close($id)
-	{
-		$this->comments_status('close', $id);
-	}
-
-	private function comments_status($status, $id)
-	{
-		$post = ORM::factory('blog_post', (int) $id);
-
-		if ( ! $post->loaded)
-			message::error(__('Invalid ID'), 'admin/blog');
-
-		$post->comment_status = $status;
-		$post->save();
-
-		message::info(__('Comment status changed to "%status"', array('status' => $status)), 'admin/blog');
-	}
-
-	private function comments_edit($id)
-	{
-		if($_POST)
-		{
-			$comment = ORM::factory('blog_comment', (int) $id);
-			$comment->author = $this->input->post('form_author');
-			$comment->email = $this->input->post('form_email');
-			$comment->url = $this->input->post('form_url');
-			$comment->content = $this->input->post('form_content');
-			$comment->save();
-
-			Cache::instance()->delete('s7n_blog_feed');
-
-			message::info(__('Comment edited successfully'), 'admin/blog/comments/'.$comment->blog_post_id);
-		}
-		else
-		{
-			$comment = ORM::factory('blog_comment', (int) $id);
-
-			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append(__('Edit comment #%id', array('%id' => $comment->id)));
-			$this->template->title .= __('Edit comment #%id', array('%id' => $comment->id));
-
-			$this->template->content = View::factory('blog/editcomment', array(
-				'comment' => $comment
-			));
-		}
-	}
-
-	private function comments_delete($id)
-	{
-		$comment = ORM::factory('blog_comment', (int) $id);
-		if ( ! $comment->loaded)
-			message::error(__('Invalid ID'), 'admin/blog');
-		
-		$post = ORM::factory('blog_post', (int) $comment->blog_post_id);
-		$post->comment_count -= 1;
-		$post->save();
-
-		$comment->delete();
-
-		Cache::instance()->delete('s7n_blog_feed_comments');
-
-		message::info(__('Comment deleted successfully'), 'admin/blog/comments/'.$post->id);
 	}
 
 	public function delete($id)
