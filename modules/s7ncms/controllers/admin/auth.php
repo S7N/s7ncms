@@ -41,10 +41,10 @@ class Auth_Controller extends Controller {
 		if ($form->validate())
 		{
 			// Load the user
-			$user = ORM::factory('user', $form->username);
+			$user = ORM::factory('user', $form->username->value);
 
 			// Attempt a login
-			if ($user->loaded AND Auth::instance()->login($user, $form->password))
+			if ($user->loaded AND Auth::instance()->login($user, $form->password->value))
 			{
 				$url = Session::instance()->get_once('redirect_me_to');
 				url::redirect(empty($url) ? 'admin' : $url);
