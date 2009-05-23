@@ -22,19 +22,19 @@
         </div>
 
 		<?php echo form::open() ?>
-			<?php echo $form->__form_object ?>
+			<?php echo $__form_object ?>
 	        <p class="email">
-	        	<?php echo form::label($form->username->name, $form->username->label) ?><br />
-	        	<?php echo empty($form->username->error) ? form::input($form->username->name, $form->username->value) : form::input($form->username->name, $form->username->value, 'class="error"') ?>
-	        	<?php if ( ! empty($form->username->error)): ?><br /><span class="error"><?php echo $form->username->error ?></span><?php endif ?>
+	        	<?php echo form::label($username->name, $username->label) ?><br />
+	        	<?php echo empty($username->error) ? form::input($username->name, $username->value) : form::input($username->name, $username->value, 'class="error"') ?>
+	        	<?php if ( ! empty($username->error)): ?><br /><span class="error"><?php echo $username->error ?></span><?php endif ?>
 	        </p>
 	        <p class="password">
-	        	<?php echo form::label($form->password->name, $form->password->label) ?><br />
-	        	<?php echo empty($form->password->error) ? form::input($form->password->name) : form::input($form->password->name, '', 'class="error"') ?>
-	        	<?php if ( ! empty($form->password->error)): ?><br /><span class="error"><?php echo $form->password->error ?></span><?php endif ?>
+	        	<?php echo form::label($password->name, $password->label) ?><br />
+	        	<?php echo empty($password->error) ? form::input($password->name) : form::input($password->name, '', 'class="error"') ?>
+	        	<?php if ( ! empty($password->error)): ?><br /><span class="error"><?php echo $password->error ?></span><?php endif ?>
 	        </p>
 	        <p class="submit">
-	        	<?php echo form::submit($form->submit->name, $form->submit->label) ?>
+	        	<?php echo form::submit($submit->name, $submit->label) ?>
 	        </p>
         <?php echo form::close() ?>
     </div>

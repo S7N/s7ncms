@@ -28,8 +28,6 @@ class Auth_Controller extends Controller {
 				url::redirect();
 		}
 		
-		$view = View::factory('login')->bind('form', $form)->bind('error', $error);
-		
 		$form = Formo::factory()
 			->add('text', 'username', array('label' => __('Username')))
 			->add('text', 'password', array('label' => __('Password')))
@@ -52,6 +50,8 @@ class Auth_Controller extends Controller {
 			
 			$error = __('Invalid username or password');
 		}
+		
+		$view = View::factory('login', $form->get(TRUE))->bind('error', $error);
 		
 		echo $view;
 	}
