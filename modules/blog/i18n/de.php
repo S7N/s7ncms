@@ -53,6 +53,8 @@ return array(
 	'Blog Settings' => 'Blog-Einstellungen',
 	'Settings' => 'Einstellungen',
 	'Settings changes successfully' => 'Einstellungen erfolgreich bearbeitet',
+	'Blog entries per page' => 'Blogeinträge pro Seite',
+	'Enable captcha' => 'Captcha aktivieren',
 	'Enable comments' => 'Kommentare einschalten',
 
 	'One comment' => 'Ein Kommentar',
