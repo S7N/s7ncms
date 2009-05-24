@@ -4,11 +4,11 @@
 <?php echo $csrf ?>
 
 <div class="box">
-	<h3><?php echo __('Edit user') ?></h3>
+	<h3><?php echo __('New user') ?></h3>
 	<div class="inside">
 		<p>
 			<?php echo form::label($username->name, $username->label) ?>
-			<?php echo empty($username->error) ? form::input($username->name, $username->value, 'readonly="readonly"') : form::input($username->name, $username->value, 'readonly="readonly" class="error"') ?>
+			<?php echo empty($username->error) ? form::input($username->name, $username->value) : form::input($username->name, $username->value, 'class="error"') ?>
 			<?php if ( ! empty($username->error)): ?><br /><span class="error"><?php echo $username->error ?></span><?php endif ?>
 		</p>
 		<p>
@@ -32,3 +32,4 @@
 <p><?php echo form::submit($submit->name, $submit->label); ?></p>
 
 <?php echo form::close(); ?>
+

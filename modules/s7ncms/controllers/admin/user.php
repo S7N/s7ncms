@@ -18,7 +18,7 @@ class User_Controller extends Administration_Controller {
 		parent::__construct();
 
 		$this->template->tasks = array(
-			array('admin/user/newuser', __('New User'))
+			array('admin/user/create', __('New User'))
 		);
 
 		$this->head->title->append(__('User'));
@@ -33,87 +33,78 @@ class User_Controller extends Administration_Controller {
 		$this->template->title .= __('All Users');
 	}
 
-	public function newuser()
+	public function create()
 	{
-		$fields = array
-		(
-			'username' => '',
-			'email' => '',
-			'password' => '',
-			'password_confirm' => '',
-		);
-
-		$errors = $fields;
-
-		if ($_POST)
-		{
-			$user = ORM::factory('user');
-
-			if ($user->validate($_POST, TRUE))
-			{
-				$user->add(ORM::factory('role', 'login'));
-				$user->add(ORM::factory('role', 'admin'));
-				$user->save();
-
-				message::info(__('User created successfully'), 'admin/user');
-			}
-			else
-			{
-				$fields = arr::overwrite($fields, $_POST->safe_array());
-				$errors = arr::overwrite($errors, $_POST->errors());
-			}
-		}
-
-		$this->template->content = View::factory('user/newuser', array('fields' => $fields, 'errors' => $errors));
-
 		$this->head->title->append(__('New User'));
 		$this->template->title .= __('New User');
+
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add('text', 'username', array('label' => __('Username')))
+			->add('text', 'email', array('label' => __('Email')))
+			->add('password', 'password', array('label' => __('Password')))
+			->add('password', 'password_confirm', array('label' => __('Confirm password')))
+			->add('submit', 'submit', array('label' => __('Save')))
+
+			// TODO check if username or email exists
+			->add_rule('username', 'required', __('You must enter a username'))
+			->add_rule('email', 'required', __('You must enter an email'))
+			->add_rule('email', 'valid::email', __('Email address is not valid'))
+			->add_rule('password', 'required', __('You must enter a password'))
+			->add_rule('password', 'matches[password_confirm]', __('The passwords doesn\'t match'))
+			->add_rule('password_confirm', 'required', __('You must confirm the password'));
+
+		if ($form->validate())
+		{
+			$user = ORM::factory('user');
+			$user->username = $form->username->value;
+			$user->email = $form->email->value;
+			$user->password = $form->password->value;
+			$user->registered = date("Y-m-d H:i:s", time());
+			$user->add(ORM::factory('role', 'login'));
+			$user->add(ORM::factory('role', 'admin'));
+			$user->save();
+
+			message::info(__('User created successfully'), 'admin/user');
+		}
+
+		$this->template->content = View::factory('user/create', $form->get(TRUE));
 	}
 	
 	public function edit($id)
 	{
-		$fields = array
-		(
-			'username' => '',
-			'email' => '',
-			'password' => '',
-			'password_confirm' => '',
-		);
-
-		$errors = $fields;
-
+		$this->head->title->append(__('New User'));
+		$this->template->title .= __('New User');
+		
 		$user = ORM::factory('user', (int) $id);
 
 		if ( ! $user->loaded)
 			Event::run('system.404');
+			
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add('text', 'username', array('label' => __('Username'), 'value' => $user->username))
+			->add('text', 'email', array('label' => __('Email'), 'value' => $user->email))
+			->add('password', 'password', array('label' => __('Password')))
+			->add('password', 'password_confirm', array('label' => __('Confirm password')))
+			->add('submit', 'submit', array('label' => __('Save')))
 
-		if ($_POST)
+			// TODO check if email has changed and check if it already exists
+			->add_rule('email', 'required', __('You must enter an email'))
+			->add_rule('email', 'valid::email', __('Email address is not valid'))
+			->add_rule('password', 'matches[password_confirm]', __('The passwords doesn\'t match'));
+
+		if ($form->validate())
 		{
-			if ($user->validate_edit($_POST))
-			{
-				$user->email = $_POST['email'];
-				if (!empty($_POST['password']))
-					$user->password = $_POST['password'];
+			$user->email = $form->email->value;
+			if ( ! empty($form->password->value))
+				$user->password = $form->password->value;
+			$user->save();
 
-				$user->save();
-
-				message::info(__('User edited successfully'), 'admin/user');
-			}
-			else
-			{
-				$fields = arr::overwrite($fields, $_POST->as_array());
-				$errors = arr::overwrite($errors, $_POST->errors());
-			}
+			message::info(__('User edited successfully'), 'admin/user');
 		}
-		else
-		{
-			$fields = arr::overwrite($fields, ORM::factory('user', (int) $id)->as_array());
-		}
-		
-		$this->template->content = View::factory('user/edit', array('user' => $user, 'fields' => $fields, 'errors' => $errors));
 
-		$this->head->title->append(__('Edit User'));
-		$this->template->title .= __('Edit User');
+		$this->template->content = View::factory('user/edit', $form->get(TRUE));
 	}
 	
 	public function delete($id)

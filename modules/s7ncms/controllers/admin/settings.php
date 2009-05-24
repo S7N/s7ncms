@@ -15,44 +15,24 @@ class Settings_Controller extends Administration_Controller {
 
 	public function index()
 	{
-		$themes = array();
-		if ($dh = opendir(THEMEPATH))
-		{
-			while(($theme = readdir($dh)) !== FALSE)
-			{
-				$path = THEMEPATH.$theme.'/theme.xml';
-				if (is_file($path))
-				{
-					$xml = simplexml_load_file($path);
-					$themes[$theme] = (string) $xml->name;
-				}
-			}
-		}
-
 		$this->head->title->append(__('Settings'));
-
 		$this->template->title = __('Settings');
-	    $this->template->content = View::factory('settings/settings', array(
-    		'site_title' => config::get('s7n.site_title'),
-	    	'theme' => config::get('s7n.theme'),
-	    	'themes' => $themes
-	    ));
-	}
-
-    public function save()
-	{
-        if($_POST)
+		
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add('text', 'site_title', array('label' => __('Site title'), 'value' => config::get('s7n.site_title')))
+			->add_select('theme', theme::available(), array('label' => __('Theme'), 'value' => config::get('s7n.theme')))
+			->add('submit', 'submit', array('label' => __('Save')));
+		
+		if ($form->validate())
 		{
-			// Site Title
-			config::set('s7n.site_title', $this->input->post('site_title'));
-
-			// Site Title
-			config::set('s7n.theme', $this->input->post('theme'));
-
+			config::set('s7n.site_title', $form->site_title->value);
+			config::set('s7n.theme', $form->theme->value);
+			
 			message::info(__('Settings edited successfully'), 'admin/settings');
-        }
-
-        url::redirect('admin/settings');
-    }
+		}
+		
+		$this->template->content = View::factory('settings/settings', $form->get(TRUE));
+	}
 
 }

@@ -30,7 +30,7 @@
 	        </p>
 	        <p class="password">
 	        	<?php echo form::label($password->name, $password->label) ?><br />
-	        	<?php echo empty($password->error) ? form::input($password->name) : form::input($password->name, '', 'class="error"') ?>
+	        	<?php echo empty($password->error) ? form::password($password->name) : form::password($password->name, '', 'class="error"') ?>
 	        	<?php if ( ! empty($password->error)): ?><br /><span class="error"><?php echo $password->error ?></span><?php endif ?>
 	        </p>
 	        <p class="submit">

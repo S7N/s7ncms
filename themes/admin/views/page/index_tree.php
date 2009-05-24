@@ -31,17 +31,18 @@ mit dem selben Namen und wird anstelle der eigentlichen Seite geladen. Sie könn
 erstellen, um ein Untermenü für diesen Controller zu erzeugen.
 </p>
 <div class="box">
-	<h3><?php echo __('Page Order') ?>Page Order</h3>
+	<h3><?php echo __('Page Order') ?></h3>
 	<div class="inside">
 		<ul class="sortable">
 		<?php
 		$level = 0;
 
-		foreach ($pages as $node):
+		foreach ($pages as $node)
+		{
 			$has_children = (($node->rgt - $node->lft - 1) > 0 );
 			$id = 'page-'.$node->id;
 
-			$value = View::factory('page/index_tree_value')->set(array('page' => $node))->render();
+			$value = View::factory('page/index_tree_value', array('page' => $node));
 
 			if($has_children) {
 				if($level > $node->level) {
@@ -59,7 +60,7 @@ erstellen, um ein Untermenü für diesen Controller zu erzeugen.
 				echo '<li id="'.$id.'">'.$value.'</li>'."\n";
 			}
 			$level = $node->level;
-		endforeach;
+		}
 		echo str_repeat("</ul></li>\n",$level);
 		?>
 		</ul>

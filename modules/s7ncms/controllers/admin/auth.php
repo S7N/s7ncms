@@ -30,7 +30,7 @@ class Auth_Controller extends Controller {
 		
 		$form = Formo::factory()
 			->add('text', 'username', array('label' => __('Username')))
-			->add('text', 'password', array('label' => __('Password')))
+			->add('password', 'password', array('label' => __('Password')))
 			->add('submit', 'submit', array('label' => __('Login')))
 			
 			->add_rule('username', 'required', __('You must enter a username'))

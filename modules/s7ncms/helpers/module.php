@@ -20,6 +20,15 @@ class module_Core {
 		else
 			return ORM::factory('module')->find_all();
 	}
+	
+	public static function installed_as_array()
+	{
+		$modules = array();
+		foreach (self::installed() as $module)
+			$modules[$module->name] = $module->name;
+		
+		return $modules;
+	}
 
 	public static function active($name = NULL)
 	{

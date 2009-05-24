@@ -2,34 +2,7 @@
 <?php echo form::open() ?>
 <?php echo $__form_object ?>
 <?php echo $csrf ?>
-<div class="box">
-	<h3><?php echo __('Page Information') ?></h3>
-	<div class="inside">
-		<p>
-			<?php echo form::label($type->name, __('Redirect page or load Module')) ?>
-			<?php
-				foreach ($type->elements as $key => $value)
-				{
-					switch ($value) {
-						case 'module':
-							echo form::radio($type->name, $value, ( ! empty($page->target) AND $page->type === 'module')).' '.$type->$key->label.': ';
-							echo form::dropdown($module->name, $module->values, $module->value).'<br />';
-							break;
-						
-						case 'redirect':
-							echo form::radio($type->name, $value, ( ! empty($page->target) AND $page->type === 'redirect')).' '.$type->$key->label.': ';
-							echo form::dropdown($redirect->name, $redirect->values, $redirect->value);
-							break;
-							
-						default:
-							echo form::radio($type->name, $value, empty($page->target)).' '.$type->$key->label;
-							echo '<br />';
-							break;
-					}
-				}
-			?>
-	</div>
-</div>
+
 <?php foreach (Kohana::config('locale.languages') as $key => $value): ?>
 <div class="box">
 	<h3><?php echo __('Content') ?> <small>(<?php echo $value['name'] ?>)</small></h3>
@@ -47,3 +20,4 @@
 <p><?php echo form::submit($submit->name, $submit->label); ?></p>
 
 <?php echo form::close(); ?>
+

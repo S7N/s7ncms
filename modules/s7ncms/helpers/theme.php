@@ -27,4 +27,23 @@ class theme_Core {
 			theme::$name = 'admin';
 	}
 	
+	static function available()
+	{
+		$themes = array();
+		if ($dh = opendir(THEMEPATH))
+		{
+			while(($theme = readdir($dh)) !== FALSE)
+			{
+				$path = THEMEPATH.$theme.'/theme.xml';
+				if (is_file($path))
+				{
+					$xml = simplexml_load_file($path);
+					$themes[$theme] = (string) $xml->name;
+				}
+			}
+		}
+		
+		return $themes;
+	}
+	
 }

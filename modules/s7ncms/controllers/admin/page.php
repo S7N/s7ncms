@@ -19,8 +19,8 @@ class Page_Controller extends Administration_Controller {
 
 		$this->template->tasks = array(
 			array('admin/page', __('Show All')),
-			array('admin/page/newpage', __('New Page')),
-			array('admin/page/settings', __('Edit Settings'))
+			array('admin/page/create', __('New Page')),
+			//array('admin/page/settings', __('Edit Settings'))
 		);
 
 		$this->head->title->append(__('Pages'));
@@ -36,98 +36,22 @@ class Page_Controller extends Administration_Controller {
 		$this->head->title->append(__('All Pages'));
 		$this->template->title .= __('All Pages');
 	}
-
-	public function edit($id)
+	
+	public function create()
 	{
-		if($_POST)
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add('submit', 'submit', array('label' => __('Save')));
+
+		foreach (Kohana::config('locale.languages') as $key => $value)
 		{
-			$post = $this->input->post('form');
-			
-			$page = ORM::factory('page', (int) $id);
-
-			if ( ! $page->loaded)
-				Event::run('system.404');
-				
-			$title = array();
-			foreach (Kohana::config('locale.languages') as $key => $value)
-			{
-				$form = $post[$key];
-				
-				$page_content = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => $key))->find();
-				if ( ! $page_content->loaded)
-				{
-					$page_content->page_id  = $page->id;
-					$page_content->language = $key;
-					$page_content->date = date("Y-m-d H:i:s");
-				}
-				$page_content->title    = $form['title'];
-				$page_content->uri      = url::title($form['title']);
-				$page_content->content  = $form['content'];
-				$page_content->modified = date("Y-m-d H:i:s");
-				$page_content->save();
-				
-				$title[] = $page_content->title;
-			}
-			
-			$type = NULL;
-			$target = NULL;
-
-			if ($post['info']['type'] == 'redirect')
-			{
-				$redirect = trim($post['info']['redirect_target']);
-				if ( ! empty($redirect))
-				{
-					$type = 'redirect';
-					$target = $redirect;
-				}
-			}
-			elseif ($post['info']['type'] == 'module')
-			{
-				$module = trim($post['info']['module_target']);
-				if ( ! empty($module))
-				{
-					$type = 'module';
-					$target = $module;
-				}
-			}
-
-			$page->type = $type;
-			$page->target = $target;
-			$page->title = implode(' / ', $title);
-			$page->save();
-			
-			Cache::instance()->delete_tag('menu');
-			Cache::instance()->delete_tag('route');
-			
-			message::info(__('Page edited successfully'), 'admin/page');
+			$form
+				->add('text', 'title_'.$key, array('label' => __('Title')))
+				->add('text', 'content_'.$key, array('label' => __('Content')))
+				->add_rule('title_'.$key, 'required', __('Please choose a title'));
 		}
-		else
-		{
-			$page = ORM::factory('page', (int) $id);
-			
-			if ( ! $page->loaded)
-				Event::run('system.404');
-
-			//$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append(__('Edit: %title', array('%title' => $page->title())));
-
-			$this->template->title .= __('Edit: %title', array('%title' => $page->title()));
-			$this->template->content = View::factory('page/edit', array(
-				'page' => $page,
-				'modules' => module::installed()
-			));
-			
-			foreach (Kohana::config('locale.languages') as $key => $value)
-				$form[$key] = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => $key))->find();
-			
-			$this->template->content->form = $form;
-		}
-	}
-
-	public function newpage()
-	{
-
-		if($_POST)
+		
+		if ($form->validate())
 		{
 			$root = ORM::factory('page')->root(1);
 			if ( ! $root->loaded)
@@ -146,19 +70,15 @@ class Page_Controller extends Administration_Controller {
 				$page->insert_as_last_child($root);
 			}
 
-			$post = $this->input->post('form');
-			
 			$title = array();
-			
 			foreach (Kohana::config('locale.languages') as $key => $value)
 			{
-				$form = $post[$key];
 				$page_content = ORM::factory('page_content');
 				$page_content->page_id  = $page->id;
 				$page_content->language = $key;
-				$page_content->title    = $form['title'];
-				$page_content->uri      = url::title($form['title']);
-				$page_content->content  = $form['content'];
+				$page_content->title    = $form->{'title_'.$key}->value;
+				$page_content->uri      = url::title($form->{'title_'.$key}->value);
+				$page_content->content  = $form->{'content_'.$key}->value;
 				$page_content->date     = date("Y-m-d H:i:s");
 				$page_content->modified = date("Y-m-d H:i:s");
 				$page_content->save();
@@ -174,14 +94,107 @@ class Page_Controller extends Administration_Controller {
 
 			message::info(__('Page created successfully'), 'admin/page');
 		}
-		else
-		{
-			$this->head->javascript->append_file('vendor/tiny_mce/tiny_mce.js');
-			$this->head->title->append(__('New Page'));
+		
+		$this->template->content = View::factory('page/create', $form->get(TRUE));
+	}
+	
+	public function edit($id)
+	{
+		$page = ORM::factory('page', (int) $id);
 			
-			$this->template->title .= __('New Page');
-			$this->template->content = new View('page/newpage');
+		if ( ! $page->loaded)
+			message::error(__('Invalid ID'), 'admin/page');
+		
+		$form = Formo::factory()
+			->plugin('csrf')
+			->add_group('type', array('none' => __('Do nothing'), 'module' => __('Load module'), 'redirect' => __('Redirect to')))
+			->add_select('module', module::installed_as_array(), array('value' => $page->target))
+			->add_select('redirect', $page->paths(), array('value' => $page->target))
+			->add('submit', 'submit', array('label' => __('Save')));
+
+		foreach (Kohana::config('locale.languages') as $key => $value)
+		{
+			$page_content = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => $key))->find();
+			$form
+				->add('text', 'title_'.$key, array('label' => __('Title'), 'value' => $page_content->title))
+				->add('text', 'content_'.$key, array('label' => __('Content'), 'value' => $page_content->content))
+				->add_rule('title_'.$key, 'required', __('Please choose a title'));
 		}
+		
+		if ($form->validate())
+		{
+			$title = array();
+			foreach (Kohana::config('locale.languages') as $key => $value)
+			{
+				$page_content = ORM::factory('page_content')->where(array('page_id' => $page->id, 'language' => $key))->find();
+				if ( ! $page_content->loaded)
+				{
+					$page_content->page_id  = $page->id;
+					$page_content->language = $key;
+					$page_content->date = date("Y-m-d H:i:s");
+				}
+				$page_content->title    = $form->{'title_'.$key}->value;
+				$page_content->uri      = url::title($form->{'title_'.$key}->value);
+				$page_content->content  = $form->{'content_'.$key}->value;
+				$page_content->modified = date("Y-m-d H:i:s");
+				$page_content->save();
+				
+				$title[] = $page_content->title;
+			}
+			
+			$type = NULL;
+			$target = NULL;
+
+			/*
+			 * TODO workaround for:
+			 * http://projects.kohanaphp.com/boards/5/topics/114
+			 * and
+			 * http://projects.kohanaphp.com/issues/1697
+			 *
+			 */
+			$_type = NULL;
+			foreach ($form->type->elements as $key => $value)
+			{
+				if ($form->type->$key->checked)
+				{
+					$_type = $value;
+					break;
+				}
+			}
+
+			if ($_type == 'redirect')
+			{
+				$redirect = trim($form->redirect->value);
+				if ( ! empty($redirect))
+				{
+					$type = 'redirect';
+					$target = $redirect;
+				}
+			}
+			elseif ($_type == 'module')
+			{
+				$module = trim($form->module->value);
+				if ( ! empty($module))
+				{
+					$type = 'module';
+					$target = $module;
+				}
+			}
+
+			$page->type = $type;
+			$page->target = $target;
+			$page->title = implode(' / ', $title);
+			$page->save();
+			
+			Cache::instance()->delete_tag('menu');
+			Cache::instance()->delete_tag('route');
+			
+			message::info(__('Page edited successfully'), 'admin/page');
+		}
+		
+		$this->template->content = View::factory('page/edit', $form->get(TRUE));
+		$this->template->content->page = $page;
+		$this->template->content->modules = module::installed();
 	}
 
 	public function delete($id)
@@ -198,7 +211,8 @@ class Page_Controller extends Administration_Controller {
 		message::info(__('Page deleted successfully'), 'admin/page');
 	}
 
-	public function settings()
+	// TODO write a better settings method (using formo) if we need special page settings
+	private function settings()
 	{
 		if($_POST)
 		{

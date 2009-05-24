@@ -159,7 +159,7 @@ class Blog_Controller extends Administration_Controller {
 			->add('checkbox', 'enable_captcha', array('label' => __('Enable captcha'), 'checked' => (config::get('blog.enable_captcha') === 'yes')))
 			->add('checkbox', 'enable_tagcloud', array('label' => __('Enable tag cloud'), 'checked' => (config::get('blog.enable_tagcloud') === 'yes')))
 			->add('checkbox', 'comment_status', array('label' => __('Enable comments'), 'checked' => (config::get('blog.comment_status') === 'open')))
-			->add('submit', 'submit', array('label' => __('Submit')))
+			->add('submit', 'submit', array('label' => __('Save')))
 			
 			->add_rule('items_per_page', 'required', __('Please enter a number'))
 			->add_rule('items_per_page', 'digit', __('This must be a number'));

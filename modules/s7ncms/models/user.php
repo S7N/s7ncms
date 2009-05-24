@@ -21,36 +21,6 @@ class User_Model extends ORM {
 	}
 
 	/**
-	 * Validates and optionally saves a new user record from an array.
-	 *
-	 * @param  array    values to check
-	 * @param  boolean  save the record when validation succeeds
-	 * @return boolean
-	 */
-	public function validate(array & $array, $save = FALSE)
-	{
-		$array = Validation::factory($array)
-			->pre_filter('trim')
-			->add_rules('email', 'required', 'length[4,127]', 'valid::email')
-			->add_rules('username', 'required', 'length[3,127]', array($this, 'username_available'))
-			->add_rules('password', 'required', 'length[4,127]')
-			->add_rules('password_confirm', 'matches[password]');
-
-		return parent::validate($array, $save);
-	}
-
-	public function validate_edit(array & $array, $save = FALSE)
-	{
-		$array = Validation::factory($array)
-			->pre_filter('trim')
-			->add_rules('email', 'required', 'length[4,127]', 'valid::email')
-			->add_rules('password', 'length[4,127]')
-			->add_rules('password_confirm', 'matches[password]');
-
-		return parent::validate($array, $save);
-	}
-
-	/**
 	 * Validates login information from an array, and optionally redirects
 	 * after a successful login.
 	 *
@@ -142,7 +112,7 @@ class User_Model extends ORM {
 	/**
 	 * Does the reverse of username_exists() by returning TRUE if user id is available
 	 *
-	 * @param    mixed    id to check 
+	 * @param    mixed    id to check
 	 * @return   boolean
 	 */
 	public function username_available($id)
