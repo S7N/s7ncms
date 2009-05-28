@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file acts as the "front controller" to your application. You can
+ * configure your application, modules, and system directories here.
+ * PHP error_reporting level may also be changed.
+ *
+ * @see http://kohanaphp.com
+ */
 
 /**
  * Define the website environment status. When this flag is set to TRUE, some
@@ -32,21 +39,7 @@ $kohana_modules = 'modules';
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_system = 'kohana';
-
-/**
- * S7Ncms upload directory. This directory contains all uploaded files
- *
- * This path can be absolute or relative to this file.
- */
-$s7n_upload = 'upload';
-
-/**
- * S7Ncms themes directory. This directory contains themes used in S7Ncms
- *
- * This path can be absolute or relative to this file.
- */
-$s7n_themes = 'themes';
+$kohana_system = 'system';
 
 /**
  * Test to make sure that Kohana is running on PHP 5.2 or newer. Once you are
@@ -78,7 +71,7 @@ define('EXT', '.php');
 //
 // DO NOT EDIT BELOW THIS LINE, UNLESS YOU FULLY UNDERSTAND THE IMPLICATIONS.
 // ----------------------------------------------------------------------------
-// $Id$
+// $Id: index.php 4134 2009-03-28 04:37:54Z zombor $
 //
 
 $kohana_pathinfo = pathinfo(__FILE__);
@@ -93,18 +86,22 @@ is_link(KOHANA) and chdir(dirname(realpath(__FILE__)));
 $kohana_application = file_exists($kohana_application) ? $kohana_application : DOCROOT.$kohana_application;
 $kohana_modules = file_exists($kohana_modules) ? $kohana_modules : DOCROOT.$kohana_modules;
 $kohana_system = file_exists($kohana_system) ? $kohana_system : DOCROOT.$kohana_system;
-$s7n_upload = file_exists($s7n_upload) ? $s7n_upload : DOCROOT.$s7n_upload;
-$s7n_themes = file_exists($s7n_themes) ? $s7n_themes : DOCROOT.$s7n_themes;
 
 // Define application and system paths
 define('APPPATH', str_replace('\\', '/', realpath($kohana_application)).'/');
 define('MODPATH', str_replace('\\', '/', realpath($kohana_modules)).'/');
 define('SYSPATH', str_replace('\\', '/', realpath($kohana_system)).'/');
-define('UPLOADPATH', str_replace('\\', '/', realpath($s7n_upload)).'/');
-define('THEMEPATH', str_replace('\\', '/', realpath($s7n_themes)).'/');
 
 // Clean up
-unset($kohana_application, $kohana_modules, $kohana_system, $s7n_upload, $s7n_themes);
+unset($kohana_application, $kohana_modules, $kohana_system);
 
-// Initialize Kohana
-require SYSPATH.'core/Bootstrap'.EXT;
+if (file_exists(DOCROOT.'install'.EXT))
+{
+	// Load the installation tests
+	include DOCROOT.'install'.EXT;
+}
+else
+{
+	// Initialize Kohana
+	require SYSPATH.'core/Bootstrap'.EXT;
+}
