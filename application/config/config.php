@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = '/kohana/';
+$config['site_domain'] = dirname($_SERVER['SCRIPT_NAME']);
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -50,7 +50,7 @@ $config['global_xss_filtering'] = TRUE;
 /**
  * Enable or disable hooks.
  */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 /**
  * Log thresholds:
@@ -79,7 +79,7 @@ $config['display_errors'] = TRUE;
  *
  * @see http://docs.kohanaphp.com/general/configuration
  */
-$config['render_stats'] = TRUE;
+$config['render_stats'] = FALSE;
 
 /**
  * Filename prefixed used to determine extensions. For example, an
