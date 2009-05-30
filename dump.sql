@@ -21,7 +21,7 @@ ENGINE = InnoDB DEFAULT CHARACTER SET utf8;
 -- Table `nations`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `nations` (
-  `id` INT UNSIGNED NOT NULL ,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `tag` VARCHAR(6) NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `timezone` TIMESTAMP NOT NULL ,
@@ -286,7 +286,7 @@ ENGINE = InnoDB DEFAULT CHARACTER SET utf8;
 -- Table `keywords`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `keywords` (
-  `id` INT UNSIGNED NOT NULL ,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `content_id` INT UNSIGNED NULL ,
   `value` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) ,
