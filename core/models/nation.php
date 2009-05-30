@@ -12,5 +12,8 @@
  * @version $Id$
  */
 
-Event::add_before('system.routing', array('Router', 'setup'), 'language::setup');
-Event::add_before('system.routing', array('Router', 'setup'), 'url::new_route');
+class Nation_Model extends ORM {
+
+	protected $belongs_to = array('language');
+	
+}

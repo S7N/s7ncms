@@ -1,3 +1,24 @@
+﻿-- phpMyAdmin SQL Dump
+-- version 2.10.2
+-- http://www.phpmyadmin.net
+-- 
+-- Host: localhost
+-- Erstellungszeit: 31. Mai 2009 um 01:28
+-- Server Version: 5.0.41
+-- PHP-Version: 5.2.5
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+-- 
+-- Datenbank: `s7ncms08`
+-- 
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `blocks`
+-- 
+
 DROP TABLE IF EXISTS `blocks`;
 CREATE TABLE IF NOT EXISTS `blocks` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -7,6 +28,17 @@ CREATE TABLE IF NOT EXISTS `blocks` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- 
+-- Daten für Tabelle `blocks`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `configs`
+-- 
+
 DROP TABLE IF EXISTS `configs`;
 CREATE TABLE IF NOT EXISTS `configs` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -15,6 +47,17 @@ CREATE TABLE IF NOT EXISTS `configs` (
   PRIMARY KEY  (`id`),
   KEY `fk_config_modules` (`modules_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `configs`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `config_languages`
+-- 
 
 DROP TABLE IF EXISTS `config_languages`;
 CREATE TABLE IF NOT EXISTS `config_languages` (
@@ -26,6 +69,17 @@ CREATE TABLE IF NOT EXISTS `config_languages` (
   KEY `fk_config_languages_config` (`config_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- 
+-- Daten für Tabelle `config_languages`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `contents`
+-- 
+
 DROP TABLE IF EXISTS `contents`;
 CREATE TABLE IF NOT EXISTS `contents` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -36,13 +90,28 @@ CREATE TABLE IF NOT EXISTS `contents` (
   `title` varchar(45) NOT NULL,
   `sub_title` varchar(255) default NULL,
   `menu_title` varchar(45) default NULL,
+  `uri` varchar(45) default NULL,
   PRIMARY KEY  (`id`),
   KEY `fk_content_languages` (`language_id`),
   KEY `fk_content_revisions` (`revision_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
-INSERT INTO `contents` VALUES (1, 1, 1, 'Hallo, das ist meiner erste Seite.', 1, 'Meine erste Seite', NULL, 'Erste Seite');
-INSERT INTO `contents` VALUES (2, 2, 2, 'Hello, this is my first page.', 1, 'My first Page', NULL, 'First Page');
+-- 
+-- Daten für Tabelle `contents`
+-- 
+
+INSERT INTO `contents` VALUES (1, 1, 1, 'Hallo, das ist meiner erste Seite.', 1, 'Meine erste Seite', NULL, 'Erste Seite', 'erste-seite');
+INSERT INTO `contents` VALUES (2, 2, 2, 'Hello, this is my first page.', 1, 'My first Page', NULL, 'First Page', 'first-page');
+INSERT INTO `contents` VALUES (3, 1, 0, 'das ist der inhalt', 0, 'Andere Seite', 'Andere Seite', 'Andere Seite', 'andere-seite');
+INSERT INTO `contents` VALUES (4, 2, 0, 'this is the content', 0, '', 'Another Page', 'Another Page', 'another-page');
+INSERT INTO `contents` VALUES (5, 1, 0, 'das ist über S7Ncms', 0, 'Über S7Ncms', NULL, 'Über', 'uber');
+INSERT INTO `contents` VALUES (6, 2, 0, 'this is about S7Ncms', 0, 'About S7Ncms', NULL, 'About', 'about');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `content_types`
+-- 
 
 DROP TABLE IF EXISTS `content_types`;
 CREATE TABLE IF NOT EXISTS `content_types` (
@@ -54,10 +123,24 @@ CREATE TABLE IF NOT EXISTS `content_types` (
   KEY `fk_content_join_pages` (`page_id`),
   KEY `fk_content_join_blocks` (`block_id`),
   KEY `fk_content_join_contentts` (`block_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+-- 
+-- Daten für Tabelle `content_types`
+-- 
 
 INSERT INTO `content_types` VALUES (1, 1, NULL, 1);
 INSERT INTO `content_types` VALUES (2, 1, NULL, 2);
+INSERT INTO `content_types` VALUES (3, 2, NULL, 3);
+INSERT INTO `content_types` VALUES (4, 2, NULL, 4);
+INSERT INTO `content_types` VALUES (5, 3, NULL, 5);
+INSERT INTO `content_types` VALUES (6, 3, NULL, 6);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `keywords`
+-- 
 
 DROP TABLE IF EXISTS `keywords`;
 CREATE TABLE IF NOT EXISTS `keywords` (
@@ -68,10 +151,20 @@ CREATE TABLE IF NOT EXISTS `keywords` (
   KEY `fk_keywords_content` (`content_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
+-- 
+-- Daten für Tabelle `keywords`
+-- 
+
 INSERT INTO `keywords` VALUES (1, 1, 'keyword1');
 INSERT INTO `keywords` VALUES (2, 1, 'keyword2');
 INSERT INTO `keywords` VALUES (3, 2, 'keyword3');
 INSERT INTO `keywords` VALUES (4, 2, 'keyword4');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `languages`
+-- 
 
 DROP TABLE IF EXISTS `languages`;
 CREATE TABLE IF NOT EXISTS `languages` (
@@ -83,19 +176,44 @@ CREATE TABLE IF NOT EXISTS `languages` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
-INSERT INTO `languages` VALUES (1, 'de', 'Deutsch', 1, '');
-INSERT INTO `languages` VALUES (2, 'en', 'English', 0, '');
+-- 
+-- Daten für Tabelle `languages`
+-- 
+
+INSERT INTO `languages` VALUES (1, 'de', 'Deutsch (Deutschland)', 1, '');
+INSERT INTO `languages` VALUES (2, 'en', 'English (UK)', 0, '');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `menus`
+-- 
 
 DROP TABLE IF EXISTS `menus`;
 CREATE TABLE IF NOT EXISTS `menus` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `pages_id` int(10) unsigned NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `parent_id` int(10) unsigned default NULL,
+  `page_id` int(10) unsigned NOT NULL,
+  `lvl` int(10) unsigned default NULL,
+  `lft` int(10) unsigned default NULL,
+  `rgt` int(10) unsigned default NULL,
+  `scope` int(10) unsigned default NULL,
   PRIMARY KEY  (`id`),
-  KEY `fk_menus_menus` (`parent_id`),
-  KEY `fk_menus_pages` (`pages_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `fk_menus_pages` (`page_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+-- 
+-- Daten für Tabelle `menus`
+-- 
+
+INSERT INTO `menus` VALUES (1, 1, 0, 1, 6, 0);
+INSERT INTO `menus` VALUES (2, 2, 1, 2, 3, 0);
+INSERT INTO `menus` VALUES (3, 3, 1, 4, 5, 0);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `modules`
+-- 
 
 DROP TABLE IF EXISTS `modules`;
 CREATE TABLE IF NOT EXISTS `modules` (
@@ -108,6 +226,17 @@ CREATE TABLE IF NOT EXISTS `modules` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- 
+-- Daten für Tabelle `modules`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `nations`
+-- 
+
 DROP TABLE IF EXISTS `nations`;
 CREATE TABLE IF NOT EXISTS `nations` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -117,7 +246,20 @@ CREATE TABLE IF NOT EXISTS `nations` (
   `language_id` int(10) unsigned default NULL,
   PRIMARY KEY  (`id`),
   KEY `fk_nations_languages` (`language_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+-- 
+-- Daten für Tabelle `nations`
+-- 
+
+INSERT INTO `nations` VALUES (1, 'de_DE', 'Germany', '2009-05-31 00:20:16', 1);
+INSERT INTO `nations` VALUES (2, 'en_GB', 'Great Britain', '2009-05-31 00:20:16', 2);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `pages`
+-- 
 
 DROP TABLE IF EXISTS `pages`;
 CREATE TABLE IF NOT EXISTS `pages` (
@@ -131,9 +273,21 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `target` varchar(45) NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `fk_pages_users` (`author_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+-- 
+-- Daten für Tabelle `pages`
+-- 
 
 INSERT INTO `pages` VALUES (1, 1, 0, '2009-05-30 00:00:01', NULL, 0, 'page', '');
+INSERT INTO `pages` VALUES (2, 1, 0, '0000-00-00 00:00:00', NULL, 0, 'page', '');
+INSERT INTO `pages` VALUES (3, 1, 0, '0000-00-00 00:00:00', NULL, 0, 'page', '');
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `page_blocks`
+-- 
 
 DROP TABLE IF EXISTS `page_blocks`;
 CREATE TABLE IF NOT EXISTS `page_blocks` (
@@ -143,6 +297,17 @@ CREATE TABLE IF NOT EXISTS `page_blocks` (
   KEY `fk_page_blocks_pages` (`page_id`),
   KEY `fk_page_blocks_blocks` (`block_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- 
+-- Daten für Tabelle `page_blocks`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `revisions`
+-- 
 
 DROP TABLE IF EXISTS `revisions`;
 CREATE TABLE IF NOT EXISTS `revisions` (
@@ -155,6 +320,17 @@ CREATE TABLE IF NOT EXISTS `revisions` (
   KEY `fk_revisions_users` (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- 
+-- Daten für Tabelle `revisions`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `roles`
+-- 
+
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -163,6 +339,17 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `description` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- 
+-- Daten für Tabelle `roles`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `users`
+-- 
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
@@ -180,7 +367,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `fk_users_nations` (`nation_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
+-- 
+-- Daten für Tabelle `users`
+-- 
+
 INSERT INTO `users` VALUES (1, 'Edy', '', 'edy@edy-b.de', 'Eduard', 'B', '0000-00-00 00:00:00', '2009-05-30 23:36:25', NULL, 1);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `users_roles`
+-- 
 
 DROP TABLE IF EXISTS `users_roles`;
 CREATE TABLE IF NOT EXISTS `users_roles` (
@@ -190,3 +387,8 @@ CREATE TABLE IF NOT EXISTS `users_roles` (
   KEY `fk_users_roles_users` (`user_id`),
   KEY `fk_users_roles_roles` (`role_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- 
+-- Daten für Tabelle `users_roles`
+-- 
+

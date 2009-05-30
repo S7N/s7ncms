@@ -12,5 +12,13 @@
  * @version $Id$
  */
 
-Event::add_before('system.routing', array('Router', 'setup'), 'language::setup');
-Event::add_before('system.routing', array('Router', 'setup'), 'url::new_route');
+class Menu_Model extends ORM_MPTT {
+
+	protected $belongs_to = array('page');
+	
+	public function title()
+	{
+		return $this->page->content()->menu_title;
+	}
+	
+}
