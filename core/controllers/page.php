@@ -19,7 +19,7 @@ class Page_Controller extends Controller {
 			->bind('page', $page)
 			->bind('content', $content);
 		
-		$page = Router::$page;
+		$page = menus::$page;
     	$content = $page->content();
 		
     	echo $view;

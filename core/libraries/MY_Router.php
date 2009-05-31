@@ -22,14 +22,42 @@ class Router extends Router_Core {
 	{
 		parent::find_uri();
 
+		if ((strpos(Router::$current_uri, 'admin')) === 0)
+			return;
+
 		if (preg_match('~^[a-z]{2}(?=/|$)~i', Router::$current_uri, $matches) AND isset($matches[0]))
 		{
 			$lang = strtolower($matches[0]);
 			if (ORM::factory('language')->tag_exists($lang))
 			{
 				Router::$language = $lang;
-				Router::$current_uri = substr(Router::$current_uri, 3);
+				Router::$current_uri = trim(substr(Router::$current_uri, 2), '/');
 			}
+		}
+	}
+	
+	public static function new_route()
+	{
+		if ((strpos(Router::$current_uri, 'admin')) === 0)
+			return;
+
+		$page = menus::find_page(Router::$current_uri);
+
+		if ($page === FALSE)
+			return;
+
+		if ($page->type === 'module')
+		{
+			Kohana::config_set('routes.'.implode('/', menu::$uri).'(/.*)?', $page->target.'/'.menu::$arguments);
+			return;
+		}
+		elseif ($page->type === 'redirect')
+		{
+			url::redirect($page->target);
+		}
+		else
+		{
+			Router::$current_uri = 'page/index/'.$page->id;
 		}
 	}
 
