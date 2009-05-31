@@ -94,7 +94,5 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array
 (
-	'core',
-	'core/modules/auth',
-	'core/modules/formo'
+	'core'
 );
