@@ -13,4 +13,5 @@
  */
 
 Event::add_before('system.routing', array('Router', 'setup'), 'language::setup');
-Event::add_before('system.routing', array('Router', 'setup'), 'url::new_route');
+Event::add_after('system.routing', 'language::setup', 'url::new_route');
+//Event::add_after('system.routing', 'url::new_route', 'access::check');

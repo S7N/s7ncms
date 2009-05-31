@@ -112,17 +112,18 @@ class url extends url_Core {
 					$routed_uri[] = $item['uri'];
 
 					// check, if we have to load a controller
-					if ( ! empty($item['target']))
+					/*if ( ! empty($item['target']))
 					{
 						$load_module = $item['target'];
-					}
+					}*/
 
 					continue 2;
 				}
 			}
 		}
 		
-		Router::$current_id = (int) $id;
+		Router::$current_id = $id;
+		Router::$page = ORM::factory('page', $id);
 		Router::$current_arguments = implode('/', $routed_arguments);
 		
 		if ($found)
