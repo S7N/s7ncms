@@ -18,7 +18,7 @@ class Menu_Model extends ORM_MPTT {
 	
 	public function title()
 	{
-		return $this->page->content()->menu_title;
+		return ORM::factory('page', $this->page_id)->content()->menu_title;
 	}
 	
 }

@@ -19,7 +19,7 @@ class Page_Controller extends Controller {
 			->bind('page', $page)
 			->bind('content', $content);
 		
-		$page = menus::$page;
+		$page = ORM::factory('page', $id);
     	$content = $page->content();
 		
     	echo $view;

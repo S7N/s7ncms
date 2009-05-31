@@ -15,7 +15,7 @@ class url extends url_Core {
 
 	public static function site($uri = '', $protocol = FALSE)
 	{
-		return self::site_lang(Router::$language, $uri, $protocol);
+		return self::site_lang(language::$tag, $uri, $protocol);
 	}
 
 	public static function site_lang($lang, $uri = '', $protocol = FALSE)

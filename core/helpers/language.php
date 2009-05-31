@@ -15,10 +15,27 @@ class language_Core {
 	
 	public static $browser_language = NULL;
 	public static $id;
+	public static $tag;
+	public static $languages;
+	public static $default_id;
+	public static $default_tag;
 	
 	public static function setup()
 	{
-		// there is no language tag in the url we have to redirect
+		$languages = ORM::factory('language')->find_all();
+		
+		foreach ($languages as $language)
+		{
+			self::$languages[$language->tag] = $language->id;
+			
+			if ($language->default)
+			{
+				self::$default_id = $language->id;
+				self::$default_tag = $language->tag;
+			}
+		}
+		
+		// if there is no language tag in the url we have to redirect
 		if (Router::$language === NULL)
 		{
 			$redirect = NULL;
@@ -34,7 +51,7 @@ class language_Core {
 				// if not, use the default language
 				else
 				{
-					$redirect = ORM::factory('language')->where('default', 1)->find()->tag;
+					$redirect = self::$default_tag;
 				}
 			}
 			// the uri is not empty
@@ -48,14 +65,15 @@ class language_Core {
 				// if not, use the default language
 				else
 				{
-					$redirect = ORM::factory('language')->where('default', 1)->find()->tag;
+					$redirect = self::$default_tag;
 				}
 			}
 
 			url::redirect($redirect);
 		}
 
-		self::$id = ORM::factory('language')->where('tag', Router::$language)->find()->id;
+		self::$id = self::id(Router::$language);
+		self::$tag = self::tag(self::$id);
 		
 		// TODO set locale and I18n::$lang
 		//Kohana::config_set('locale.language', language::$available_languages[Router::$language]['language']);
@@ -80,5 +98,19 @@ class language_Core {
 		}
 
 		return language::$browser_language;
+	}
+	
+	public static function id($tag)
+	{
+		return isset(self::$languages[$tag]) ? self::$languages[$tag] : self::$default_id;
+	}
+	
+	public static function tag($id)
+	{
+		foreach (self::$languages as $key => $value)
+			if ($value === $id)
+				return $key;
+		
+		return self::$default_tag;
 	}
 }

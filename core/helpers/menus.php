@@ -32,7 +32,7 @@ class menus_Core {
 		{
 			self::$tree->rewind();
 			
-			$page = self::$tree->current()->page;
+			$page = ORM::factory('page', self::$tree->current()->page_id);
 			self::$page_id = $page->id;
 			
 			return self::$page = $page;
@@ -85,11 +85,12 @@ class menus_Core {
 		{
 			if ($item->lvl == 0) continue;
 
+			$page = ORM::factory('page', $item->page_id);
 			$items[$item->lvl][] = array(
 				'id' => $item->page_id,
-				'uri' => $item->page->content()->uri,
-				'type' => $item->page->type,
-				'target' => $item->page->target
+				'uri' => $page->content()->uri,
+				'type' => $page->type,
+				'target' => $page->target
 			);
 		}
 		

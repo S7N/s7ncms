@@ -17,11 +17,32 @@ class Page_Model extends ORM {
 	protected $has_many = array('contents' => 'content_types');
 	protected $belongs_to = array('author' => 'user');
 	
-	public function content()
+	public function content($language = FALSE)
 	{
-		$this->where(array('language_id' => language::$id));
-		
-		return $this->contents->current();
+		$lang = language::$id;
+		if ($language)
+		{
+			$lang = language::id($language);
+		}
+
+		return ORM::factory('page', $this->id)->where(array('language_id' => $lang))->contents->current();
 	}
-	
+
+	public function uri($language = FALSE)
+	{
+		$menu_item = ORM::factory('menu')->where('page_id', $this->id)->find();
+
+		$parents = $menu_item->parents()->find_all();
+
+		$uri = array();
+		foreach ($parents as $parent)
+			if ($parent->lvl !== 0)
+				$uri[] = ORM::factory('page', $parent->id)->content($language)->uri;
+
+		if ($menu_item->lvl !== 0)
+			$uri[] = $this->content($language)->uri;
+		
+		return implode('/', $uri).'/';
+	}
+
 }
