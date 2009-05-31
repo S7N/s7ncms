@@ -48,7 +48,7 @@ class Router extends Router_Core {
 
 		if ($page->type === 'module')
 		{
-			Kohana::config_set('routes.'.implode('/', menus::$uri).'(/.*)?', $page->target.'/'.implode('/', menus::$arguments));
+			Kohana::config_set('routes.'.implode('/', menus::$uri).'(/.*)?', trim($page->target.'/'.implode('/', menus::$arguments), '/'));
 		}
 		elseif ($page->type === 'redirect')
 		{
