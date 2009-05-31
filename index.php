@@ -43,6 +43,8 @@ $kohana_system = 'system';
 
 $cms_core = 'core';
 
+$cms_themes = 'themes';
+
 /**
  * Test to make sure that Kohana is running on PHP 5.2 or newer. Once you are
  * sure that your environment is compatible with Kohana, you can comment this
@@ -89,23 +91,17 @@ $kohana_application = file_exists($kohana_application) ? $kohana_application : D
 $kohana_modules = file_exists($kohana_modules) ? $kohana_modules : DOCROOT.$kohana_modules;
 $kohana_system = file_exists($kohana_system) ? $kohana_system : DOCROOT.$kohana_system;
 $cms_core = file_exists($cms_core) ? $cms_core : DOCROOT.$cms_core;
+$cms_themes = file_exists($cms_themes) ? $cms_themes : DOCROOT.$cms_themes;
 
 // Define application and system paths
 define('APPPATH', str_replace('\\', '/', realpath($kohana_application)).'/');
 define('MODPATH', str_replace('\\', '/', realpath($kohana_modules)).'/');
 define('SYSPATH', str_replace('\\', '/', realpath($kohana_system)).'/');
 define('COREPATH', str_replace('\\', '/', realpath($cms_core)).'/');
+define('THEMESPATH', str_replace('\\', '/', realpath($cms_themes)).'/');
 
 // Clean up
-unset($kohana_application, $kohana_modules, $kohana_system);
+unset($kohana_application, $kohana_modules, $kohana_system, $cms_core, $cms_themes);
 
-if (file_exists(DOCROOT.'install'.EXT))
-{
-	// Load the installation tests
-	include DOCROOT.'install'.EXT;
-}
-else
-{
-	// Initialize Kohana
-	require SYSPATH.'core/Bootstrap'.EXT;
-}
+// Initialize Kohana
+require SYSPATH.'core/Bootstrap'.EXT;

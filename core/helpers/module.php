@@ -16,16 +16,28 @@ class module_Core {
 	
 	public static function load_core_modules()
 	{
-		$core_modules = (array) glob(DOCROOT . 'core/modules/*');
+		$modules = (array) glob(COREPATH . 'modules/*');
 		
-		if ( ! empty($core_modules))
-		{
-			$modules = Kohana::config('core.modules');
-
-			foreach ($core_modules as $core_module)
-				$modules[] = $core_module;
-
-			Kohana::config_set('core.modules', $modules);
-		}
+		if ( ! empty($modules))
+			foreach ($modules as $module)
+				self::load_module(basename($module), TRUE);
 	}
+	
+	public static function load_module($name, $core = FALSE)
+	{
+		$modules = Kohana::config('core.modules');
+
+		$module_dir = $core ? COREPATH . 'modules/' . $name : MODPATH . $name;
+
+		$modules[] = $module_dir;
+
+		Kohana::config_set('core.modules', $modules);
+
+		$hooks = (array) glob($module_dir . '/hooks/*.php');
+
+		if ( ! empty($hooks))
+			foreach ($hooks as $hook)
+				include $hook;
+	}
+
 }
