@@ -12,10 +12,9 @@
  * @version $Id$
  */
 
-
 // 1: Load modules and config
 Event::add('system.ready', 'module::load_core_modules');
-//Event::add('system.ready', 'module::load_modules');
+Event::add('system.ready', 'module::load_modules');
 //Event::add('system.ready', 'config::load');
 
 // 2: Get language preferences

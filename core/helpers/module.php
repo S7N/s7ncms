@@ -18,9 +18,16 @@ class module_Core {
 	{
 		$modules = (array) glob(COREPATH . 'modules/*');
 		
-		if ( ! empty($modules))
-			foreach ($modules as $module)
-				self::load_module(basename($module), TRUE);
+		foreach ($modules as $module)
+			self::load_module(basename($module), TRUE);
+	}
+	
+	public static function load_modules()
+	{
+		$modules = ORM::factory('module')->enabled();
+		
+		foreach ($modules as $module)
+			self::load_module(basename($module->name));
 	}
 	
 	public static function load_module($name, $core = FALSE)
@@ -35,9 +42,8 @@ class module_Core {
 
 		$hooks = (array) glob($module_dir . '/hooks/*.php');
 
-		if ( ! empty($hooks))
-			foreach ($hooks as $hook)
-				include $hook;
+		foreach ($hooks as $hook)
+			include $hook;
 	}
 
 }
