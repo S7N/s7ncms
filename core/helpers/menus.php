@@ -21,6 +21,17 @@ class menus_Core {
 	
 	public static function find_page($uri)
 	{
+		$cache_name = 'route_'.language::$tag.'_'.$uri;
+		
+		if (($cache = Cache::instance()->get($cache_name)) !== NULL)
+		{
+			self::$page_id = $cache['page_id'];
+			self::$arguments = $cache['arguments'];
+			self::$uri = $cache['uri'];
+			
+			return $cache['found'] ? self::$page = ORM::factory('page', self::$page_id) : FALSE;
+		}
+		
 		$menu_items = self::items();
 		
 		// return FALSE if the menu tree is empty
@@ -34,6 +45,15 @@ class menus_Core {
 			
 			$page = ORM::factory('page', self::$tree->current()->page_id);
 			self::$page_id = $page->id;
+			
+			$cache = array(
+				'page_id' => self::$page_id,
+				'arguments' => array(),
+				'uri' => array(),
+				'found' => true
+			);
+			
+			Cache::instance()->set($cache_name, $cache, array('route'));
 			
 			return self::$page = $page;
 		}
@@ -71,6 +91,15 @@ class menus_Core {
 				}
 			}
 		}
+		
+		$cache = array(
+			'page_id' => self::$page_id,
+			'arguments' => self::$arguments,
+			'uri' => self::$uri,
+			'found' => $found
+		);
+		
+		Cache::instance()->set($cache_name, $cache, array('route'));
 		
 		return $found ? self::$page = ORM::factory('page', self::$page_id) : FALSE;
 	}

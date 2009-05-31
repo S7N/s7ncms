@@ -11,6 +11,7 @@
  * @copyright Eduard Baun, 2007-2009
  * @version $Id$
  */
+
 class Page_Controller extends Controller {
 	
 	public function index($id)
@@ -19,7 +20,7 @@ class Page_Controller extends Controller {
 			->bind('page', $page)
 			->bind('content', $content);
 		
-		$page = ORM::factory('page', $id);
+		$page = ORM::factory('page', (int) $id);
     	$content = $page->content();
 		
     	echo $view;

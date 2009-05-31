@@ -17,8 +17,7 @@ class Page_Model extends ORM {
 	protected $has_many = array('contents' => 'content_types');
 	protected $belongs_to = array('author' => 'user');
 	private static $cache = array();
-	private static $uri_cache = array();
-	
+
 	public function content($language = FALSE)
 	{
 		$lang = $language ? language::id($language) : language::$id;
@@ -31,9 +30,11 @@ class Page_Model extends ORM {
 
 	public function uri($language = FALSE)
 	{
-		if (isset(self::$uri_cache[(string) $language][$this->id]))
-			return self::$uri_cache[(string) $language][$this->id];
-			
+		$cache_name = 'page_uri_' . $this->id . '_' . ($language ? $language : language::$tag);
+		
+		if (($cache = Cache::instance()->get($cache_name)) !== NULL)
+			return $cache;
+		
 		$menu_item = ORM::factory('menu')->where('page_id', $this->id)->find();
 
 		$parents = $menu_item->parents()->find_all();
@@ -45,8 +46,12 @@ class Page_Model extends ORM {
 
 		if ($menu_item->lvl !== 0)
 			$uri[] = $this->content($language)->uri;
+			
+		$uri = implode('/', $uri).'/';
 		
-		return self::$uri_cache[(string) $language][$this->id] = implode('/', $uri).'/';
+		Cache::instance()->set($cache_name, $uri, array('page'));
+		
+		return $uri;
 	}
 
 }
