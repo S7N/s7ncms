@@ -41,6 +41,8 @@ $kohana_modules = 'modules';
  */
 $kohana_system = 'system';
 
+$cms_core = 'core';
+
 /**
  * Test to make sure that Kohana is running on PHP 5.2 or newer. Once you are
  * sure that your environment is compatible with Kohana, you can comment this
@@ -86,11 +88,13 @@ is_link(KOHANA) and chdir(dirname(realpath(__FILE__)));
 $kohana_application = file_exists($kohana_application) ? $kohana_application : DOCROOT.$kohana_application;
 $kohana_modules = file_exists($kohana_modules) ? $kohana_modules : DOCROOT.$kohana_modules;
 $kohana_system = file_exists($kohana_system) ? $kohana_system : DOCROOT.$kohana_system;
+$cms_core = file_exists($cms_core) ? $cms_core : DOCROOT.$cms_core;
 
 // Define application and system paths
 define('APPPATH', str_replace('\\', '/', realpath($kohana_application)).'/');
 define('MODPATH', str_replace('\\', '/', realpath($kohana_modules)).'/');
 define('SYSPATH', str_replace('\\', '/', realpath($kohana_system)).'/');
+define('COREPATH', str_replace('\\', '/', realpath($cms_core)).'/');
 
 // Clean up
 unset($kohana_application, $kohana_modules, $kohana_system);

@@ -12,10 +12,29 @@
  * @version $Id$
  */
 
+
+//1: Load modules
+Event::add('system.ready', 'loader::load_core');
+
+//2: Get language preferences
+
 Event::add('system.ready', 'module::load_core_modules');
 //Event::add('system.ready', 'module::load_modules');
 //Event::add('system.ready', 'config::load');
+
 Event::add_before('system.routing', array('Router', 'setup'), 'language::setup');
+
+//3: Get the new URL route
 Event::add_after('system.routing', 'language::setup', 'Router::new_route');
+
+//4: Process access control
+Event::add_after('system.routing', 'url::new_route', 'acl::check_access');
+
+//5: Load the theme
+//Event::add('system.post_controller', 'theme', 'load_themes');
+
+// And away we go...
+
+=======
 //Event::add_after('system.routing', 'url::new_route', 'access::check');
-//Event::add('system.post_routing', 'theme::load');
+//Event::add('system.post_routing', 'theme::load');>>>>>>> .r427
