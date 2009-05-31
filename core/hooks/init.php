@@ -35,6 +35,5 @@ Event::add_after('system.routing', 'url::new_route', 'acl::check_access');
 
 // And away we go...
 
-=======
 //Event::add_after('system.routing', 'url::new_route', 'access::check');
-//Event::add('system.post_routing', 'theme::load');>>>>>>> .r427
+//Event::add('system.post_routing', 'theme::load');
