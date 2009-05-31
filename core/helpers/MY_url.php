@@ -64,7 +64,7 @@ class url extends url_Core {
 
 
 			Router::$current_id = (int) $page->id;
-			Router::$page = ORM::factory('page', $id);
+			Router::$page = $page;
 			Router::$current_uri = 'page/index/'.$page->id;
 
 			return;
