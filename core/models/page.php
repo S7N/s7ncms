@@ -30,7 +30,7 @@ class Page_Model extends ORM {
 
 	public function uri($language = FALSE)
 	{
-		$cache_name = 'page_uri_' . $this->id . '_' . ($language ? $language : language::$tag);
+		$cache_name = sha1('page_uri' . $this->id . ($language ? $language : language::$tag));
 		
 		if (($cache = Cache::instance()->get($cache_name)) !== NULL)
 			return $cache;

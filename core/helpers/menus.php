@@ -21,7 +21,7 @@ class menus_Core {
 	
 	public static function find_page($uri)
 	{
-		$cache_name = 'route_'.language::$tag.'_'.$uri;
+		$cache_name = sha1('menu_uri' . language::$tag . $uri);
 		
 		if (($cache = Cache::instance()->get($cache_name)) !== NULL)
 		{
@@ -53,7 +53,7 @@ class menus_Core {
 				'found' => true
 			);
 			
-			Cache::instance()->set($cache_name, $cache, array('route'));
+			Cache::instance()->set($cache_name, $cache, array('menu'));
 			
 			return self::$page = $page;
 		}
@@ -99,7 +99,7 @@ class menus_Core {
 			'found' => $found
 		);
 		
-		Cache::instance()->set($cache_name, $cache, array('route'));
+		Cache::instance()->set($cache_name, $cache, array('menu'));
 		
 		return $found ? self::$page = ORM::factory('page', self::$page_id) : FALSE;
 	}
