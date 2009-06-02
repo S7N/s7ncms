@@ -366,7 +366,7 @@ INSERT INTO `users` VALUES (1, 'Edy', '', 'edy@edy-b.de', 'Eduard', 'B', '0000-0
 -- Tabellenstruktur für Tabelle `users_roles`
 -- 
 
-DROP TABLE IF EXISTS `users_roles`;
+DROP TABLE IF EXISTS `roles_users`;
 CREATE TABLE IF NOT EXISTS `users_roles` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `user_id` int(10) unsigned NOT NULL,
