@@ -27,6 +27,8 @@ class Install_Controller extends Template_Controller {
 
 	public function index()
 	{
+		Session::instance()->destroy();
+		
 		url::redirect('install/step_systemcheck');
 	}
 
