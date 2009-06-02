@@ -173,8 +173,8 @@ CREATE TABLE IF NOT EXISTS `languages` (
 -- Daten für Tabelle `languages`
 -- 
 
-INSERT INTO `languages` VALUES (1, 'de', 'Deutsch (Deutschland)', 1, '');
-INSERT INTO `languages` VALUES (2, 'en', 'English (UK)', 0, '');
+INSERT INTO `languages` VALUES (1, 'de', 'German', 1, 'Deutsch');
+INSERT INTO `languages` VALUES (2, 'en', 'English', 0, 'English');
 
 -- --------------------------------------------------------
 
@@ -226,25 +226,26 @@ CREATE TABLE IF NOT EXISTS `modules` (
 -- --------------------------------------------------------
 
 -- 
--- Tabellenstruktur für Tabelle `nations`
+-- Tabellenstruktur für Tabelle `countries`
 -- 
 
-DROP TABLE IF EXISTS `nations`;
-CREATE TABLE IF NOT EXISTS `nations` (
+DROP TABLE IF EXISTS `countries`;
+CREATE TABLE IF NOT EXISTS `countries` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tag` varchar(6) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `timezone` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `timezone` time NOT NULL,
   `language_id` int(10) unsigned default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- 
--- Daten für Tabelle `nations`
+-- Daten für Tabelle `countries`
 -- 
 
-INSERT INTO `nations` VALUES (1, 'de_DE', 'Germany', '2009-05-31 00:20:16', 1);
-INSERT INTO `nations` VALUES (2, 'en_GB', 'Great Britain', '2009-05-31 00:20:16', 2);
+INSERT INTO `countries` VALUES (1, 'de', 'Germany', '01:00', 1);
+INSERT INTO `countries` VALUES (2, 'gb', 'Great Britain', '00:00', 2);
+INSERT INTO `countries` VALUES (2, 'us', 'United States', '-05:00', 2);
 
 -- --------------------------------------------------------
 
