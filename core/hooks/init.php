@@ -24,7 +24,7 @@ Event::add_before('system.routing', array('Router', 'setup'), 'language::setup')
 Event::add_after('system.routing', 'language::setup', 'Router::new_route');
 
 // 4: Process access control
-Event::add_after('system.routing', 'url::new_route', 'acl::check_access');
+Event::add_after('system.routing', 'Router::new_route', 'acl::current_page');
 
 // 5: Load the theme
 //Event::add('system.post_controller', 'theme::load');
