@@ -13,21 +13,23 @@
  */
 
 class Frontend_Controller extends Controller {
-	
+
 	// Template view name
 	public $template = 'template';
-	
+
 	// Default to do auto-rendering
 	public $auto_render = TRUE;
-	
+
+	public $title;
 	public $content;
 
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		// Load the template
 		$this->template = View::factory($this->template)
+			->bind('title', $this->title)
 			->bind('content', $this->content);
 
 		if ($this->auto_render == TRUE)
@@ -36,7 +38,7 @@ class Frontend_Controller extends Controller {
 			Event::add('system.post_controller', array($this, '_render'));
 		}
 	}
-	
+
 	/**
 	 * Render the loaded template.
 	 */
@@ -48,5 +50,5 @@ class Frontend_Controller extends Controller {
 			$this->template->render(TRUE);
 		}
 	}
-	
+
 }

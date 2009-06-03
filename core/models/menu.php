@@ -15,10 +15,10 @@
 class Menu_Model extends ORM_MPTT {
 
 	protected $belongs_to = array('page');
-	
+
 	public function title()
 	{
 		return ORM::factory('page', $this->page_id)->content()->menu_title;
 	}
-	
+
 }

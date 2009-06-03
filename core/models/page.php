@@ -17,6 +17,31 @@ class Page_Model extends ORM {
 	protected $has_many = array('contents' => 'content_types');
 	protected $belongs_to = array('author' => 'user');
 
+	public function __construct($id = NULL)
+	{
+		if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
+			$id = $this->id_from_uri($id);
+
+		parent::__construct($id);
+	}
+
+	public function id_from_uri($uri, $language = FALSE)
+	{
+		$lang = $language ? language::id($language) : language::$id;
+
+		$result = Database::instance()->query("
+			SELECT `page_id` AS `id` FROM `content_types`
+			WHERE `content_id` IN
+				(SELECT `id` FROM `contents` WHERE language_id = ".(int) $lang." AND uri = '".$uri."')
+			LIMIT 1
+		");
+
+		if (count($result) === 1)
+			return (int) $result->current()->id;
+		else
+			return NULL;
+	}
+
 	public function content($language = FALSE)
 	{
 		$lang = $language ? language::id($language) : language::$id;

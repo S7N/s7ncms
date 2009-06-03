@@ -12,14 +12,19 @@
  * @version $Id$
  */
 
-class Page_Controller extends Frontend_Controller {
+class Menu_Core {
 
-	public function index($id)
+	public static $page = NULL;
+	public static $page_id = NULL;
+
+	public static function home_page_id()
 	{
-		$page = ORM::factory('page', (int) $id);
+		$root = ORM::factory('menu')->root(0);
 
-    	$this->title = $page->content()->title;
-    	$this->content = $page->content()->data;
+		if ( ! $root->loaded)
+			return NULL;
+
+		return $root->page_id;
 	}
 
 }

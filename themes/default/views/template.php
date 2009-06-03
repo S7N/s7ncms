@@ -58,8 +58,8 @@
                         </div>
                     </div>
                     <div class="grid_9 alpha">
-                    <h1><?php echo $content->title ?></h1>
-                    <?php echo $content->data ?>
+                    <h1><?php echo $title ?></h1>
+                    <?php echo $content ?>
                     </div>
                     <div class="clear"> </div>
                     <div class="grid_6 alpha bottom_left corner"></div>

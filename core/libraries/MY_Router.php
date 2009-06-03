@@ -35,29 +35,37 @@ class Router extends Router_Core {
 			}
 		}
 	}
-	
+
 	public static function new_route()
 	{
 		if ((strpos(Router::$current_uri, 'admin')) === 0)
 			return;
 
-		$page = menus::find_page(Router::$current_uri);
+		$current_uri = explode('/', Router::$current_uri);
 
-		if ($page === FALSE)
+		$page = $current_uri[0];
+
+		if (empty($page))
+			$page = Menu::home_page_id();
+
+		$page = ORM::factory('page', $page);
+
+		Menu::$page = $page;
+		Menu::$page_id = $page->id;
+
+		if ( ! $page->loaded)
 			return;
 
 		if ($page->type === 'module')
 		{
-			Kohana::config_set('routes.'.implode('/', menus::$uri).'(/.*)?', trim($page->target.'/'.implode('/', menus::$arguments), '/'));
+			$uri = array_shift($current_uri);
+
+			Kohana::config_set('routes.'. (empty($uri) ? '_default' : '(/.*)'), trim($page->target.'/'.implode('/', $current_uri), '/'));
 		}
 		elseif ($page->type === 'redirect')
-		{
 			url::redirect($page->target);
-		}
 		else
-		{
 			Router::$current_uri = 'page/index/'.$page->id;
-		}
 	}
 
 }
