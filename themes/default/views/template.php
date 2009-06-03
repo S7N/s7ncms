@@ -2,11 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" href="styles/reset.css" type="text/css" media="all" />
-        <link rel="stylesheet" href="styles/text.css" type="text/css" media="all" />
-        <link rel="stylesheet" href="styles/960.css" type="text/css" media="all" />
-        <link rel="stylesheet" href="styles/navigation.css" type="text/css" media="all" />
-        <link rel="stylesheet" href="styles/layout.css" type="text/css" media="all" />
+        <?php
+        	assets::stylesheet(theme::url('styles/reset.css'));
+        	assets::stylesheet(theme::url('styles/text.css'));
+        	assets::stylesheet(theme::url('styles/960.css'));
+        	assets::stylesheet(theme::url('styles/navigation.css'));
+        	assets::stylesheet(theme::url('styles/layout.css'));
+        ?>
+        <?php echo assets::render() ?>
         <title>Welcome to S7N!</title>
     </head>
     <body>
@@ -55,7 +58,8 @@
                         </div>
                     </div>
                     <div class="grid_9 alpha">
-                    I am the content
+                    <h1><?php echo $content->title ?></h1>
+                    <?php echo $content->data ?>
                     </div>
                     <div class="clear"> </div>
                     <div class="grid_6 alpha bottom_left corner"></div>

@@ -12,17 +12,11 @@
  * @version $Id$
  */
 
-class Page_Controller extends Controller {
+class Page_Controller extends Frontend_Controller {
 	
 	public function index($id)
 	{
-		$view = View::factory('page')
-			->bind('page', $page)
-			->bind('content', $content);
-		
 		$page = ORM::factory('page', (int) $id);
-    	$content = $page->content();
-		
-    	echo $view;
+    	$this->content = $page->content();
 	}
 }

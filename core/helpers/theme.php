@@ -12,5 +12,25 @@
  * @version $Id$
  */
 class theme_Core {
-	static $name = 'default';
+	
+	public static $name = 'default';
+	
+	public static function load()
+	{
+		$modules = Kohana::config("core.modules");
+		$modules[] = THEMESPATH;
+		
+		Kohana::config_set("core.modules", $modules);
+		
+		// TODO
+		//theme::$name = config::get('s7n.theme');
+		
+		if (strpos(Router::$current_uri, 'admin') === 0)
+			theme::$name = 'admin';
+	}
+	
+	public static function url($path = '')
+	{
+		return 'themes/' . theme::$name . '/' . $path;
+	}
 }

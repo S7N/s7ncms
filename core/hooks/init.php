@@ -27,4 +27,4 @@ Event::add_after('system.routing', 'language::setup', 'Router::new_route');
 Event::add_after('system.routing', 'Router::new_route', 'acl::current_page');
 
 // 5: Load the theme
-//Event::add('system.post_controller', 'theme::load');
+Event::add('system.ready', 'theme::load');
