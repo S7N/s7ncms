@@ -99,10 +99,10 @@ CREATE TABLE IF NOT EXISTS `contents` (
 
 INSERT INTO `contents` VALUES (1, 1, 1, 0, 'Hallo, das ist meiner erste Seite.', 1, 'Meine erste Seite', NULL, 'Erste Seite', 'erste-seite');
 INSERT INTO `contents` VALUES (2, 2, 2, 0, 'Hello, this is my first page.', 1, 'My first Page', NULL, 'First Page', 'first-page');
-INSERT INTO `contents` VALUES (3, 1, 0, 0, 'das ist der inhalt', 0, 'Andere Seite', 'Andere Seite', 'Andere Seite', 'andere-seite');
-INSERT INTO `contents` VALUES (4, 2, 0, 0, 'this is the content', 0, '', 'Another Page', 'Another Page', 'another-page');
-INSERT INTO `contents` VALUES (5, 1, 0, 0, 'das ist über S7Ncms', 0, 'Über S7Ncms', NULL, 'Über', 'uber');
-INSERT INTO `contents` VALUES (6, 2, 0, 0, 'this is about S7Ncms', 0, 'About S7Ncms', NULL, 'About', 'about');
+INSERT INTO `contents` VALUES (3, 1, 0, 0, 'das ist der inhalt', 1, 'Andere Seite', NULL, 'Andere Seite', 'andere-seite');
+INSERT INTO `contents` VALUES (4, 2, 0, 0, 'this is the content', 1, 'Another Page', NULL, 'Another Page', 'another-page');
+INSERT INTO `contents` VALUES (5, 1, 0, 0, 'das ist über S7Ncms', 1, 'Über S7Ncms', NULL, 'Über', 'uber');
+INSERT INTO `contents` VALUES (6, 2, 0, 0, 'this is about S7Ncms', 1, 'About S7Ncms', NULL, 'About', 'about');
 
 -- --------------------------------------------------------
 

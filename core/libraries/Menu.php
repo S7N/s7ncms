@@ -14,8 +14,125 @@
 
 class Menu_Core {
 
+	public static $instance = NULL;
+	protected $scope = NULL;
+	protected $items = array();
+
 	public static $page = NULL;
 	public static $page_id = NULL;
+
+	public function __construct($scope = 'main')
+	{
+		$this->scope = $scope;
+	}
+
+	public function __toString()
+	{
+		try {
+			return (string) $this->render();
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+
+	}
+
+	protected function render($id = NULL)
+	{
+		$output = '';
+
+		if ($id === NULL)
+		{
+			$cache_name = sha1('menu_' . Menu::$page_id . language::$tag);
+
+			if (($cache_output = Cache::instance()->get($cache_name)) !== NULL)
+				return $cache_output;
+
+			foreach ($this->items() as $item)
+				$item->rendered = FALSE;
+
+			$output = '<ul class="nav">';
+
+			foreach ($this->items() as $item)
+			{
+				if ($item->lvl == 0)
+					continue;
+
+				$output .= $this->render($item->id);
+			}
+
+			$output .= '</ul>';
+
+			Cache::instance()->set($cache_name, $output, array('menu'));
+		}
+		else
+		{
+			$item = $this->items($id);
+			$class = $item->active === TRUE ? 'active' : '';
+
+			if (empty($item->children))
+			{
+				$output .= '<li class="'.$class.'">'.html::anchor($item->uri, html::specialchars($item->title), array('class' => $class)).'</li>';
+			}
+			else
+			{
+				$output = '<li class="'.$class.'">'.html::anchor($item->uri, html::specialchars($item->title), array('class' => $class));
+				$output .= '<ul>';
+
+				foreach ($item->children as $child)
+					$output .= $this->render($child->id);
+
+				$output .= '</ul></li>';
+			}
+
+			$this->rendered = TRUE;
+		}
+
+		return $output;
+	}
+
+	public function items($id = NULL)
+	{
+		if ($id !== NULL)
+			return $this->items[$id];
+
+		if (empty($this->items))
+		{
+			$menu_items = ORM::factory('menu')->find_all();
+
+			foreach ($menu_items as $item)
+			{
+				$menu = new Menu_Item;
+				$page = ORM::factory('page', $item->page_id);
+
+				$menu->id = (int) $page->id;
+				$menu->title = $page->content()->menu_title;
+				$menu->uri = $page->uri();
+				$menu->parent = (int) $item->parent()->id;
+				$menu->lvl = (int) $item->lvl;
+
+				$this->items[$menu->id] = $menu;
+
+				if ($menu->parent > 0)
+					$this->items[$menu->parent]->append_child($menu->id);
+
+				if ($menu->id === Menu::$page_id)
+					$this->set_active($menu->id);
+			}
+		}
+
+		return $this->items;
+	}
+
+	public function set_active($id)
+	{
+		if ($id === 0)
+			return;
+
+		$item = $this->items($id);
+		$item->active = TRUE;
+
+		$this->set_active($item->parent);
+	}
 
 	public static function home_page_id()
 	{
@@ -27,4 +144,21 @@ class Menu_Core {
 		return $root->page_id;
 	}
 
+}
+
+class Menu_Item {
+
+	public $id = 0;
+	public $title;
+	public $uri;
+	public $parent = 0;
+	public $level = 0;
+	public $children = array();
+	public $rendered = FALSE;
+	public $active = FALSE;
+
+	public function append_child($id)
+	{
+		$this->children[] = $id;
+	}
 }

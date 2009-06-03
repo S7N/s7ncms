@@ -46,11 +46,11 @@ class Page_Model extends ORM {
 	{
 		$lang = $language ? language::id($language) : language::$id;
 
-		$cache_name = sha1('page_content' . $this->id . $lang);
+		$cache_name = sha1('page_content' . $this->id . language::$tag);
 
 		if (($content = Cache::instance()->get($cache_name)) === NULL)
 		{
-			$content = ORM::factory('page', $this->id)->where(array('language_id' => $lang))->contents->current();
+			$content = $this->where(array('language_id' => $lang))->contents->current();
 
 			Cache::instance()->set($cache_name, $content, array('page'));
 		}
@@ -60,23 +60,11 @@ class Page_Model extends ORM {
 
 	public function uri($language = FALSE)
 	{
-		$cache_name = sha1('page_uri' . $this->id . ($language ? $language : language::$tag));
+		$cache_name = sha1('page_uri' . $this->id . language::$tag);
 
 		if (($uri = Cache::instance()->get($cache_name)) === NULL)
 		{
-			$menu_item = ORM::factory('menu')->where('page_id', $this->id)->find();
-
-			$parents = $menu_item->parents()->find_all();
-
-			$uri = array();
-			foreach ($parents as $parent)
-				if ($parent->lvl !== 0)
-					$uri[] = ORM::factory('page', $parent->id)->content($language)->uri;
-
-			if ($menu_item->lvl !== 0)
-				$uri[] = $this->content($language)->uri;
-
-			$uri = implode('/', $uri).'/';
+			$uri = $this->content($language)->uri;
 
 			Cache::instance()->set($cache_name, $uri, array('page'));
 		}

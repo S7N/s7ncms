@@ -21,22 +21,7 @@
                     	Logo
                     </div>
                     <div class="grid_8 alpha tabs">
-                    	<ul class="nav">
-                            <li class="active"><strong>Home</strong>
-                                <ul>
-                                	<li>Menu 1</li>
-                                    <li>Menu 2</li>
-                                    <li>Menu 3</li>
-                                </ul>
-                            </li>
-                            <li><strong>a navigation item</strong>
-                                <ul>
-                                    <li>Menu 1</li>
-                                    <li>Menu 2</li>
-                                    <li>Menu 3</li>
-                                </ul>
-                            </li>
-                          </ul>
+                    	<?php echo new Menu ?>
                     </div>
                     <div class="clear"> </div>
                 </div>
