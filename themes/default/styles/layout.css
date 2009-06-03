@@ -1,0 +1,104 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+/* MAIN */
+body
+{
+	background: #003d5b;
+}
+
+#wrapper
+{
+	width: 100%;
+	background: url('../images/bg.png') repeat-x;
+}
+
+.right
+{
+	float: right;
+}
+
+.left
+{
+	float: left;
+}
+/* END MAIN */
+
+
+/* HEADER */
+
+.top
+{
+	width: 100%;
+	background: #006ea4;
+	height: 15px;
+}
+
+.header
+{
+	width: 100%;
+	height: 100px;
+}
+
+	.tabs
+	{
+		margin-top: 67px;
+	}
+/* HEADER */
+
+.content
+{
+	background: #FFF;
+}
+
+.block
+{
+	
+}
+.block .header
+{
+}
+.block .body
+{
+}
+
+
+/* CORNERS */
+
+.corner
+{
+	width: 11px;
+	height: 11px;
+}
+
+.top_left
+{
+	background: url('../images/corners/top_left.png') no-repeat left;
+}
+
+.top_right
+{
+	background: url('../images/corners/top_right.png') no-repeat right;
+}
+
+.bottom_left
+{
+	background: url('../images/corners/bottom_left.png') no-repeat left;
+}
+
+.bottom_right
+{
+	background: url('../images/corners/bottom_right.png') no-repeat right;
+}
+
+/* END */
+
+.footer
+{
+	margin-top: 3px;
+	padding-top: 35px;
+	padding-left: 10px;
+	height: 70px;
+	background: url('../images/footer/reflection.png') no-repeat;
+}

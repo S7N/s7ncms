@@ -1,0 +1,71 @@
+/*** Nav bar styles ***/
+
+ul.nav,
+.nav ul{
+/*Remove all spacings from the list items*/
+	margin: 0;
+	padding: 0;
+	cursor: default;
+	list-style-type: none;
+	display: inline;
+}
+
+ul.nav{
+	display: table;
+}
+ul.nav>li{
+	display: inline-block;
+	position: relative;
+	height: 33px;
+	margin: 0px;
+	margin-right: 1px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 3px;
+}
+
+ul.nav li>ul{
+	display: none;
+	position: absolute;
+	max-width: 40ex;
+	margin-left: -6px;
+	margin-top: 2px;
+}
+
+ul.nav li:hover>ul{
+	display: block;
+}
+
+ul.nav li:hover>ul li{
+	margin: 0px;
+}
+
+.nav ul li a{
+	display: block;
+	padding: 2px 10px;
+}
+
+.nav li{
+	background: url('../images/header/tab_bg.png') repeat-x;
+	color: #369;
+}
+
+.nav li:hover{
+	background-color: #fff;
+	color: #369;
+}
+
+.nav .active
+{
+	background: #fff;
+	color: #369;
+}
+
+ul.nav,
+.nav ul{
+	margin: 1px;
+}
+
+.nav a{
+	text-decoration: none;
+}
