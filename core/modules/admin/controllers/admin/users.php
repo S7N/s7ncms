@@ -12,7 +12,7 @@
  * @version $Id$
  */
 
-class Users_Core {
+class Users_Controller extends Backend_Controller {
 
 	public function index()
 	{

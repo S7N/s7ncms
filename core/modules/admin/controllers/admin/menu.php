@@ -12,7 +12,7 @@
  * @version $Id$
  */
 
-class Menu_Core extends Backend_Controller {
+class Menu_Controller extends Backend_Controller {
 
 	public function index()
 	{

@@ -12,7 +12,7 @@
  * @version $Id$
  */
 
-class Pages_Core extends Backend_Controller {
+class Pages_Controller extends Backend_Controller {
 
 	public function index()
 	{

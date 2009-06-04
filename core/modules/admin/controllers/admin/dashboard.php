@@ -12,7 +12,7 @@
  * @version $Id$
  */
 
-class Dashboard_Core extends Backend_Controller {
+class Dashboard_Controller extends Backend_Controller {
 
 	public function index()
 	{
