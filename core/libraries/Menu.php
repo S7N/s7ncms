@@ -15,15 +15,17 @@
 class Menu_Core {
 
 	public static $instance = NULL;
-	protected $scope = NULL;
+	protected $scope;
+	protected $include_root;
 	protected $items = array();
 
 	public static $page = NULL;
 	public static $page_id = NULL;
 
-	public function __construct($scope = 'main')
+	public function __construct($scope = 'main', $include_root = FALSE)
 	{
 		$this->scope = $scope;
+		$this->include_root = $include_root;
 	}
 
 	public function __toString()
@@ -42,7 +44,7 @@ class Menu_Core {
 
 		if ($id === NULL)
 		{
-			$cache_name = sha1('menu_' . Menu::$page_id . language::$tag);
+			$cache_name = sha1('menu' . language::$tag . Menu::$page_id . $this->scope);
 
 			if (($cache_output = Cache::instance()->get($cache_name)) !== NULL)
 				return $cache_output;
@@ -54,7 +56,7 @@ class Menu_Core {
 
 			foreach ($this->items() as $item)
 			{
-				if ($item->lvl == 0)
+				if ($this->include_root === FALSE AND $item->lvl == 0)
 					continue;
 
 				$output .= $this->render($item->id);
@@ -67,6 +69,10 @@ class Menu_Core {
 		else
 		{
 			$item = $this->items($id);
+
+			if ($item === FALSE)
+				return '';
+
 			$class = $item->active === TRUE ? 'active' : '';
 
 			if (empty($item->children))
@@ -75,7 +81,7 @@ class Menu_Core {
 			}
 			else
 			{
-				$output = '<li class="'.$class.'">'.html::anchor($item->uri, html::specialchars($item->title), array('class' => $class));
+				$output .= '<li class="'.$class.'">'.html::anchor($item->uri, html::specialchars($item->title), array('class' => $class));
 				$output .= '<ul>';
 
 				foreach ($item->children as $child)
@@ -93,11 +99,16 @@ class Menu_Core {
 	public function items($id = NULL)
 	{
 		if ($id !== NULL)
-			return $this->items[$id];
+		{
+			if (array_key_exists($id, $this->items))
+				return $this->items[$id];
+
+			return FALSE;
+		}
 
 		if (empty($this->items))
 		{
-			$menu_items = ORM::factory('menu')->find_all();
+			$menu_items = ORM::factory('menu')->root($this->scope)->descendants(TRUE)->find_all();
 
 			foreach ($menu_items as $item)
 			{
@@ -129,6 +140,10 @@ class Menu_Core {
 			return;
 
 		$item = $this->items($id);
+
+		if ($item === FALSE)
+			return;
+
 		$item->active = TRUE;
 
 		$this->set_active($item->parent);
@@ -136,12 +151,43 @@ class Menu_Core {
 
 	public static function home_page_id()
 	{
-		$root = ORM::factory('menu')->root(0);
+		$root = ORM::factory('menu')->root('main');
 
 		if ( ! $root->loaded)
 			return NULL;
 
 		return $root->page_id;
+	}
+
+	public static function breadcrumb()
+	{
+		$cache_name = sha1('menu_breadcrumb' . language::$tag . Menu::$page_id . 'main');
+
+		if (($cache_output = Cache::instance()->get($cache_name)) !== NULL)
+			return $cache_output;
+
+		$item = ORM::factory('menu')->where(array('page_id' => Menu::$page_id, 'scope' => 'main'))->find();
+
+		$output = '<ul class="breadcrumb">';
+		if ($item->loaded)
+		{
+			$parents = $item->parents()->find_all();
+			foreach ($parents as $parent)
+			{
+				$page = ORM::factory('page', $parent->page_id);
+				$uri = $parent->lvl === 0 ? '/' : $page->content()->uri;
+				$output .= '<li>'.html::anchor($uri, $page->content()->menu_title);
+			}
+
+			$page = ORM::factory('page', Menu::$page_id);
+			$uri = $item->is_root() ? '/' : $page->content()->uri;
+			$output .= '<li>'.html::anchor($uri, $page->content()->menu_title).'</li>';
+		}
+		$output .= '</ul>';
+
+		Cache::instance()->set($cache_name, $output, array('menu'));
+
+		return $output;
 	}
 
 }
