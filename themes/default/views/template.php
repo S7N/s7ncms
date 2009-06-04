@@ -14,7 +14,7 @@
     </head>
     <body>
         <div id="wrapper">
-        	<div class="top"> </div>
+        	<div class="top"><?php echo Menu::breadcrumb(); ?></div>
             <div class="container_12">
                 <div class="grid_12 header">
                 	<div class="grid_4 omega">
@@ -30,15 +30,23 @@
                     <div class="grid_6 omega top_right corner"></div>
                     <div class="clear"> </div>
                 	<div class="grid_12">
-                    	<img src="images/content/banner.png" alt="Welcome to S7N!" />
+                    	<img src="/cms/themes/default/images/content/banner.png" alt="Welcome to S7N!" />
                     </div>
                     <div class="grid_3 omega">
                     	<div class="block">
                         	<div class="title">
-                            	<h6>Title<h6>
+                            	<h6>Block Title<h6>
                             </div>
                             <div class="body">
-                            	Body
+                            	Block Body
+                            </div>
+                        </div>
+                        <div class="block">
+                        	<div class="title">
+                            	<h6>Block Title<h6>
+                            </div>
+                            <div class="body">
+                            	Block Body
                             </div>
                         </div>
                     </div>

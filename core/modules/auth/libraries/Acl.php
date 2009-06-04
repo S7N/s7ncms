@@ -1,9 +1,18 @@
 <?php
 
-class Acl_Core {
+final class Acl {
 	
 	protected $auth_instance;
 	
+	public static function current_page()
+	{
+		$instance = self::instance();
+		if($instance->check_access() == FALSE)
+		{
+			echo "YOU NO NOT HAVE ACCESS! :-)";
+		}
+	}
+
 	public static function instance()
 	{
 		static $instance;
