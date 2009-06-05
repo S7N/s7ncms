@@ -29,11 +29,16 @@ class Page_Model extends ORM {
 	{
 		$lang = $language ? language::id($language) : language::$id;
 
+		$content_type_id = ORM::factory('content_type', 'page')->id;
+
 		$result = Database::instance()->query("
 			SELECT `page_id` AS `id` FROM `page_contents`
-			WHERE `content_id` IN
-				(SELECT `id` FROM `contents` WHERE language_id = ".(int) $lang." AND uri = '".$uri."')
-			LIMIT 1
+			WHERE `content_id` IN (
+				SELECT `id` FROM `contents`
+				WHERE language_id = ".(int) $lang."
+					AND uri = ".Database::instance()->escape($uri)."
+					AND content_type_id = ".(int) $content_type_id."
+			) LIMIT 1
 		");
 
 		if (count($result) === 1)
