@@ -13,23 +13,23 @@
  */
 
 class module_Core {
-	
+
 	public static function load_core_modules()
 	{
 		$modules = (array) glob(COREPATH . 'modules/*');
-		
+
 		foreach ($modules as $module)
 			self::load_module(basename($module), TRUE);
 	}
-	
+
 	public static function load_modules()
 	{
-		$modules = ORM::factory('module')->enabled();
-		
+		$modules = ORM::factory('module')->enabled()->find_all();
+
 		foreach ($modules as $module)
 			self::load_module(basename($module->name));
 	}
-	
+
 	public static function load_module($name, $core = FALSE)
 	{
 		$modules = Kohana::config('core.modules');

@@ -21,12 +21,12 @@ class Page_Model extends ORM {
 
 	public function __construct($id = NULL)
 	{
+		$this->content_type_id = (int) ORM::factory('content_type', 'page')->id;
+
 		if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
 			$id = $this->id_from_uri($id);
 
 		parent::__construct($id);
-
-		$this->content_type_id = (int) ORM::factory('content_type', 'page')->id;
 	}
 
 	public function id_from_uri($uri, $language = FALSE)

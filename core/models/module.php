@@ -16,12 +16,12 @@ class Module_Model extends ORM {
 
 	public function installed()
 	{
-		return $this->find_all();
+		return $this;
 	}
-	
+
 	public function enabled()
 	{
-		return $this->where('enabled', TRUE)->find_all();
+		return $this->where('enabled', TRUE);
 	}
-	
+
 }
