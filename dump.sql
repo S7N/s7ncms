@@ -245,7 +245,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
 
 INSERT INTO `countries` VALUES (1, 'de', 'Germany', '01:00', 1);
 INSERT INTO `countries` VALUES (2, 'gb', 'Great Britain', '00:00', 2);
-INSERT INTO `countries` VALUES (2, 'us', 'United States', '-05:00', 2);
+INSERT INTO `countries` VALUES (3, 'us', 'United States', '-05:00', 2);
 
 -- --------------------------------------------------------
 
