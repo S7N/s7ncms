@@ -74,12 +74,12 @@ class ORM_Versioned_Core extends ORM {
 	}
 
 	/**
-	 * Restores the object with data from stored version
+	 * Loads data from stored version
 	 *
-	 * @param   integer  version number you want to restore
+	 * @param   integer  version number you want to load
 	 * @return  ORM
 	 */
-	public function restore($version)
+	public function version($version)
 	{
 		if ( ! $this->loaded)
 			return $this;
@@ -110,9 +110,21 @@ class ORM_Versioned_Core extends ORM {
 
 				$this->__set($key, $value);
 			}
-
-			$this->save();
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Restores the object with data from stored version
+	 *
+	 * @param   integer  version number you want to restore
+	 * @return  ORM
+	 */
+	public function restore($version)
+	{
+		$this->version($version);
+		$this->save();
 
 		return $this;
 	}

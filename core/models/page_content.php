@@ -12,8 +12,4 @@
  * @version $Id$
  */
 
-class Content_Model extends ORM_Versioned {
-
-	protected $has_many = array('keywords');
-
-}
+class Page_content_Model extends ORM {}

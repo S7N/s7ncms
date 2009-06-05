@@ -81,8 +81,8 @@ CREATE TABLE IF NOT EXISTS `config_languages` (
 DROP TABLE IF EXISTS `contents`;
 CREATE TABLE IF NOT EXISTS `contents` (
   `id` int(10) unsigned NOT NULL auto_increment,
+  `version` int(10) unsigned NOT NULL,
   `language_id` int(10) unsigned NOT NULL,
-  `revision_id` int(10) unsigned NOT NULL,
   `content_type_id` int(10) unsigned NOT NULL,
   `data` text NOT NULL,
   `active` tinyint(1) NOT NULL,
@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS `contents` (
   `sub_title` varchar(255) default NULL,
   `menu_title` varchar(45) default NULL,
   `uri` varchar(45) default NULL,
+  `comment` varchar(45) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
@@ -97,12 +98,71 @@ CREATE TABLE IF NOT EXISTS `contents` (
 -- Daten für Tabelle `contents`
 -- 
 
-INSERT INTO `contents` VALUES (1, 1, 1, 0, 'Hallo, das ist meiner erste Seite.', 1, 'Meine erste Seite', NULL, 'Erste Seite', 'erste-seite');
-INSERT INTO `contents` VALUES (2, 2, 2, 0, 'Hello, this is my first page.', 1, 'My first Page', NULL, 'First Page', 'first-page');
-INSERT INTO `contents` VALUES (3, 1, 0, 0, 'das ist der inhalt', 1, 'Andere Seite', NULL, 'Andere Seite', 'andere-seite');
-INSERT INTO `contents` VALUES (4, 2, 0, 0, 'this is the content', 1, 'Another Page', NULL, 'Another Page', 'another-page');
-INSERT INTO `contents` VALUES (5, 1, 0, 0, 'das ist über S7Ncms', 1, 'Über S7Ncms', NULL, 'Über', 'uber');
-INSERT INTO `contents` VALUES (6, 2, 0, 0, 'this is about S7Ncms', 1, 'About S7Ncms', NULL, 'About', 'about');
+INSERT INTO `contents` VALUES (1, 1, 1, 1, 'Hallo, das ist meiner erste Seite.', 1, 'Meine erste Seite', NULL, 'Erste Seite', 'erste-seite', NULL);
+INSERT INTO `contents` VALUES (2, 1, 2, 1, 'Hello, this is my first page.', 1, 'My first Page', NULL, 'First Page', 'first-page', NULL);
+INSERT INTO `contents` VALUES (3, 1, 1, 1, 'das ist der inhalt', 1, 'Andere Seite', NULL, 'Andere Seite', 'andere-seite', NULL);
+INSERT INTO `contents` VALUES (4, 1, 2, 1, 'this is the content', 1, 'Another Page', NULL, 'Another Page', 'another-page', NULL);
+INSERT INTO `contents` VALUES (5, 1, 1, 1, 'das ist über S7Ncms', 1, 'Über S7Ncms', NULL, 'Über', 'uber', NULL);
+INSERT INTO `contents` VALUES (6, 1, 2, 1, 'this is about S7Ncms', 1, 'About S7Ncms', NULL, 'About', 'about', NULL);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `contents_versions`
+-- 
+
+DROP TABLE IF EXISTS `contents_versions`;
+CREATE TABLE IF NOT EXISTS `contents_versions` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `content_id` int(10) unsigned NOT NULL,
+  `version` int(10) unsigned NOT NULL,
+  `language_id` int(10) unsigned NOT NULL,
+  `content_type_id` int(10) unsigned NOT NULL,
+  `data` text NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `title` varchar(45) NOT NULL,
+  `sub_title` varchar(255) default NULL,
+  `menu_title` varchar(45) default NULL,
+  `uri` varchar(45) default NULL,
+  `comment` varchar(45) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+-- 
+-- Daten für Tabelle `contents_versions`
+-- 
+
+INSERT INTO `contents_versions` VALUES (1, 1, 1, 1, 1, 'Hallo, das ist meiner erste Seite.', 1, 'Meine erste Seite', NULL, 'Erste Seite', 'erste-seite', NULL);
+INSERT INTO `contents_versions` VALUES (2, 2, 1, 2, 1, 'Hello, this is my first page.', 1, 'My first Page', NULL, 'First Page', 'first-page', NULL);
+INSERT INTO `contents_versions` VALUES (3, 3, 1, 1, 1, 'das ist der inhalt', 1, 'Andere Seite', NULL, 'Andere Seite', 'andere-seite', NULL);
+INSERT INTO `contents_versions` VALUES (4, 4, 1, 2, 1, 'this is the content', 1, 'Another Page', NULL, 'Another Page', 'another-page', NULL);
+INSERT INTO `contents_versions` VALUES (5, 5, 1, 1, 1, 'das ist über S7Ncms', 1, 'Über S7Ncms', NULL, 'Über', 'uber', NULL);
+INSERT INTO `contents_versions` VALUES (6, 6, 1, 2, 1, 'this is about S7Ncms', 1, 'About S7Ncms', NULL, 'About', 'about', NULL);
+
+-- --------------------------------------------------------
+
+-- 
+-- Tabellenstruktur für Tabelle `content_types`
+-- 
+
+DROP TABLE IF EXISTS `page_contents`;
+CREATE TABLE IF NOT EXISTS `page_contents` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `page_id` int(10) unsigned default NULL,
+  `content_id` int(10) unsigned default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+-- 
+-- Daten für Tabelle `content_types`
+-- 
+
+INSERT INTO `page_contents` VALUES (1, 1, 1);
+INSERT INTO `page_contents` VALUES (2, 1, 2);
+INSERT INTO `page_contents` VALUES (3, 2, 3);
+INSERT INTO `page_contents` VALUES (4, 2, 4);
+INSERT INTO `page_contents` VALUES (5, 3, 5);
+INSERT INTO `page_contents` VALUES (6, 3, 6);
 
 -- --------------------------------------------------------
 
@@ -113,22 +173,15 @@ INSERT INTO `contents` VALUES (6, 2, 0, 0, 'this is about S7Ncms', 1, 'About S7N
 DROP TABLE IF EXISTS `content_types`;
 CREATE TABLE IF NOT EXISTS `content_types` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `page_id` int(10) unsigned default NULL,
-  `block_id` int(10) unsigned default NULL,
-  `content_id` int(10) unsigned default NULL,
+  `name` varchar(45) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- 
 -- Daten für Tabelle `content_types`
 -- 
 
-INSERT INTO `content_types` VALUES (1, 1, NULL, 1);
-INSERT INTO `content_types` VALUES (2, 1, NULL, 2);
-INSERT INTO `content_types` VALUES (3, 2, NULL, 3);
-INSERT INTO `content_types` VALUES (4, 2, NULL, 4);
-INSERT INTO `content_types` VALUES (5, 3, NULL, 5);
-INSERT INTO `content_types` VALUES (6, 3, NULL, 6);
+INSERT INTO `content_types` VALUES (1, 'page');
 
 -- --------------------------------------------------------
 

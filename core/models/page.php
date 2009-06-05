@@ -14,7 +14,7 @@
 
 class Page_Model extends ORM {
 
-	protected $has_many = array('contents' => 'content_types');
+	protected $has_many = array('contents' => 'page_contents');
 	protected $belongs_to = array('author' => 'user');
 
 	public function __construct($id = NULL)
@@ -30,7 +30,7 @@ class Page_Model extends ORM {
 		$lang = $language ? language::id($language) : language::$id;
 
 		$result = Database::instance()->query("
-			SELECT `page_id` AS `id` FROM `content_types`
+			SELECT `page_id` AS `id` FROM `page_contents`
 			WHERE `content_id` IN
 				(SELECT `id` FROM `contents` WHERE language_id = ".(int) $lang." AND uri = '".$uri."')
 			LIMIT 1
