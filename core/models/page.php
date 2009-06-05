@@ -17,19 +17,21 @@ class Page_Model extends ORM {
 	protected $has_many = array('contents' => 'page_contents');
 	protected $belongs_to = array('author' => 'user');
 
+	protected $content_type_id = 0;
+
 	public function __construct($id = NULL)
 	{
 		if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
 			$id = $this->id_from_uri($id);
 
 		parent::__construct($id);
+
+		$this->content_type_id = (int) ORM::factory('content_type', 'page')->id;
 	}
 
 	public function id_from_uri($uri, $language = FALSE)
 	{
 		$lang = $language ? language::id($language) : language::$id;
-
-		$content_type_id = ORM::factory('content_type', 'page')->id;
 
 		$result = Database::instance()->query("
 			SELECT `page_id` AS `id` FROM `page_contents`
@@ -37,7 +39,7 @@ class Page_Model extends ORM {
 				SELECT `id` FROM `contents`
 				WHERE language_id = ".(int) $lang."
 					AND uri = ".Database::instance()->escape($uri)."
-					AND content_type_id = ".(int) $content_type_id."
+					AND content_type_id = ".$this->content_type_id."
 			) LIMIT 1
 		");
 
@@ -55,7 +57,9 @@ class Page_Model extends ORM {
 
 		if (($content = Cache::instance()->get($cache_name)) === NULL)
 		{
-			$content = $this->where(array('language_id' => $lang))->contents->current();
+			$content = $this
+				->where(array('language_id' => $lang, 'content_type_id' => $this->content_type_id))
+				->contents->current();
 
 			Cache::instance()->set($cache_name, $content, array('page'));
 		}
