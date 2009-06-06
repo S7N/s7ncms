@@ -56,8 +56,16 @@ class Menu_Core {
 
 			foreach ($this->items() as $item)
 			{
-				if ($this->include_root === FALSE AND $item->lvl == 0)
+				if ($item->lvl == 0)
+				{
+					if ($this->include_root)
+					{
+						$class = $item->id === Menu::$page_id ? 'active' : '';
+						$output .= '<li class="'.$class.'">'.html::anchor($item->uri, html::specialchars($item->title), array('class' => $class)).'</li>';
+					}
+
 					continue;
+				}
 
 				$output .= $this->render($item->id);
 			}

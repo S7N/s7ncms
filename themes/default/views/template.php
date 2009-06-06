@@ -21,7 +21,7 @@
                     	Logo
                     </div>
                     <div class="grid_8 alpha tabs">
-                    	<?php echo new Menu ?>
+                    	<?php echo new Menu('main', TRUE) ?>
                     </div>
                     <div class="clear"> </div>
                 </div>

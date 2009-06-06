@@ -124,7 +124,11 @@ class ORM_Versioned_Core extends ORM {
 	public function restore($version)
 	{
 		$this->version($version);
-		$this->save();
+
+		if ($this->version === $version)
+		{
+			$this->save();
+		}
 
 		return $this;
 	}
