@@ -12,9 +12,9 @@
  * @version $Id$
  */
 
-class module_Core {
+class modules_Core {
 
-	public static function load_core_modules()
+	public static function load_core()
 	{
 		$modules = (array) glob(COREPATH . 'modules/*');
 
@@ -22,7 +22,7 @@ class module_Core {
 			self::load_module(basename($module), TRUE);
 	}
 
-	public static function load_modules()
+	public static function load_enabled()
 	{
 		$modules = ORM::factory('module')->enabled()->find_all();
 

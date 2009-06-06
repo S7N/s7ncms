@@ -13,8 +13,8 @@
  */
 
 // 1: Load modules and config
-Event::add('system.ready', 'module::load_core_modules');
-Event::add('system.ready', 'module::load_modules');
+Event::add('system.ready', 'modules::load_core');
+Event::add('system.ready', 'modules::load_enabled');
 //Event::add('system.ready', 'config::load');
 
 // 2: Get language preferences
