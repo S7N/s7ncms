@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS `configs`;
 CREATE TABLE IF NOT EXISTS `configs` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `key` text NOT NULL,
-  `modules_id` int(11) NOT NULL,
+  `module_id` int(11) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `configs` (
 DROP TABLE IF EXISTS `config_languages`;
 CREATE TABLE IF NOT EXISTS `config_languages` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `language_id` int(10) unsigned NOT NULL,
+  `language_id` int(10) unsigned default NULL,
   `config_id` int(10) unsigned NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY  (`id`)

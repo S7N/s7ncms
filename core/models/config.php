@@ -12,4 +12,11 @@
  * @version $Id$
  */
 
-class Config_Model {}
+class Config_Model extends ORM {
+
+	public function values()
+	{
+		return ORM::factory('config_language')->where(array('config_id' => $this->id));
+	}
+
+}

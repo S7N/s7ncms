@@ -27,7 +27,7 @@ class modules_Core {
 		$modules = ORM::factory('module')->enabled()->find_all();
 
 		foreach ($modules as $module)
-			self::load_module(basename($module->name));
+			self::load_module($module->name);
 	}
 
 	public static function load_module($name, $core = FALSE)

@@ -15,18 +15,12 @@
 abstract class Module_Core {
 
 	public $config = NULL;
-	public $info = NULL;
+	public $module = NULL;
 
 	public function __construct()
 	{
-		echo "construct";
-		$this->info = ORM::factory('module', strtolower(__CLASS__));
-		$this->config = new Config($this->info->id);
-	}
-
-	public function modtest()
-	{
-		return "modtest";
+		$this->module = ORM::factory('module', strtolower(get_class($this)));
+		$this->config = new Config($this->module->id);
 	}
 
 	abstract public function install();

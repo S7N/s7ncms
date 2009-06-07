@@ -14,14 +14,31 @@
 
 class Module_Model extends ORM {
 
+
 	public function installed()
 	{
 		return $this;
 	}
 
-	public function enabled()
+	public function enabled($name = NULL)
 	{
-		return $this->where('enabled', TRUE);
+		if ($name === NULL)
+			return $this->where('enabled', TRUE);
+		else
+			return (bool) $this->db
+				->select('id')
+				->where(array('name' => $name, 'enabled' => TRUE))
+				->count_records('config_languages');
+	}
+
+	public function unique_key($id)
+	{
+		if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
+		{
+			return 'name';
+		}
+
+		return parent::unique_key($id);
 	}
 
 }

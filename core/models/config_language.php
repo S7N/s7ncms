@@ -12,4 +12,4 @@
  * @version $Id$
  */
 
-class Config_language_Model {}
+class Config_language_Model extends ORM {}

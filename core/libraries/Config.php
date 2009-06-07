@@ -16,10 +16,27 @@ class Config_Core {
 
 	protected $config = NULL;
 
-	public function __construct($module_id)
+	public function __construct($module_id = NULL)
 	{
 		// parse configuration
-		// take care of the language value
+		$keys = ORM::factory('config')->where(array('module_id' => $module_id))->find_all();
+
+		foreach ($keys as $key)
+		{
+			$values = $key->values()->find_all();
+
+			if (count($values) === 1)
+			{
+				$this->config[$key->key] = $values->current()->value;
+			}
+			else
+			{
+				foreach ($values as $value)
+				{
+					$this->config[$key->key][$value->language_id] = $value->value;
+				}
+			}
+		}
 	}
 
 	public function __get($key)
