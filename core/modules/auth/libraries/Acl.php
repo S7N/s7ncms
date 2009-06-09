@@ -1,6 +1,6 @@
 <?php
 
-final class Acl {
+class Acl_Core {
 	
 	protected $auth_instance;
 	

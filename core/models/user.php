@@ -14,6 +14,39 @@
 
 class User_Model extends ORM {
 
-	protected $belongs_to = array('nation');
+	protected $belongs_to = array('country', 'role');
+	
+	public $formo_label_filters = array
+	(
+	  'ucwords'
+	);
+	
+	public $formo_ignores = array
+	(
+	  'id',
+	  'last_login',
+	  'created',
+	  'auth_code',
+	  'nation_id'
+	);
+	
+	public $formo_pre_filters = array
+	(
+		'email' => array('trim')
+	);
+	
+	public $formo_rules = array
+	(
+		'email' => array('email', 'Invalid email')
+	);
+	
+	public $formo_order = array
+	(
+		'username',
+		'password',
+		'password_conf',
+		'email',
+		'register'
+	);
 	
 }

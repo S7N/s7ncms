@@ -2,6 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <?php
+	    	assets::script('jquery', theme::url('scripts/jquery/jquery-1.3.2.min.js'));
+	    	assets::script('form', theme::url('scripts/jquery.forms.js'));
+		?>
         <?php
         	assets::stylesheet(theme::url('styles/reset.css'));
         	assets::stylesheet(theme::url('styles/text.css'));

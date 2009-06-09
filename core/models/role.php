@@ -2,5 +2,4 @@
 
 
 class Role_Model extends ORM {
-	
 }

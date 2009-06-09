@@ -12,4 +12,6 @@
  * @version $Id$
  */
 
-class Country_Model {}
+class Country_Model {
+	protected $belongs_to = array('language');
+}
