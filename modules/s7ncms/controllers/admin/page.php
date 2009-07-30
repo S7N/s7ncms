@@ -151,6 +151,8 @@ class Page_Controller extends Administration_Controller {
 			 * and
 			 * http://projects.kohanaphp.com/issues/1697
 			 *
+			 * fixed in Formo 1.2
+			 *
 			 */
 			$_type = NULL;
 			foreach ($form->type->elements as $key => $value)

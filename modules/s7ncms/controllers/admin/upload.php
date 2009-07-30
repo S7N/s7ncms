@@ -25,11 +25,11 @@ class Upload_Controller extends Administration_Controller {
 		if ($files->validate())
 		{
 			$filename = upload::save('picture');
-			echo 'window.top.window.stopUploadSuccess("' . url::site_lang('','upload/'.basename($filename)) .'");';
+			echo 'window.top.window.stopUploadSuccess("' . url::base().'upload/'.basename($filename).'");';
 		}
 		else
 		{
-			$errors=$files->errors();			
+			$errors=$files->errors();
 			echo 'window.top.window.stopUploadError("' . $errors['picture'] . '");';
 		}
 
