@@ -65,7 +65,7 @@ class Blog_Controller extends Administration_Controller {
 		$form = Formo::factory()
 			->plugin('csrf')
 			->add('text', 'title', array('label' => __('Title')))
-			->add('textarea', 'content', array('label' => __('Content')))
+			->add('textarea', 'blog_content', array('label' => __('Content')))
 			->add('text', 'tags', array('label' => __('Tags: <small>(Comma separated)</small>')))
 			->add('submit', 'submit', array('label' => __('Submit')))
 			
@@ -77,7 +77,7 @@ class Blog_Controller extends Administration_Controller {
 			$post->user_id = Auth::instance()->get_user()->id;
 			$post->title = $form->title->value;
 			$post->uri = blog::unique_title($form->title->value);
-			$post->content = $form->content->value;
+			$post->content = $form->blog_content->value;
 			$post->tags = $form->tags->value;
 			$post->save();
 
@@ -105,7 +105,7 @@ class Blog_Controller extends Administration_Controller {
 		$form = Formo::factory()
 			->plugin('csrf')
 			->add('text', 'title', array('label' => __('Title'), 'value' => $post->title))
-			->add('textarea', 'content', array('label' => __('Content'), 'value' => $post->content))
+			->add('textarea', 'blog_content', array('label' => __('Content'), 'value' => $post->content))
 			->add('text', 'tags', array('label' => __('Tags: <small>(Comma separated)</small>'), 'value' => $post->tags))
 			->add('submit', 'submit', array('label' => __('Submit')))
 			
@@ -117,7 +117,7 @@ class Blog_Controller extends Administration_Controller {
 				$post->uri = blog::unique_title($form->title->value);
 			
 			$post->title = $form->title->value;
-			$post->content = $form->content->value;
+			$post->content = $form->blog_content->value;
 			$post->tags = $form->tags->value;
 			$post->save();
 

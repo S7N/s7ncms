@@ -10,7 +10,7 @@
 			<?php echo empty($title->error) ? form::input($title->name, $title->value) : form::input($title->name, $title->value, 'class="error"') ?>
 			<?php if ( ! empty($title->error)): ?><br /><span class="error"><?php echo $title->error ?></span><?php endif ?>
 		</p>
-		<p><?php echo form::label($content->name, $content->label).form::textarea($content->name, $content->value) ?></p>
+		<p><?php echo form::label($blog_content->name, $blog_content->label).form::textarea($blog_content->name, $blog_content->value) ?></p>
 		<p><?php echo form::label($tags->name, $tags->label).form::input($tags->name, $tags->value) ?></p>
 	</div>
 </div>
