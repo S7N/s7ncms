@@ -108,8 +108,13 @@ class module_Core {
 			array_unshift($modules, MODPATH . $module->name);
 			$files = (array) glob(MODPATH . $module->name. '/hooks/*.php');
 			
-			if ( ! empty($files))
-				$hooks = array_merge($hooks, $files);
+			$add = array();
+			foreach ($files as $file)
+				if ( ! empty($file))
+					$add[] = $file;
+			
+			if ( ! empty($add))
+				$hooks = array_merge($hooks, $add);
 		}
 		
 		foreach ($hooks as $hook)
