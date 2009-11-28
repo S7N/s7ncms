@@ -46,7 +46,7 @@ class Cache_File_Driver implements Cache_Driver {
 		elseif ($tag === TRUE)
 		{
 			// Find all the files that have the tag name
-			$paths = glob($this->directory.'*~*'.$id.'*~*');
+			$paths = (array) glob($this->directory.'*~*'.$id.'*~*');
 
 			// Find all tags matching the given tag
 			$files = array();
@@ -170,9 +170,9 @@ class Cache_File_Driver implements Cache_Driver {
 				ob_start();
 				include $file;
 				$data = ob_get_clean();
-				
+
 				$data = unserialize($data);
-				
+
 				error_reporting($ER);
 			}
 		}
