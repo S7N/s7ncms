@@ -60,7 +60,7 @@ class User_Controller extends Administration_Controller {
 			$user->username = $form->username->value;
 			$user->email = $form->email->value;
 			$user->password = $form->password->value;
-			$user->registered = date("Y-m-d H:i:s", time());
+			$user->registered_on = date("Y-m-d H:i:s", time());
 			$user->add(ORM::factory('role', 'login'));
 			$user->add(ORM::factory('role', 'admin'));
 			$user->save();
@@ -70,17 +70,17 @@ class User_Controller extends Administration_Controller {
 
 		$this->template->content = View::factory('user/create', $form->get(TRUE));
 	}
-	
+
 	public function edit($id)
 	{
 		$this->head->title->append(__('New User'));
 		$this->template->title .= __('New User');
-		
+
 		$user = ORM::factory('user', (int) $id);
 
 		if ( ! $user->loaded)
 			Event::run('system.404');
-			
+
 		$form = Formo::factory()
 			->plugin('csrf')
 			->add('text', 'username', array('label' => __('Username'), 'value' => $user->username))
@@ -96,6 +96,7 @@ class User_Controller extends Administration_Controller {
 
 		if ($form->validate())
 		{
+			$user->username = $form->username->value;
 			$user->email = $form->email->value;
 			if ( ! empty($form->password->value))
 				$user->password = $form->password->value;
@@ -106,7 +107,7 @@ class User_Controller extends Administration_Controller {
 
 		$this->template->content = View::factory('user/edit', $form->get(TRUE));
 	}
-	
+
 	public function delete($id)
 	{
 		$user = ORM::factory('user', (int) $id);

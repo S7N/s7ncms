@@ -8,7 +8,7 @@
 	<div class="inside">
 		<p>
 			<?php echo form::label($username->name, $username->label) ?>
-			<?php echo empty($username->error) ? form::input($username->name, $username->value, 'readonly="readonly"') : form::input($username->name, $username->value, 'readonly="readonly" class="error"') ?>
+			<?php echo empty($username->error) ? form::input($username->name, $username->value) : form::input($username->name, $username->value, 'class="error"') ?>
 			<?php if ( ! empty($username->error)): ?><br /><span class="error"><?php echo $username->error ?></span><?php endif ?>
 		</p>
 		<p>
