@@ -31,7 +31,7 @@ class Formo_csrf {
 		$this->last_token = Session::instance()->get_once('formo_csrf_token', FALSE);
 	}
 	
-	public static function load( & $form)
+	public static function load($form)
 	{
 		return new Formo_csrf($form);
 	}
